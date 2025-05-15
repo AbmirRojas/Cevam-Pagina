@@ -1,12 +1,18 @@
 {
-  "name": "cevam-pagina",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
+    "pg": "^8.16.0"
+  },
+  "name": "cevam",
   "version": "1.0.0",
-  "description": "",
-  "license": "ISC",
-  "author": "Abmir, Giovanny, Jackson, Jose, Jesus, Manuel",
-  "type": "module",
   "main": "index.js",
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-  }
+  },
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "description": ""
 }
