@@ -45,14 +45,37 @@ db.connect();
 
 // Rutas de la aplicacion
 
+// Rutas get 
+
 app.get("/login", (req, res) => {
   res.render("login.ejs");
+});
+
+app.get("/register", (req, res) => {
+  res.render("register.ejs");
+});
+
+// Rutas Post
+
+app.post("/register", async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    await db.query(
+      "INSERT INTO users (email, password) VALUES ($1, $2)",
+      [username, hashedPassword]
+    );
+    res.redirect("/login");
+  } catch (err) {
+    console.error("Error inserting user:", err);
+    res.status(500).send("Error registering user");
+  }
 });
 
 app.post(
   "/login",
   passport.authenticate("local", {
-    successRedirect: "/secrets",
+    successRedirect: "/main",
     failureRedirect: "/login",
   })
 );
