@@ -53,20 +53,6 @@ app.get("/login", (req, res) => {
   res.render("login.ejs");
 });
 
-app.get("/register", (req, res) => {
-  res.render("register.ejs");
-});
-
-app.get("/", (req, res) => {
-  if (req.isAuthenticated()) {
-    // Renderiza la vista principal si el usuario está autenticado
-
-    res.render("main.ejs", { user: req.user });
-  } else {
-    res.redirect("/login");
-  }
-});
-
 app.get("/logout", (req, res) => {
   req.logout((err) => {
     if (err) {
@@ -75,6 +61,37 @@ app.get("/logout", (req, res) => {
     }
     res.redirect("/login");
   });
+});
+
+app.get("/register", (req, res) => {
+  res.render("register.ejs");
+});
+
+app.get("/books", (req, res) => {
+  if (req.isAuthenticated()) {
+    // Renderiza la vista principal si el usuario está autenticado
+    books = db.query("SELECT * FROM libros");
+
+    res.render("main.ejs", { user: req.user, books: books.rows });
+  } else {
+    res.redirect("/login");
+  }
+});
+
+app.get("/book/:id/units", async (req, res) => {
+  if (req.isAuthenticated()) {
+    try {
+      const bookId = req.params.id;
+      const units = await db.query("SELECT * FROM unidades WHERE id_libro = $1", [bookId]);
+
+      res.render("units.ejs", { user: req.user, units: units.rows });
+    } catch (error) {
+      console.error("Error retrieving units:", error);
+      res.status(500).send("Internal server error");
+    }
+  } else {
+    res.redirect("/login");
+  }
 });
 
 app.get("/settings", (req, res) => {
@@ -101,7 +118,7 @@ app.post("/register", async (req, res) => {
 app.post(
   "/login",
   passport.authenticate("local", {
-    successRedirect: "/main",
+    successRedirect: "/books",
     failureRedirect: "/login",
   })
 );
