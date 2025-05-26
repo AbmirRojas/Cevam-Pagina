@@ -6,6 +6,8 @@ import bcrypt from 'bcrypt';
 import passport from 'passport';
 import { Strategy } from 'passport-local';
 import session from 'express-session';
+import env from 'dotenv';
+
 
 // Detalles de la sesion
 
@@ -55,15 +57,39 @@ app.get("/register", (req, res) => {
   res.render("register.ejs");
 });
 
+app.get("/", (req, res) => {
+  if (req.isAuthenticated()) {
+    // Renderiza la vista principal si el usuario está autenticado
+
+    res.render("main.ejs", { user: req.user });
+  } else {
+    res.redirect("/login");
+  }
+});
+
+app.get("/logout", (req, res) => {
+  req.logout((err) => {
+    if (err) {
+      console.error("Error during logout:", err);
+      return res.status(500).send("Error logging out");
+    }
+    res.redirect("/login");
+  });
+});
+
+app.get("/settings", (req, res) => {
+  res.render("settings", { user: req.user });
+});
+
 // Rutas Post
 
 app.post("/register", async (req, res) => {
-  const { fName, lName, mail, password, cedula, phoneNumber, role } = req.body;
+  const { fName, lName, email, password, cedula, phoneNumber, role } = req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     await db.query(
-      "INSERT INTO usuarios (nombre, apellido, correo, contrasena_hash, cedula_identidad, numero_celular, id_rol) VALUES ($1, $2, $3, $4, $5, $6, (SELECT id FROM roles WHERE nombre = $7))",
-      [fName, lName, mail, hashedPassword, cedula, phoneNumber, role]
+      "INSERT INTO usuarios (nombre, apellido, correo, contrasena_hash, cedula_identidad, numero_celular, id_rol) VALUES ($1, $2, $3, $4, $5, $6, (SELECT id_rol FROM roles WHERE nombre_rol = $7))",
+      [fName, lName, email, hashedPassword, cedula, phoneNumber, role]
     );
     res.redirect("/login");
   } catch (err) {
@@ -80,12 +106,27 @@ app.post(
   })
 );
 
+app.post("/settings", async (req, res) => {
+  const { fName, lName, email, password, cedula, phoneNumber } = req.body;
+  try {
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    await db.query(
+      "UPDATE usuarios SET nombre = $1, apellido = $2, correo = $3, contrasena_hash = $4, cedula_identidad = $5, numero_celular = $6 WHERE id_usuario = $7",
+      [fName, lName, email, hashedPassword, cedula, phoneNumber, req.user.id]
+    );
+    res.redirect("/settings");
+  } catch (err) {
+    console.error("Error updating user:", err);
+    res.status(500).send("Error updating user");
+  }
+});
+
 passport.use(
   "local",
-  new Strategy(async function verify(mail, password, cb) {
+  new Strategy(async function verify(email, password, cb) {
     try {
       const result = await db.query("SELECT * FROM usuarios WHERE email = $1 ", [
-        mail,
+        email,
       ]);
       if (result.rows.length > 0) {
         const user = result.rows[0];
