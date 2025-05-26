@@ -32,7 +32,7 @@ app.use(passport.session());
 
 // Configuracion de la base de datos
 
-/*
+
 const db = new pg.Client({
   user: process.env.PG_USER,
   host: process.env.PG_HOST,
@@ -41,7 +41,7 @@ const db = new pg.Client({
   port: process.env.PG_PORT,
 });
 db.connect();
-*/
+
 
 // Rutas de la aplicacion
 
@@ -58,12 +58,12 @@ app.get("/register", (req, res) => {
 // Rutas Post
 
 app.post("/register", async (req, res) => {
-  const { username, password } = req.body;
+  const { fName, lName, mail, password, cedula, phoneNumber, role } = req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     await db.query(
-      "INSERT INTO users (email, password) VALUES ($1, $2)",
-      [username, hashedPassword]
+      "INSERT INTO usuarios (nombre, apellido, correo, contrasena_hash, cedula_identidad, numero_celular, id_rol) VALUES ($1, $2, $3, $4, $5, $6, (SELECT id FROM roles WHERE nombre = $7))",
+      [fName, lName, mail, hashedPassword, cedula, phoneNumber, role]
     );
     res.redirect("/login");
   } catch (err) {
@@ -82,10 +82,10 @@ app.post(
 
 passport.use(
   "local",
-  new Strategy(async function verify(username, password, cb) {
+  new Strategy(async function verify(mail, password, cb) {
     try {
-      const result = await db.query("SELECT * FROM users WHERE email = $1 ", [
-        username,
+      const result = await db.query("SELECT * FROM usuarios WHERE email = $1 ", [
+        mail,
       ]);
       if (result.rows.length > 0) {
         const user = result.rows[0];
