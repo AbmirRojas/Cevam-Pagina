@@ -34,7 +34,6 @@ app.use(passport.session());
 
 // Configuracion de la base de datos
 
-
 const db = new pg.Client({
   user: process.env.PG_USER,
   host: process.env.PG_HOST,
@@ -67,12 +66,12 @@ app.get("/register", (req, res) => {
   res.render("register.ejs");
 });
 
-app.get("/books", (req, res) => {
+app.get("/", (req, res) => {
   if (req.isAuthenticated()) {
     // Renderiza la vista principal si el usuario está autenticado
     books = db.query("SELECT * FROM libros");
 
-    res.render("main.ejs", { user: req.user, books: books.rows });
+    res.render("index.ejs", { user: req.user, books: books.rows });
   } else {
     res.redirect("/login");
   }
@@ -118,7 +117,7 @@ app.post("/register", async (req, res) => {
 app.post(
   "/login",
   passport.authenticate("local", {
-    successRedirect: "/books",
+    successRedirect: "/",
     failureRedirect: "/login",
   })
 );
@@ -147,7 +146,8 @@ passport.use(
       ]);
       if (result.rows.length > 0) {
         const user = result.rows[0];
-        const storedHashedPassword = user.password;
+        console.log(user.contrasena_hash)
+        const storedHashedPassword = user.contrasena_hash;
         bcrypt.compare(password, storedHashedPassword, (err, valid) => {
           if (err) {
             console.error("Error comparing passwords:", err);
@@ -161,6 +161,7 @@ passport.use(
           }
         });
       } else {
+        console.log("User not found")
         return cb("User not found");
       }
     } catch (err) {

@@ -1,0 +1,252 @@
+:root {
+        --azul-cevam: #002169;
+        --rojo-cevam: #CF142B;
+        --gris-texto: #6c757d;
+    }
+
+    @keyframes slideIn {
+        from { transform: translateY(100px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes fadeIn {
+        to { opacity: 1; }
+    }
+
+    @keyframes slideOutDown {
+        from { transform: translateY(0); opacity: 1; }
+        to { transform: translateY(100px); opacity: 0; }
+    }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: 'Poppins', sans-serif;
+        background: #f8f9fa;
+    }
+
+    .contenedor-principal {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        min-height: 100vh;
+        animation: slideIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) both;
+        animation-delay: 0.3s;
+    }
+
+    .exit-animation {
+        animation: slideOutDown 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    .seccion-formulario {
+        padding: 3rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background: white;
+        position: relative;
+        opacity: 0;
+        animation: fadeIn 0.6s ease forwards;
+        animation-delay: 0.6s;
+    }
+
+    .logo-cevam {
+        width: 300px;
+        margin: 0 auto 2rem;
+        display: block;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        transition: transform 0.3s ease, filter 0.3s ease;
+        cursor: pointer;
+    }
+
+    .logo-cevam:hover {
+        transform: scale(1.05) rotate(-2deg);
+        filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+    }
+
+    .btn-back {
+        color: var(--azul-cevam);
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-back:hover {
+        color: var(--rojo-cevam);
+        transform: translateX(-5px);
+    }
+
+    .bi-arrow-left-short {
+        font-size: 1.4rem;
+        transition: transform 0.3s ease;
+    }
+
+    .btn-back:hover .bi-arrow-left-short {
+        transform: translateX(-5px);
+    }
+
+    .titulo-formulario {
+        color: var(--azul-cevam);
+        font-weight: 700;
+        font-size: 2.2rem;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .subtitulo {
+        color: var(--gris-texto);
+        text-align: center;
+        margin-bottom: 2.5rem;
+        font-size: 1.1rem;
+    }
+
+    .campo-formulario {
+        border: 8px solid #e9ecef;
+        border-radius: 12px;
+        padding: 1.2rem;
+        margin-bottom: 1.8rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .campo-formulario:focus-within {
+        border-color: var(--azul-cevam);
+        box-shadow: 0 0 0 4px rgba(0, 33, 105, 0.15);
+    }
+
+    input {
+        width: 100%;
+        border: none;
+        outline: none;
+        font-size: 1rem;
+        font-weight: 500;
+    }
+
+    .subtitulo-seccion {
+        color: var(--azul-cevam);
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin: 1.5rem 0 0.5rem;
+        text-align: left;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .subtitulo-seccion i {
+        font-size: 1.1em;
+        margin-right: 8px;
+    }
+
+    .boton-principal {
+        width: 100%;
+        background: var(--rojo-cevam);
+        color: white;
+        border: 3px solid var(--rojo-cevam);
+        padding: 1.2rem;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .boton-principal:hover {
+        background: #B01024;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(207, 20, 43, 0.3);
+    }
+
+    .boton-principal::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: rgba(255,255,255,0.1);
+        transform: rotate(45deg);
+        transition: all 0.5s ease;
+    }
+
+    .boton-principal:hover::after {
+        left: 150%;
+    }
+
+    .seccion-bienvenida {
+        background: linear-gradient(135deg, var(--azul-cevam), #001a4d);
+        padding: 4rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        color: white;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .seccion-bienvenida::before {
+        content: '';
+        position: absolute;
+        width: 200%;
+        height: 200%;
+        background: repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 25px,
+            rgba(255,255,255,0.05) 25px,
+            rgba(255,255,255,0.05) 50px
+        );
+        animation: movePattern 20s linear infinite;
+    }
+
+    @keyframes movePattern {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+
+    .mensaje-bienvenida {
+        position: relative;
+        z-index: 1;
+    }
+
+    .mensaje-bienvenida h2 {
+        font-size: 2.8rem;
+        margin-bottom: 1.5rem;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .redes-sociales {
+        margin-top: 3rem;
+    }
+
+    .redes-sociales a {
+        color: white;
+        font-size: 1.8rem;
+        margin: 0 1.2rem;
+        transition: all 0.3s;
+        position: relative;
+    }
+
+    .redes-sociales a:hover {
+        transform: translateY(-5px);
+        opacity: 0.9;
+    }
+
+    @media (max-width: 992px) {
+        .contenedor-principal {
+            grid-template-columns: 1fr;
+        }
+        
+        .seccion-bienvenida {
+            display: none;
+        }
+        
+        .seccion-formulario {
+            padding: 2rem;
+        }
+    }

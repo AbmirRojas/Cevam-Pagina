@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro Completo CEVAM</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/styles/register.css">
+</head>
+<body>
+
+<div class="contenedor-principal">
+    <!-- Sección Formulario -->
+    <div class="seccion-formulario">
+        <div class="text-start mb-4">
+            <a href="/login" class="btn-back" id="backLink">
+                <i class="bi bi-arrow-left-short"></i> Volver al Login
+            </a>
+        </div>
+        
+        <img src="img/LOGOCEVAM.png" alt="CEVAM" class="logo-cevam">
+        <h1 class="titulo-formulario">Registro Completo</h1>
+        <p class="subtitulo">Centro Venezolano Americano de Mérida</p>
+
+        <form id="registroForm" action="/register" method="post">
+            <!-- Información Personal -->
+            <h3 class="subtitulo-seccion">
+                <i class="bi bi-person-fill"></i>INFORMACIÓN PERSONAL
+            </h3>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="campo-formulario">
+                        <input name="fName" type="text" placeholder="Nombre(s)" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="campo-formulario">
+                        <input name="lName" type="text" placeholder="Apellido(s)" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Datos de Contacto -->
+            <h3 class="subtitulo-seccion">
+                <i class="bi bi-telephone-fill"></i>DATOS DE CONTACTO
+            </h3>
+            <div class="campo-formulario">
+                <input name="email" type="email" placeholder="Correo electrónico" required>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="campo-formulario">
+                        <input name="phoneNumber" type="tel" placeholder="Teléfono" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="campo-formulario">
+                        <input name="cedula" type="text" placeholder="Cedula" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seguridad -->
+            <h3 class="subtitulo-seccion mt-4">
+                <i class="bi bi-shield-lock-fill"></i>SEGURIDAD
+            </h3>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="campo-formulario">
+                        <input name="password" type="password" placeholder="Contraseña" id="password" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="campo-formulario">
+                        <input type="password" placeholder="Confirmar contraseña" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-check mb-4">
+                <input class="form-check-input" type="checkbox" id="terminos">
+                <label class="form-check-label" for="terminos">
+                    Acepto los <a href="#" class="text-decoration-none">términos y condiciones</a>
+                </label>
+            </div>
+
+            <button type="submit" class="boton-principal">
+                <i class="bi bi-person-plus-fill me-2"></i>Registrarse Ahora
+            </button>
+        </form>
+
+        <p class="text-center mt-4 text-muted">
+            ¿Ya tienes cuenta? 
+            <a href="login.html" class="text-decoration-none fw-bold" style="color: var(--azul-cevam);" id="backLinkBottom">
+                Inicia Sesión Aquí
+            </a>
+        </p>
+    </div>
+
+    <!-- Sección Bienvenida -->
+    <div class="seccion-bienvenida">
+        <div class="mensaje-bienvenida">
+            <h2>¡Bienvenido a CEVAM!</h2>
+            <p class="lead">Tu plataforma integral para el aprendizaje del inglés</p>
+            
+            <div class="redes-sociales">
+                <a href="https://www.facebook.com/CevamMerida/?locale=es_LA" data-bs-toggle="tooltip" title="Síguenos en Facebook">
+                    <i class="bi bi-facebook"></i>
+                </a>
+                <a href="https://www.instagram.com/edusacevam/?hl=es" data-bs-toggle="tooltip" title="Síguenos en Instagram">
+                    <i class="bi bi-instagram"></i>
+                </a>
+                <a href="" data-bs-toggle="tooltip" title="Síguenos en Twitter">
+                    <i class="bi bi-twitter"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Términos -->
+<div class="modal fade" id="modalTerminos" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Términos y Condiciones</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Contenido de términos aquí -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/scripts/register.js"></script>
+
+</body>
+</html>

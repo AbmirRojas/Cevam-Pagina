@@ -1,0 +1,141 @@
+        :root {
+            --main-blue: #002169;
+            --hover-blue: #00308a;
+        }
+        
+        body {
+            margin-top: 40px;
+            background: #f6f9fc;
+        }
+        
+        @keyframes slideOut {
+            from { transform: translateY(0); opacity: 1; }
+            to { transform: translateY(-100px); opacity: 0; }
+        }
+
+        .exit-animation {
+            animation: slideOut 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .main-container {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .account-block {
+            background: url('../images/FONDO.jpeg') no-repeat center center;
+            background-size: cover;
+            height: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .logo-header {
+            text-align: center;
+            padding: 20px;
+        }
+        .cevam-logo {
+            max-width: 250px;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+        .cevam-logo:hover {
+            transform: scale(1.05);
+        }
+        .btn-theme {
+            background-color: var(--main-blue);
+            border-color: var(--main-blue);
+            color: #fff;
+            width: 100%;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        .btn-theme:hover {
+            background-color: var(--hover-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 33, 105, 0.3);
+        }
+        .welcome-section {
+            background: rgba(0, 33, 105, 0.7);
+            color: white;
+            padding: 60px 40px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .form-group input {
+            border: 2px solid var(--main-blue) !important;
+            border-radius: 8px !important;
+        }
+        .form-group input:focus {
+            box-shadow: 0 0 0 0.3rem rgba(0, 33, 105, 0.25) !important;
+        }
+        .input-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--main-blue);
+        }
+        .social-links a {
+            transition: transform 0.3s ease;
+        }
+        .social-links a:hover {
+            transform: translateY(-3px);
+            color: var(--hover-blue) !important;
+        }
+        .divisor-vertical {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(45deg, var(--main-blue) 0%, var(--hover-blue) 100%);
+        }
+        .divisor-content {
+            position: relative;
+            height: 80%;
+            width: 4px;
+            background: #fff;
+            border-radius: 2px;
+            box-shadow: 0 0 10px rgba(255,255,255,0.3);
+        }
+        .divisor-content::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            background: #fff;
+            border-radius: 50%;
+            border: 4px solid var(--main-blue);
+        }
+        .register-card {
+            border: 2px solid var(--main-blue);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
+        }
+        .register-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 33, 105, 0.1);
+        }
+        .register-link {
+            font-weight: 600;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .register-link:hover {
+            color: var(--hover-blue) !important;
+            border-bottom-color: var(--hover-blue);
+            text-decoration: none;
+        }
+        @media (max-width: 991px) {
+            .divisor-vertical { display: none; }
+        }
