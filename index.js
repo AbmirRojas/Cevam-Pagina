@@ -8,9 +8,7 @@ import { Strategy } from 'passport-local';
 import session from 'express-session';
 import env from 'dotenv';
 
-
 // Detalles de la sesion
-
 const app = express();
 const port = 3000;
 const saltRounds = 11;
@@ -25,7 +23,6 @@ app.use(
 );
 
 // Dependencias de sesion y paso de datos
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
@@ -33,7 +30,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Configuracion de la base de datos
-
 const db = new pg.Client({
   user: process.env.PG_USER,
   host: process.env.PG_HOST,
@@ -43,16 +39,72 @@ const db = new pg.Client({
 });
 db.connect();
 
+// Configuración de Passport antes de las rutas
+passport.use(
+  "local",
+  new Strategy(
+    { usernameField: 'email' }, // Especifica que el campo username es 'email'
+    async function verify(email, password, cb) {
+      try {
+        console.log("Attempting login for:", email); // Debug
+        const result = await db.query("SELECT * FROM usuarios WHERE correo = $1", [email]);
+        
+        if (result.rows.length > 0) {
+          const user = result.rows[0];
+          const storedHashedPassword = user.contrasena_hash;
+          
+          bcrypt.compare(password, storedHashedPassword, (err, valid) => {
+            if (err) {
+              console.error("Error comparing passwords:", err);
+              return cb(err);
+            } else {
+              if (valid) {
+                console.log("Login successful for:", email); // Debug
+                return cb(null, user);
+              } else {
+                console.log("Invalid password for:", email); // Debug
+                return cb(null, false);
+              }
+            }
+          });
+        } else {
+          console.log("User not found:", email); // Debug
+          return cb(null, false); // Cambiar de cb("User not found") a cb(null, false)
+        }
+      } catch (err) {
+        console.error("Database error:", err);
+        return cb(err);
+      }
+    }
+  )
+);
+
+passport.serializeUser((user, cb) => {
+  cb(null, user.id_usuario); // Usar solo el ID del usuario
+});
+
+passport.deserializeUser(async (id, cb) => {
+  try {
+    const result = await db.query("SELECT * FROM usuarios WHERE id_usuario = $1", [id]);
+    if (result.rows.length > 0) {
+      cb(null, result.rows[0]);
+    } else {
+      cb("User not found");
+    }
+  } catch (err) {
+    console.error("Error deserializing user:", err);
+    cb(err);
+  }
+});
 
 // Rutas de la aplicacion
 
 // Rutas get 
-
-app.get("/login", (req, res) => {
+app.get("/login", async (req, res) => {
   res.render("login.ejs");
 });
 
-app.get("/logout", (req, res) => {
+app.get("/logout", async (req, res) => {
   req.logout((err) => {
     if (err) {
       console.error("Error during logout:", err);
@@ -62,16 +114,26 @@ app.get("/logout", (req, res) => {
   });
 });
 
-app.get("/register", (req, res) => {
+app.get("/register", async (req, res) => {
   res.render("register.ejs");
 });
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
   if (req.isAuthenticated()) {
     // Renderiza la vista principal si el usuario está autenticado
-    books = db.query("SELECT * FROM libros");
+    try {
+      const books = await db.query("SELECT * FROM libros");
 
-    res.render("index.ejs", { user: req.user, books: books.rows });
+      if (books.rows.length > 0) {
+        console.log(books.rows)
+        res.render("index.ejs", { user: req.user, books: books.rows });
+      } else {
+        res.render("index.ejs", { user: req.user });
+      }
+    } catch (error) {
+      console.error("Error retrieving books:", error);
+      res.status(500).send("Internal server error");
+    }
   } else {
     res.redirect("/login");
   }
@@ -93,24 +155,55 @@ app.get("/book/:id/units", async (req, res) => {
   }
 });
 
-app.get("/settings", (req, res) => {
-  res.render("settings", { user: req.user });
+app.get("/settings", async (req, res) => {
+  if (req.isAuthenticated()) {
+    res.render("settings.ejs", { user: req.user });
+  } else {
+    res.redirect("/login");
+  }
 });
 
 // Rutas Post
-
 app.post("/register", async (req, res) => {
-  const { fName, lName, email, password, cedula, phoneNumber, role } = req.body;
+  const { fName, lName, email, password, cedula, phoneNumber } = req.body;
+  const role = 3;
+
   try {
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-    await db.query(
-      "INSERT INTO usuarios (nombre, apellido, correo, contrasena_hash, cedula_identidad, numero_celular, id_rol) VALUES ($1, $2, $3, $4, $5, $6, (SELECT id_rol FROM roles WHERE nombre_rol = $7))",
-      [fName, lName, email, hashedPassword, cedula, phoneNumber, role]
-    );
-    res.redirect("/login");
+    const checkResult = await db.query("SELECT * FROM usuarios WHERE correo = $1", [email]);
+
+    if (checkResult.rows.length > 0) {
+      console.log("Usuario ya existente");
+      return res.render("register.ejs", { error: "El usuario ya existe" });
+    } else {
+      bcrypt.hash(password, saltRounds, async (err, hashedPassword) => {
+        if (err) {
+          console.error("Error hashing password:", err);
+          return res.status(500).send("Error creating user");
+        } else {
+          try {
+            const result = await db.query(
+              "INSERT INTO usuarios (nombre, apellido, correo, contrasena_hash, cedula_identidad, numero_celular, id_rol) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+              [fName, lName, email, hashedPassword, cedula, phoneNumber, role]
+            );
+            const user = result.rows[0];
+            req.login(user, (err) => {
+              if (err) {
+                console.error("Error logging in after registration:", err);
+                return res.redirect("/login");
+              }
+              console.log("Registration and login successful");
+              res.redirect("/");
+            });
+          } catch (dbErr) {
+            console.error("Database error during registration:", dbErr);
+            res.status(500).send("Error creating user");
+          }
+        }
+      });
+    }
   } catch (err) {
-    console.error("Error inserting user:", err);
-    res.status(500).send("Error registering user");
+    console.error("Error during registration:", err);
+    res.status(500).send("Internal server error");
   }
 });
 
@@ -119,16 +212,21 @@ app.post(
   passport.authenticate("local", {
     successRedirect: "/",
     failureRedirect: "/login",
+    failureFlash: false
   })
 );
 
 app.post("/settings", async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.redirect("/login");
+  }
+
   const { fName, lName, email, password, cedula, phoneNumber } = req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     await db.query(
       "UPDATE usuarios SET nombre = $1, apellido = $2, correo = $3, contrasena_hash = $4, cedula_identidad = $5, numero_celular = $6 WHERE id_usuario = $7",
-      [fName, lName, email, hashedPassword, cedula, phoneNumber, req.user.id]
+      [fName, lName, email, hashedPassword, cedula, phoneNumber, req.user.id_usuario]
     );
     res.redirect("/settings");
   } catch (err) {
@@ -137,47 +235,6 @@ app.post("/settings", async (req, res) => {
   }
 });
 
-passport.use(
-  "local",
-  new Strategy(async function verify(email, password, cb) {
-    try {
-      const result = await db.query("SELECT * FROM usuarios WHERE email = $1 ", [
-        email,
-      ]);
-      if (result.rows.length > 0) {
-        const user = result.rows[0];
-        console.log(user.contrasena_hash)
-        const storedHashedPassword = user.contrasena_hash;
-        bcrypt.compare(password, storedHashedPassword, (err, valid) => {
-          if (err) {
-            console.error("Error comparing passwords:", err);
-            return cb(err);
-          } else {
-            if (valid) {
-              return cb(null, user);
-            } else {
-              return cb(null, false);
-            }
-          }
-        });
-      } else {
-        console.log("User not found")
-        return cb("User not found");
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  })
-);
-
-passport.serializeUser((user, cb) => {
-  cb(null, user);
-});
-
-passport.deserializeUser((user, cb) => {
-  cb(null, user);
-});
-
 app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-  });
+  console.log(`Server running on port ${port}`);
+});
