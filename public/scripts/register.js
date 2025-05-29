@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const form = document.getElementById('registroForm');
     const password = document.getElementById('password');
+    const passwordConfirmation = document.getElementById('passwordConfirmation');
     
     form.addEventListener('submit', function(e) {
         let isValid = true;
@@ -16,6 +17,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if(!document.getElementById('terminos').checked) {
             isValid = false;
             showError('Debes aceptar los términos y condiciones');
+        }
+
+        if (!comparePasswords(password.value, passwordConfirmation.value)) {
+            isValid = false;
         }
 
         if(!isValid) {
@@ -36,6 +41,14 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 600);
         });
     });
+
+    function comparePasswords(password1, password2) {
+        if (password1 !== password2) {
+            showError('Las contraseñas no coinciden');
+            return false;
+        }
+        return true;
+    }
 
     function showError(message) {
         const alertDiv = document.createElement('div');

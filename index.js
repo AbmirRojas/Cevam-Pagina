@@ -25,6 +25,7 @@ app.use(
 // Dependencias de sesion y paso de datos
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
+app.use(express.static("node_modules/bootstrap/dist/"));
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -85,11 +86,13 @@ passport.serializeUser((user, cb) => {
 
 passport.deserializeUser(async (id, cb) => {
   try {
+    console.log("Deserializing user with ID:", id); // Debug
     const result = await db.query("SELECT * FROM usuarios WHERE id_usuario = $1", [id]);
     if (result.rows.length > 0) {
       cb(null, result.rows[0]);
     } else {
-      cb("User not found");
+      console.log("User not found in deserializeUser for ID:", id); // Debug
+      cb(null, false); // Cambiar a cb(null, false) en lugar de cb("User not found")
     }
   } catch (err) {
     console.error("Error deserializing user:", err);
@@ -165,45 +168,54 @@ app.get("/settings", async (req, res) => {
 
 // Rutas Post
 app.post("/register", async (req, res) => {
-  const { fName, lName, email, password, cedula, phoneNumber } = req.body;
+  const { fName, lName, email, password, cedula, phoneNumber, passwordConfirmation } = req.body;
   const role = 3;
 
-  try {
-    const checkResult = await db.query("SELECT * FROM usuarios WHERE correo = $1", [email]);
+  if (password === passwordConfirmation) {
+    try {
+      const checkResult = await db.query("SELECT * FROM usuarios WHERE correo = $1", [email]);
 
-    if (checkResult.rows.length > 0) {
-      console.log("Usuario ya existente");
-      return res.render("register.ejs", { error: "El usuario ya existe" });
-    } else {
-      bcrypt.hash(password, saltRounds, async (err, hashedPassword) => {
-        if (err) {
-          console.error("Error hashing password:", err);
-          return res.status(500).send("Error creating user");
-        } else {
-          try {
-            const result = await db.query(
-              "INSERT INTO usuarios (nombre, apellido, correo, contrasena_hash, cedula_identidad, numero_celular, id_rol) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
-              [fName, lName, email, hashedPassword, cedula, phoneNumber, role]
-            );
-            const user = result.rows[0];
-            req.login(user, (err) => {
-              if (err) {
-                console.error("Error logging in after registration:", err);
-                return res.redirect("/login");
-              }
-              console.log("Registration and login successful");
-              res.redirect("/");
-            });
-          } catch (dbErr) {
-            console.error("Database error during registration:", dbErr);
-            res.status(500).send("Error creating user");
+      if (checkResult.rows.length > 0) {
+        console.log("Usuario ya existente");
+        return res.render("register.ejs", { error: "El usuario ya existe" });
+      } else {
+        bcrypt.hash(password, saltRounds, async (err, hashedPassword) => {
+          if (err) {
+            console.error("Error hashing password:", err);
+            return res.status(500).send("Error creating user");
+          } else {
+            try {
+              const result = await db.query(
+                "INSERT INTO usuarios (nombre, apellido, correo, contrasena_hash, cedula_identidad, numero_celular, id_rol) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+                [fName, lName, email, hashedPassword, cedula, phoneNumber, role]
+              );
+              const user = result.rows[0];
+              
+              // Asegura que el usuario tenga el campo id_usuario
+              console.log("Created user:", user); // Debug
+              
+              req.login(user, (err) => {
+                if (err) {
+                  console.error("Error logging in after registration:", err);
+                  return res.redirect("/login");
+                }
+                console.log("Registration and login successful");
+                res.redirect("/");
+              });
+            } catch (dbErr) {
+              console.error("Database error during registration:", dbErr);
+              res.status(500).send("Error creating user");
+            }
           }
-        }
-      });
+        });
+      }
+    } catch (err) {
+      console.error("Error during registration:", err);
+      res.status(500).send("Internal server error");
     }
-  } catch (err) {
-    console.error("Error during registration:", err);
-    res.status(500).send("Internal server error");
+  } else {
+    console.log("Passwords don't match");
+    return res.render("register.ejs", { error: "Las contraseñas deben ser iguales" });
   }
 });
 
