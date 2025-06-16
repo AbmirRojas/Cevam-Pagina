@@ -2,87 +2,196 @@
 <html lang="es">
 <head>
     <meta charset="utf-8">
-    <title>CEVAM - Login</title>
+    <title>CEVAM - Plataforma de Inglés</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
+    
     <link rel="stylesheet" href="/styles/main.css">
+    
+    <!-- Font Awesome 6.5.1 para todos los iconos (versión actualizada) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!--  CSS del Login -->
     <link rel="stylesheet" href="/styles/login.css">
 </head>
 <body>
 <div id="main-wrapper" class="container main-container">
     <div class="row justify-content-center">
         <div class="col-xl-10">
-            <div class="card border-0 shadow-lg" style="border-radius: 25px;">
+            <!-- Tarjeta principal que contiene todo el contenido -->
+            <div class="card border-0 shadow-lg" style="border-radius: 22px;">
                 <div class="card-body p-0">
                     <div class="row no-gutters">
-                        <!-- Columna Izquierda - Formulario -->
+                        <!-- Columna Izquierda - Formulario de Login -->
                         <div class="col-lg-6">
                             <div class="p-5">
+                                <!-- Encabezado con logo -->
                                 <div class="logo-header">
-                                    <img src="images/LOGOCEVAM.png" alt="CEVAM Logo" class="cevam-logo img-fluid">
-                                    <div class="cevam-title h5 text-muted mt-2">Centro Venezolano Americano de Mérida</div>
+                                    <!-- Logo restaurado y mejorado -->
+                                    <img src="/images/LOGOCEVAM.png" alt="CEVAM Logo" class="cevam-logo img-fluid">
+                                    <div class="cevam-title h5 text-muted mt-1">Centro Venezolano Americano de Mérida</div>
                                 </div>
                                 
-                                <h4 class="h2 font-weight-bold mb-4 text-center mt-4" style="color: var(--main-blue);">ACCESO DE CUENTA</h4>
-                                <p class="text-muted mb-4 text-center h5" style="color: #ce0e2d !important;">Please login to your account.</p>
+                                <!-- Sección de formulario de login (activa por defecto) -->
+                                <div id="loginSection">
+                                    <h4 class="h2 font-weight-bold mb-3 text-center mt-3" style="color: var(--main-blue);">ACCESO DE CUENTA</h4>
+                                    <p class="text-muted mb-3 text-center h5" style="color: var(--cevam-red) !important;">Por favor ingrese a su cuenta.</p>
 
-                                <form action="/login" method="post">
-                                    <div class="form-group">
-                                        <label for="email" style="color: var(--main-blue);">Email</label>
-                                        <div class="input-group">
-                                            <input name="email" type="email" class="form-control" placeholder="Ingrese su email">
-                                            <div class="input-icon">
-                                                <i class="fas fa-envelope"></i>
+                                    <!-- Formulario de login -->
+                                    <form id="loginForm" action="/login" method="post">
+
+                                        <!-- Campo de email -->
+                                        <div class="form-group">
+                                            <label for="email" style="color: var(--main-blue);">Email</label>
+                                            <div class="input-group">
+                                                <input name="email" type="email" class="form-control" placeholder="Ingrese su email" required>
+                                                <div class="input-icon">
+                                                    <i class="fas fa-envelope"></i>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group mt-4">
-                                        <label for="password" style="color: var(--main-blue);">Contraseña</label>
-                                        <div class="input-group">
-                                            <input name="password" type="password" class="form-control" placeholder="Ingrese su contraseña">
-                                            <div class="input-icon">
-                                                <i class="fas fa-lock"></i>
+                                        
+                                        <!-- Campo de contraseña -->
+                                        <div class="form-group mt-3">
+                                            <label for="password" style="color: var(--main-blue);">Contraseña</label>
+                                            <div class="input-group">
+                                                <input name="password" type="password" class="form-control" placeholder="Ingrese su contraseña" id="passwordField" required>
+                                                <div class="input-icon">
+                                                    <i class="fas fa-lock"></i>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    
-                                    <div class="password-options d-flex justify-content-between mt-4">
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="showPassword">
-                                            <label class="form-check-label" for="showPassword">Mostrar Contraseña</label>
-                                        </div>
-                                        <a href="#" class="small" style="color: var(--main-blue);">¿Olvidó la contraseña?</a>
-                                    </div>
-                                    
-                                    <button type="submit" class="btn btn-theme mb-4 mt-4"> 
-                                        <i class="fas fa-sign-in-alt mr-2"></i>Login
-                                    </button>
-                                    
-                                    <div class="card register-card mt-4 p-3">
-                                        <div class="d-flex justify-content-center align-items-center">
-                                            <span class="text-muted mr-2">¿Nuevo usuario?</span>
-                                            <a href="/register" class="register-link" style="color: var(--main-blue);" id="registerLink">
-                                                <i class="fas fa-user-plus mr-2"></i>Regístrate aquí
+                                        
+                                        <!-- Opciones para contraseña -->
+                                        <div class="password-options d-flex justify-content-between mt-3">
+                                            <div class="form-check">
+                                                <!-- Checkbox para mostrar/ocultar contraseña -->
+                                                <input type="checkbox" class="form-check-input" id="showPassword">
+                                                <label class="form-check-label" for="showPassword">Mostrar Contraseña</label>
+                                            </div>
+                                            <a href="#" class="small" style="color: var(--main-blue);" id="forgotPasswordLink">
+                                                ¿Olvidó la contraseña?
                                             </a>
                                         </div>
+                                        
+                                        <!-- Botón de login -->
+                                        <button type="submit" class="btn btn-theme mb-3 mt-3"> 
+                                            <i class="fas fa-sign-in-alt mr-2"></i>Login
+                                        </button>
+                                        
+                                        <!-- Tarjeta de registro para nuevos usuarios -->
+                                        <div class="card register-card mt-3">
+                                            <div class="d-flex justify-content-center align-items-center">
+                                                <span class="text-muted mr-2">¿Nuevo usuario?</span>
+                                                <a href="/register" class="register-link" style="color: var(--main-blue);" id="registerLink">
+                                                    <i class="fas fa-user-plus mr-2"></i>Regístrate aquí
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                
+                                <!-- Sección de recuperación de contraseña (oculta inicialmente) -->
+                                <div id="recoverySection" class="recovery-form">
+                                    <h4 class="h2 font-weight-bold mb-3 text-center mt-3" style="color: var(--main-blue);">RECUPERAR CONTRASEÑA</h4>
+                                    <p class="text-muted mb-3 text-center h5" style="color: var(--cevam-red) !important;">Ingrese su email para restablecer su contraseña.</p>
+                                    
+                                    <div class="recovery-instructions">
+                                        <p class="mb-0"><i class="fas fa-info-circle mr-2"></i>Le enviaremos un enlace a su correo para restablecer su contraseña.</p>
                                     </div>
-                                </form>
+                                    
+                                    <!-- Formulario de recuperación -->
+                                    <form id="recoveryForm">
+                                        <!-- Campo de email para recuperación -->
+                                        <div class="form-group">
+                                            <label style="color: var(--main-blue);">Email</label>
+                                            <div class="input-group">
+                                                <input type="email" class="form-control" placeholder="Ingrese su email registrado" id="recoveryEmail" required>
+                                                <div class="input-icon">
+                                                    <i class="fas fa-envelope"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Botón de recuperación -->
+                                        <button type="submit" class="btn btn-theme mb-3 mt-3" id="recoverySubmit"> 
+                                            <i class="fas fa-paper-plane mr-2"></i>Enviar Instrucciones
+                                        </button>
+                                        
+                                        <!-- Enlace para volver al login -->
+                                        <div class="text-center">
+                                            <span class="back-to-login" id="backToLogin">
+                                                <i class="fas fa-arrow-left mr-2"></i>Volver al inicio de sesión
+                                            </span>
+                                        </div>
+                                    </form>
+                                    
+                                    <!-- Mensaje de éxito después de enviar instrucciones -->
+                                    <div id="recoverySuccess" class="success-message">
+                                        <h4 class="mb-2"><i class="fas fa-check-circle text-success mr-2"></i>¡Instrucciones enviadas!</h4>
+                                        <p class="mb-1">Hemos enviado un enlace para restablecer tu contraseña a: <strong id="sentEmail"></strong></p>
+                                        <p class="mt-2">Por favor revisa tu bandeja de entrada.</p>
+                                        <button id="backToLoginSuccess" class="btn btn-theme mt-2">
+                                            <i class="fas fa-sign-in-alt mr-2"></i>Volver al Login
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Sección de verificación de cédula (oculta inicialmente) -->
+                                <div id="idVerificationSection" class="verification-form">
+                                    <h4 class="h2 font-weight-bold mb-3 text-center mt-3" style="color: var(--main-blue);">VERIFICACIÓN DE IDENTIDAD</h4>
+                                    <p class="text-muted mb-3 text-center h5" style="color: var(--cevam-red) !important;">Por favor ingrese su cédula para continuar con el registro.</p>
+                                    
+                                    <div class="recovery-instructions">
+                                        <p class="mb-0"><i class="fas fa-info-circle mr-2"></i>Su cédula debe tener entre 6 y 10 dígitos numéricos.</p>
+                                    </div>
+                                    
+                                    <!-- Formulario de verificación de cédula -->
+                                    <form id="idVerificationForm">
+                                        <!-- Campo de cédula -->
+                                        <div class="form-group">
+                                            <label style="color: var(--main-blue);">Número de Cédula</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="Ingrese su cédula" id="idNumber" required>
+                                                <div class="input-icon">
+                                                    <i class="fas fa-id-card"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Botón de verificación -->
+                                        <button type="submit" class="btn btn-theme-alt mb-3 mt-3" id="verifyIdButton"> 
+                                            <i class="fas fa-check mr-2"></i>Verificar Cédula
+                                        </button>
+                                        
+                                        <!-- Mensaje de error -->
+                                        <div id="idError" class="error-message">
+                                            <h4 class="mb-2"><i class="fas fa-exclamation-triangle mr-2"></i>Cédula inválida</h4>
+                                            <p class="mb-1">Por favor ingrese un número de cédula válido (6-10 dígitos numéricos).</p>
+                                        </div>
+                                        
+                                        <!-- Enlace para volver al login -->
+                                        <div class="text-center">
+                                            <span class="back-to-login" id="backToLoginFromVerification">
+                                                <i class="fas fa-arrow-left mr-2"></i>Volver al inicio de sesión
+                                            </span>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Divisor Vertical -->
+                        <!-- Divisor Vertical (solo visible en desktop) -->
                         <div class="col-lg-1 d-none d-lg-flex divisor-vertical">
                             <div class="divisor-content"></div>
                         </div>
 
-                        <!-- Columna Derecha - Bienvenida -->
-                        <div class="col-lg-5 d-none d-lg-inline-block">
+                        <!-- Columna Derecha - Sección de Bienvenida con imagen de fondo espacial -->
+                        <div class="col-lg-5 d-none d-lg-flex">
                             <div class="account-block h-100">
                                 <div class="welcome-section">
-                                    <h2 class="display-4 mb-4">WELCOME BACK!</h2>
-                                    <h3 class="mb-4 font-weight-light">¡Bienvenido/a a tu plataforma de inglés!</h3>
+                                    <h2 class="display-4 mb-3">WELCOME BACK!</h2>
+                                    <h3 class="mb-3 font-weight-light">¡Bienvenido/a a tu plataforma de inglés!</h3>
                                     <p class="lead mb-0">¿Qué esperas para empezar hoy mismo?</p>
                                 </div>
                             </div>
@@ -90,24 +199,37 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Sección de bienvenida para móviles (oculta en desktop) -->
+            <div class="welcome-mobile">
+                <h3 class="mb-2">¡Bienvenido/a a CEVAM!</h3>
+                <p class="mb-0">Accede a tu plataforma de inglés desde cualquier dispositivo.</p>
+            </div>
 
-            <!-- Sección Inferior -->
-            <div class="text-center mt-5 mb-4">
-                <div class="social-links">
-                    <span class="h5 mr-3 text-muted">Visítanos:</span>
-                    <a href="https://www.facebook.com/CevamMerida/?locale=es_LA" style="color: var(--main-blue);">
-                        <i class="fab fa-facebook fa-2x mx-3"></i>
+            <!-- SECCIÓN SOCIAL CON ANIMACIONES RESTAURADAS -->
+            <div class="social-section">
+                <span class="social-title">Visítanos:</span>
+                <div class="social-icons-container">
+                    <!-- Iconos de redes sociales con animaciones restauradas -->
+                    <a href="https://www.facebook.com/CevamMerida/?locale=es_LA" title="Facebook CEVAM">
+                        <i class="fab fa-facebook fa-2x"></i>
                     </a>
-                    <a href="https://www.instagram.com/edusacevam/?hl=es" style="color: var(--main-blue);">
-                        <i class="fab fa-instagram fa-2x mx-3"></i>
+                    <a href="https://www.instagram.com/edusacevam/?hl=es" title="Instagram CEVAM">
+                        <i class="fab fa-instagram fa-2x"></i>
                     </a>
-                    <a href="#" style="color: var(--main-blue);">
-                        <i class="fab fa-twitter fa-2x mx-3"></i>
+                    <a href="https://www.twitter.com" title="Twitter CEVAM">
+                        <i class="fab fa-twitter fa-2x"></i>
+                    </a>
+                    <a href="https://www.youtube.com" title="YouTube CEVAM">
+                        <i class="fab fa-youtube fa-2x"></i>
+                    </a>
+                    <a href="https://www.threads.net" title="Threads CEVAM">
+                        <i class="fab fa-threads fa-2x"></i>
                     </a>
                 </div>
                 <div class="mt-3">
                     <p class="text-muted small">
-                        © 2023 CEVAM. Todos los derechos reservados.
+                        © 2025 CEVAM. Todos los derechos reservados.
                     </p>
                 </div>
             </div>
@@ -115,20 +237,11 @@
     </div>
 </div>
 
-<div class="dropdown">
-  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Dropdown link
-  </a>
-
-  <ul class="dropdown-menu">
-    <li><a class="dropdown-item" href="#">Action</a></li>
-    <li><a class="dropdown-item" href="#">Another action</a></li>
-    <li><a class="dropdown-item" href="#">Something else here</a></li>
-  </ul>
-</div>
-
+<!-- Scripts necesarios -->
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="/js/bootstrap.bundle.min.js"></script>
+
+<!-- Script de Login -->
 <script src="/scripts/login.js"></script>
 </body>
 </html>

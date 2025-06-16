@@ -1,94 +1,194 @@
-        :root {
-            --main-blue: #002169;
-            --hover-blue: #00308a;
+:root {
+            /* Variables CSS para colores institucionales */
+            --main-blue: #002169;       /* Azul principal de CEVAM */
+            --hover-blue: #00308a;      /* Azul para efectos hover */
+            --cevam-red: #ce0e2d;       /* Rojo institucional para detalles */
+            --light-bg: #f6f9fc;        /* Color de fondo claro */
+            --success-green: #28a745;   /* Color para mensajes de éxito */
+            --warning-orange: #ffc107;  /* Color para advertencias */
         }
         
+        /* Estilos generales del cuerpo */
         body {
-            margin-top: 40px;
-            background: #f6f9fc;
+            margin: 0;
+            padding: 15px;
+            background: var(--light-bg);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background 0.4s ease;
+            background: linear-gradient(135deg, #f6f9fc 0%, #e8eff9 100%);
         }
         
+        /* Animación para transición de salida */
         @keyframes slideOut {
             from { transform: translateY(0); opacity: 1; }
             to { transform: translateY(-100px); opacity: 0; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(25px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
         .exit-animation {
             animation: slideOut 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
 
+        /* Contenedor principal */
         .main-container {
             position: relative;
             overflow: hidden;
+            width: 100%;
+            max-width: 1200px;
+            transition: transform 0.4s ease;
         }
         
+        /* Bloque de cuenta con imagen de fondo */
         .account-block {
-            background: url('../images/FONDO.jpeg') no-repeat center center;
+            background: 
+                linear-gradient(135deg, rgba(0,33,105,0.85), rgba(0,48,138,0.85)), 
+                url('https://images.unsplash.com/photo-1464802686167-b939a6910659?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80');
             background-size: cover;
+            background-position: center;
             height: 100%;
             position: relative;
             display: flex;
             align-items: center;
+            border-radius: 0 25px 25px 0;
         }
+        
+        /* Encabezado con logo */
         .logo-header {
             text-align: center;
-            padding: 20px;
+            padding: 10px 0 15px;
         }
+        
+        /* Logo CEVAM */
         .cevam-logo {
             max-width: 250px;
-            margin-bottom: 15px;
+            margin-bottom: 8px;
             transition: transform 0.3s ease;
+            background-color: white;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
+        
+        /* Efecto hover para el logo */
         .cevam-logo:hover {
             transform: scale(1.05);
         }
+        
+        /* Botón principal de tema */
         .btn-theme {
             background-color: var(--main-blue);
             border-color: var(--main-blue);
             color: #fff;
             width: 100%;
-            padding: 15px;
+            padding: 14px;
             border-radius: 8px;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             transition: all 0.3s ease;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            box-sizing: border-box;
         }
+        
+        /* Efecto hover para botón */
         .btn-theme:hover {
             background-color: var(--hover-blue);
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 33, 105, 0.3);
         }
+
+        /* Botón de tema alternativo */
+        .btn-theme-alt {
+            background-color: var(--cevam-red);
+            border-color: var(--cevam-red);
+            color: #fff;
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 1.05rem;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            box-sizing: border-box;
+        }
+        
+        .btn-theme-alt:hover {
+            background-color: #b00c27;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(206, 14, 45, 0.3);
+        }
+        
+        /* Sección de bienvenida */
         .welcome-section {
-            background: rgba(0, 33, 105, 0.7);
+            background: transparent;
             color: white;
-            padding: 60px 40px;
+            padding: 35px 25px;
             height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
+            border-radius: 0 25px 25px 0;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
         }
+        
+        .welcome-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .welcome-section h3 {
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+        
+        .welcome-section p {
+            font-size: 1.1rem;
+            max-width: 80%;
+        }
+        
+        /* Campos de formulario */
         .form-group input {
             border: 2px solid var(--main-blue) !important;
             border-radius: 8px !important;
+            padding: 14px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
         }
+        
+        /* Efecto focus para campos */
         .form-group input:focus {
             box-shadow: 0 0 0 0.3rem rgba(0, 33, 105, 0.25) !important;
+            border-color: var(--hover-blue) !important;
         }
+        
+        /* Iconos dentro de campos */
         .input-icon {
             position: absolute;
-            right: 20px;
+            right: 16px;
             top: 50%;
             transform: translateY(-50%);
             color: var(--main-blue);
+            font-size: 1.15rem;
+            pointer-events: none; /* Evita que interfiera con clics */
         }
-        .social-links a {
-            transition: transform 0.3s ease;
-        }
-        .social-links a:hover {
-            transform: translateY(-3px);
-            color: var(--hover-blue) !important;
-        }
+        
+        /* Divisor vertical */
         .divisor-vertical {
             position: relative;
             display: flex;
@@ -96,6 +196,8 @@
             justify-content: center;
             background: linear-gradient(45deg, var(--main-blue) 0%, var(--hover-blue) 100%);
         }
+        
+        /* Contenido del divisor */
         .divisor-content {
             position: relative;
             height: 80%;
@@ -104,38 +206,432 @@
             border-radius: 2px;
             box-shadow: 0 0 10px rgba(255,255,255,0.3);
         }
+        
+        /* Elemento decorativo del divisor */
         .divisor-content::after {
             content: '';
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             background: #fff;
             border-radius: 50%;
             border: 4px solid var(--main-blue);
         }
+        
+        /* Tarjeta de registro */
         .register-card {
             border: 2px solid var(--main-blue);
             border-radius: 10px;
             background: rgba(255, 255, 255, 0.9);
             transition: all 0.3s ease;
+            padding: 12px;
         }
+        
+        /* Efecto hover para tarjeta de registro */
         .register-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 33, 105, 0.1);
         }
+        
+        /* Enlace de registro */
         .register-link {
             font-weight: 600;
             border-bottom: 2px solid transparent;
             transition: all 0.3s ease;
         }
+        
+        /* Efecto hover para enlace de registro */
         .register-link:hover {
             color: var(--hover-blue) !important;
             border-bottom-color: var(--hover-blue);
             text-decoration: none;
         }
+        
+        /* Formulario de recuperación de contraseña */
+        .recovery-form {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        /* Formulario de verificación de cédula */
+        .verification-form {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        /* Botón para volver */
+        .back-to-login {
+            cursor: pointer;
+            color: var(--main-blue);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin-top: 12px;
+        }
+        
+        .back-to-login:hover {
+            color: var(--hover-blue);
+            transform: translateX(-3px);
+        }
+        
+        /* Mensaje de éxito */
+        .success-message {
+            display: none;
+            background: rgba(40, 167, 69, 0.1);
+            border-left: 4px solid var(--success-green);
+            border-radius: 8px;
+            padding: 18px;
+            margin: 18px 0;
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* Mensaje de error */
+        .error-message {
+            display: none;
+            background: rgba(206, 14, 45, 0.1);
+            border-left: 4px solid var(--cevam-red);
+            border-radius: 8px;
+            padding: 18px;
+            margin: 18px 0;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        /* ========== ESTILOS RESPONSIVOS MEJORADOS ========== */
+        
+        /* Tablets y dispositivos medianos */
         @media (max-width: 991px) {
             .divisor-vertical { display: none; }
+            
+            .welcome-section {
+                border-radius: 0 0 25px 25px;
+                padding: 25px 18px;
+            }
+            
+            .cevam-logo {
+                max-width: 220px;
+            }
+            
+            .card {
+                border-radius: 22px !important;
+            }
+        }
+        
+        /* Dispositivos pequeños (móviles en landscape) */
+        @media (max-width: 768px) {
+            body {
+                padding: 12px;
+            }
+            
+            .p-5 {
+                padding: 1.5rem !important;
+            }
+            
+            .logo-header {
+                padding: 8px 0 12px;
+            }
+            
+            .cevam-title {
+                font-size: 0.85rem;
+            }
+            
+            .h2 {
+                font-size: 1.5rem;
+            }
+            
+            .password-options {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .password-options a {
+                margin-top: 10px;
+            }
+            
+            .social-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .welcome-section h2 {
+                font-size: 1.7rem;
+            }
+            
+            .welcome-section h3 {
+                font-size: 1.15rem;
+            }
+            
+            .btn-theme {
+                padding: 13px;
+                font-size: 1rem;
+            }
+        }
+        
+        /* Móviles pequeños (portrait) */
+        @media (max-width: 576px) {
+            .p-5 {
+                padding: 1.2rem !important;
+            }
+            
+            .cevam-logo {
+                max-width: 170px;
+                padding: 10px;
+            }
+            
+            .form-group label {
+                font-size: 0.88rem;
+            }
+            
+            .btn-theme {
+                padding: 12px;
+                font-size: 0.98rem;
+            }
+            
+            .welcome-section {
+                padding: 22px 14px;
+            }
+            
+            .input-icon {
+                right: 14px;
+                font-size: 1rem;
+            }
+            
+            .form-group input {
+                padding: 12px;
+            }
+        }
+        
+        /* Móviles muy pequeños (hasta 400px) */
+        @media (max-width: 400px) {
+            body {
+                padding: 10px;
+            }
+            
+            .p-5 {
+                padding: 1rem !important;
+            }
+            
+            .cevam-logo {
+                max-width: 140px;
+                padding: 8px;
+            }
+            
+            .h2 {
+                font-size: 1.3rem;
+            }
+            
+            .register-card {
+                padding: 10px !important;
+            }
+            
+            .btn-theme {
+                padding: 11px;
+                font-size: 0.95rem;
+            }
+            
+            .form-group input {
+                padding: 11px;
+                font-size: 0.9rem;
+            }
+            
+            .input-icon {
+                font-size: 0.95rem;
+            }
+            
+            .success-message {
+                padding: 15px;
+            }
+            
+            .logo-header {
+                padding: 5px 0 10px;
+            }
+            
+            .password-options .form-check-label {
+                font-size: 0.85rem;
+            }
+            
+            .password-options a.small {
+                font-size: 0.85rem !important;
+            }
+        }
+        
+        /* Sección de bienvenida para móviles (oculta en desktop) */
+        .welcome-mobile {
+            display: none;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        /* Mostrar sección de bienvenida solo en dispositivos medianos y pequeños */
+        @media (max-width: 991px) {
+            .welcome-mobile {
+                display: block;
+                background: linear-gradient(135deg, var(--main-blue), var(--hover-blue));
+                color: white;
+                padding: 22px 18px;
+                border-radius: 14px;
+                margin-top: 22px;
+                text-align: center;
+                box-shadow: 0 4px 12px rgba(0, 33, 105, 0.2);
+            }
+        }
+        
+        /* Estilos para el formulario de recuperación */
+        .recovery-instructions {
+            background: rgba(0, 33, 105, 0.08);
+            border-radius: 10px;
+            padding: 14px;
+            margin: 18px 0;
+            border-left: 4px solid var(--main-blue);
+            font-size: 0.95rem;
+        }
+        
+        /* Contenedor de iconos sociales */
+        .social-icons-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 15px 0;
+            margin: 15px 0;
+        }
+        
+        .social-icons-container a {
+            display: inline-block;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-origin: center;
+            color: var(--main-blue);
+            position: relative;
+        }
+        
+        .social-icons-container a:hover {
+            transform: translateY(-5px) scale(1.15);
+            color: var(--hover-blue) !important;
+        }
+        
+        /* Efecto de onda al hacer hover */
+        .social-icons-container a::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 33, 105, 0.1);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            opacity: 0;
+            z-index: -1;
+        }
+        
+        .social-icons-container a:hover::after {
+            transform: translate(-50%, -50%) scale(1.5);
+            opacity: 1;
+        }
+        
+        /* Animación de flotación para iconos */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .social-icons-container a i {
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        /* Cada icono con un retardo diferente */
+        .social-icons-container a:nth-child(1) i { animation-delay: 0s; }
+        .social-icons-container a:nth-child(2) i { animation-delay: 0.5s; }
+        .social-icons-container a:nth-child(3) i { animation-delay: 1s; }
+        .social-icons-container a:nth-child(4) i { animation-delay: 1.5s; }
+        .social-icons-container a:nth-child(5) i { animation-delay: 2s; }
+        
+        /* Optimización para la tarjeta principal */
+        .card {
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 33, 105, 0.15);
+        }
+        
+        /* Sección social mejorada */
+        .social-section {
+            text-align: center;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .social-title {
+            display: block;
+            margin-bottom: 18px;
+            font-size: 1.25rem;
+            color: var(--main-blue);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        /* Animación especial para el título "Visítanos" */
+        .social-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--cevam-red);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.5s ease;
+        }
+        
+        .social-title:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        
+        /* Ajuste para dispositivos móviles */
+        @media (max-width: 768px) {
+            .social-title {
+                margin-bottom: 15px;
+                font-size: 1.15rem;
+            }
+            
+            .social-icons-container {
+                gap: 16px;
+                padding: 12px 0;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .social-title {
+                margin-bottom: 12px;
+                font-size: 1.05rem;
+            }
+            
+            .social-icons-container {
+                gap: 14px;
+                padding: 10px 0;
+            }
+            
+            .social-icons-container a i {
+                font-size: 1.6rem;
+            }
+            
+            .social-icons-container a::after {
+                display: none;
+            }
+        }
+
+        /* Animación para cédula válida */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse-animation {
+            animation: pulse 0.5s ease;
         }

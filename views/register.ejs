@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro Completo CEVAM</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    
+
     <link rel="stylesheet" href="/styles/main.css">
     <link rel="stylesheet" href="/styles/register.css">
 </head>
@@ -15,7 +14,7 @@
 <div class="contenedor-principal">
     <!-- Sección Formulario -->
     <div class="seccion-formulario">
-        <div class="text-start mb-4">
+        <div class="text-start mb-2">
             <a href="/login" class="btn-back" id="backLink">
                 <i class="bi bi-arrow-left-short"></i> Volver al Login
             </a>
@@ -26,65 +25,93 @@
         <p class="subtitulo">Centro Venezolano Americano de Mérida</p>
 
         <form id="registroForm" action="/register" method="post">
-            <!-- Información Personal -->
-            <h3 class="subtitulo-seccion">
-                <i class="bi bi-person-fill"></i>INFORMACIÓN PERSONAL
-            </h3>
-            <div class="row g-3">
+            <!-- Sección Información Personal -->
+            <h3 class="subtitulo-seccion">Información Personal</h3>
+            <div class="row g-1">
                 <div class="col-md-6">
                     <div class="campo-formulario">
+                        <i class="bi bi-person"></i>
                         <input name="fName" type="text" placeholder="Nombre(s)" required>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="campo-formulario">
+                        <i class="bi bi-person"></i>
                         <input name="lName" type="text" placeholder="Apellido(s)" required>
                     </div>
                 </div>
             </div>
 
-            <!-- Datos de Contacto -->
-            <h3 class="subtitulo-seccion">
-                <i class="bi bi-telephone-fill"></i>DATOS DE CONTACTO
-            </h3>
+            <!-- Sección Datos de Contacto -->
+            <h3 class="subtitulo-seccion">Datos de Contacto</h3>
             <div class="campo-formulario">
+                <i class="bi bi-envelope"></i>
                 <input name="email" type="email" placeholder="Correo electrónico" required>
             </div>
 
-            <div class="row g-3">
+            <div class="row g-1">
                 <div class="col-md-6">
                     <div class="campo-formulario">
+                        <i class="bi bi-telephone"></i>
                         <input name="phoneNumber" type="tel" placeholder="Teléfono" required>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="campo-formulario">
+                        <i class="bi bi-card-heading"></i>
                         <input name="cedula" type="text" placeholder="Cedula" required>
                     </div>
                 </div>
             </div>
 
-            <!-- Seguridad -->
-            <h3 class="subtitulo-seccion mt-4">
-                <i class="bi bi-shield-lock-fill"></i>SEGURIDAD
-            </h3>
-            <div class="row g-3">
+            <!-- Campo de fecha de nacimiento eliminado según la solicitud -->
+            
+            <div class="divider">o continua con</div>
+
+            <!-- Sección Seguridad -->
+            <h3 class="subtitulo-seccion">Seguridad</h3>
+            <div class="row g-1">
                 <div class="col-md-6">
                     <div class="campo-formulario">
+                        <i class="bi bi-lock"></i>
                         <input name="password" type="password" placeholder="Contraseña" id="password" required>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="campo-formulario">
-                        <input name="passwordConfirmation" type="password" placeholder="Confirmar contraseña" id="passwordConfirmation" required>
+                        <i class="bi bi-lock"></i>
+                        <input name="passwordConfirmation" type="password" placeholder="Confirmar contraseña" required>
                     </div>
                 </div>
             </div>
+            
+            <!-- Indicador de seguridad -->
+            <div class="indicador-seguridad">
+                <div class="requisitos-contrasena">
+                    <div class="requisito" id="req-longitud">
+                        <i class="bi bi-dash-circle"></i> Mínimo 8 caracteres
+                    </div>
+                    <div class="requisito" id="req-mayuscula">
+                        <i class="bi bi-dash-circle"></i> 1 letra mayúscula
+                    </div>
+                    <div class="requisito" id="req-numero">
+                        <i class="bi bi-dash-circle"></i> 1 número
+                    </div>
+                    <div class="requisito" id="req-especial">
+                        <i class="bi bi-dash-circle"></i> 1 carácter especial
+                    </div>
+                </div>
+                
+                <div class="nivel-seguridad">
+                    <div class="barra-seguridad" id="barra-seguridad"></div>
+                </div>
+                <div class="etiqueta-seguridad" id="etiqueta-seguridad">Contraseña insegura</div>
+            </div>
 
-            <div class="form-check mb-4">
+            <div class="form-check mb-2">
                 <input class="form-check-input" type="checkbox" id="terminos">
                 <label class="form-check-label" for="terminos">
-                    Acepto los <a href="#" class="text-decoration-none">términos y condiciones</a>
+                    Acepto los <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#modalTerminos">términos y condiciones</a>
                 </label>
             </div>
 
@@ -93,9 +120,9 @@
             </button>
         </form>
 
-        <p class="text-center mt-4 text-muted">
+        <p class="text-center mt-3 text-muted">
             ¿Ya tienes cuenta? 
-            <a href="/login" class="text-decoration-none fw-bold" style="color: var(--azul-cevam);" id="backLinkBottom">
+            <a href="login" class="text-decoration-none fw-bold" style="color: var(--azul-cevam);" id="backLinkBottom">
                 Inicia Sesión Aquí
             </a>
         </p>
@@ -117,6 +144,13 @@
                 <a href="" data-bs-toggle="tooltip" title="Síguenos en Twitter">
                     <i class="bi bi-twitter"></i>
                 </a>
+                <!-- Nuevos iconos agregados -->
+                <a href="https://www.youtube.com/" data-bs-toggle="tooltip" title="Visita nuestro canal de YouTube">
+                    <i class="bi bi-youtube"></i>
+                </a>
+                <a href="https://www.threads.net/" data-bs-toggle="tooltip" title="Síguenos en Threads">
+                    <i class="bi bi-chat-dots"></i>
+                </a>
             </div>
         </div>
     </div>
@@ -131,12 +165,38 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <!-- Contenido de términos aquí -->
+                <h4>1. Aceptación de Términos</h4>
+                <p>Al acceder y utilizar los servicios de CEVAM, usted acepta estar sujeto a estos términos y condiciones en su totalidad. Si no está de acuerdo con estos términos, no debe utilizar nuestros servicios.</p>
+                
+                <h4>2. Registro de Usuario</h4>
+                <p>Para acceder a ciertos servicios, deberá registrarse proporcionando información precisa y completa. Usted es responsable de mantener la confidencialidad de su cuenta y contraseña.</p>
+                
+                <h4>3. Privacidad y Protección de Datos</h4>
+                <p>CEVAM respeta su privacidad. Toda la información personal proporcionada se maneja según nuestra Política de Privacidad, disponible en nuestro sitio web.</p>
+                
+                <h4>4. Uso Aceptable</h4>
+                <p>Usted se compromete a utilizar nuestros servicios de manera legal y ética. Queda prohibido cualquier uso que pueda dañar, deshabilitar o sobrecargar nuestros sistemas.</p>
+                
+                <h4>5. Propiedad Intelectual</h4>
+                <p>Todo el contenido proporcionado por CEVAM (materiales de curso, documentos, software) está protegido por derechos de propiedad intelectual y solo puede utilizarse con fines educativos personales.</p>
+                
+                <h4>6. Pagos y Reembolsos</h4>
+                <p>Los pagos por servicios son no reembolsables excepto en casos específicos determinados por la administración. Los precios pueden cambiar con previo aviso.</p>
+                
+                <h4>7. Modificaciones</h4>
+                <p>CEVAM se reserva el derecho de modificar estos términos en cualquier momento. Los cambios serán efectivos inmediatamente después de su publicación en el sitio web.</p>
+                
+                <h4>8. Terminación</h4>
+                <p>Podemos suspender o terminar su acceso a nuestros servicios si viola estos términos o por cualquier otra razón a nuestra discreción.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/js/bootstrap.bundle.min.js"></script>
 <script src="/scripts/register.js"></script>
 
