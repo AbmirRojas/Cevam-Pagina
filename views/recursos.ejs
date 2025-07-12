@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEVAM - Student Platform</title>
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/styles/recursos.css">
+</head>
+<body>
+    <!-- Mazer Sidebar -->
+    <aside class="mazer-sidebar">
+        <div class="mazer-logo">
+            <h2>CEVAM</h2>
+        </div>
+        
+        <div class="mazer-menu">
+            <div class="menu-title">Main Menu</div>
+            
+            <div class="menu-item">
+                <a href="#" class="menu-link active" data-section="dashboard">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+            </div>
+            
+            <div class="menu-item">
+                <a href="#" class="menu-link" data-section="library">
+                    <i class="fas fa-book"></i>
+                    <span>Library</span>
+                </a>
+            </div>
+            
+            <div class="menu-title">Academic Resources</div>
+            
+            <div class="menu-item">
+                <a href="#" class="menu-link collapsed" id="resourcesToggle">
+                    <i class="fas fa-book-open"></i>
+                    <span>Study Materials</span>
+                    <i class="fas fa-chevron-down arrow ms-auto"></i>
+                </a>
+                <ul class="sub-menu" id="resourcesMenu">
+                    <li class="menu-item">
+                        <a href="#" class="menu-link" data-resource="grammar">
+                            <span>Grammar</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link" data-resource="listening">
+                            <span>Listening</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link" data-resource="speaking">
+                            <span>Speaking</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link" data-resource="reading">
+                            <span>Reading</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link" data-resource="writing">
+                            <span>Writing</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="menu-title">Communication</div>
+            
+            <div class="menu-item">
+                <a href="#" class="menu-link" data-section="announcements">
+                    <i class="fas fa-bullhorn"></i>
+                    <span>Announcements</span>
+                </a>
+            </div>
+            
+            <div class="menu-title">Settings</div>
+            
+            <div class="menu-item">
+                <a href="#" class="menu-link" id="settingsLink" data-section="profile">
+                    <i class="fas fa-user-cog"></i>
+                    <span>My Profile</span>
+                </a>
+            </div>
+            
+            <div class="menu-item">
+                <a href="#" class="menu-link" id="darkModeLink">
+                    <i class="fas fa-moon"></i>
+                    <span>Dark Mode</span>
+                </a>
+            </div>
+
+            <form action="/logout" method="get">
+                <div class="menu-item">
+                    <a href="/logout" class="menu-link" id="logoutLink">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </aside>
+
+    <button class="sidebar-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="cevam-header">
+            <div class="logo-container">
+                <div class="logo">CE</div>
+                <div class="site-info">
+                    <h1>DASHBOARD - STUDENTS</h1>
+                    <p>Virtual Learning Center</p>
+                </div>
+            </div>
+            <div class="user-info">
+                <div class="user-profile">
+                    <div class="avatar" id="userAvatar"><%= user.nombre.charAt(0); %></div>
+                    <div class="user-name" id="userName"><%= user.nombre %> <%= user.apellido %></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content - Dashboard Section -->
+        <div class="main-container" id="dashboardSection">
+            <div class="section-title">
+                <h2><i class="fas fa-tachometer-alt me-2"></i> Student Dashboard</h2>
+            </div>
+            
+            <div class="content-section">
+                <h3>Welcome to the CEVAM Platform</h3>
+                <p>This is your personal area where you can access all educational resources, manage your courses, and customize your learning experience.</p>
+                
+                <div class="row mt-4">
+                    <div class="col-md-6 mb-4">
+                        <div class="dashboard-card">
+                            <i class="fas fa-book"></i>
+                            <h4>Library</h4>
+                            <p>Access all educational resources organized by categories.</p>
+                            <button class="btn btn-primary mt-2" data-section="library">Go to Library</button>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="dashboard-card">
+                            <i class="fas fa-bullhorn"></i>
+                            <h4>Announcements</h4>
+                            <p>Stay informed with the latest platform announcements.</p>
+                            <button class="btn btn-primary mt-2" data-section="announcements">View Announcements</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-title">
+                <h2><i class="fas fa-book me-2"></i> Your Recent Resources</h2>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+                <div class="recent-resource-card">
+                    <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                        <div class="recent-resource-icon">
+                            <i class="fas fa-language"></i>
+                        </div>
+                        <div>
+                            <h4 style="margin: 0;">Book 1</h4>
+                            <p style="margin: 0; color: var(--secondary); font-size: 0.9rem;">Select to view modules</p>
+                        </div>
+                    </div>
+                    <button class="btn-resource" data-resource="grammar">View Modules</button>
+                </div>
+                
+                <div class="recent-resource-card">
+                    <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                        <div class="recent-resource-icon">
+                            <i class="fas fa-headphones"></i>
+                        </div>
+                        <div>
+                            <h4 style="margin: 0;">Book 2</h4>
+                            <p style="margin: 0; color: var(--secondary); font-size: 0.9rem;">Select to view modules</p>
+                        </div>
+                    </div>
+                    <button class="btn-resource" data-resource="listening">View Modules</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content - Library Section -->
+        <div class="main-container" id="librarySection" style="display: none;">
+            <div class="section-title">
+                <h2><i class="fas fa-book me-2"></i> CEVAM Library</h2>
+            </div>
+            
+            <div class="library-grid">
+                <!-- Books 1-10 will be generated dynamically -->
+                 
+            </div>
+            
+            <!-- Modules View -->
+            <div class="modules-view" id="modulesView">
+                <div class="back-to-library" id="backToLibrary">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back to library</span>
+                </div>
+                
+                <h2 class="book-modules-title" id="bookModulesTitle">Book 1</h2>
+                
+                <div class="modules-grid" id="modulesGrid">
+                    <!-- Modules will be loaded here dynamically -->
+                </div>
+            </div>
+            
+            <!-- Book Modules View -->
+            <div class="book-modules-view" id="bookModulesView">
+                <!-- Specific module content will be loaded here -->
+            </div>
+        </div>
+        
+        <!-- Main Content - Profile Section -->
+        <div class="main-container" id="profileSection" style="display: none;">
+            <div class="section-title">
+                <h2><i class="fas fa-user-cog me-2"></i> Profile Settings</h2>
+            </div>
+            
+            <div class="content-section">
+                <div class="profile-form">
+                    <div class="form-group">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" value="<%= user.nombre + " " + user.apellido %>" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="email" value="<%= user.correo %>" readonly>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Announcements Section -->
+        <div class="main-container" id="announcementsSection" style="display: none;">
+            <div class="section-title">
+                <h2><i class="fas fa-bullhorn me-2"></i> CEVAM Announcements</h2>
+            </div>
+            
+            <div class="content-section">
+                <h3>New Registrations & Platform Updates</h3>
+                <p>Stay informed about the latest news, registration periods, and important platform updates.</p>
+                
+                <div class="announcement-card">
+                    <h3 class="announcement-title">
+                        <i class="fas fa-user-graduate"></i> New Student Registration Period
+                    </h3>
+                    <span class="announcement-date">June 25, 2025</span>
+                    <div class="announcement-content">
+                        <p>The registration period for new students for the 2025-2026 academic year is now open. All prospective students should complete their applications by July 15, 2025.</p>
+                        <p>New students will have access to orientation materials starting July 1st. Please check your email for your registration confirmation and access instructions.</p>
+                    </div>
+                </div>
+                
+                <div class="announcement-card">
+                    <h3 class="announcement-title">
+                        <i class="fas fa-book"></i> New Learning Materials Available
+                    </h3>
+                    <span class="announcement-date">June 20, 2025</span>
+                    <div class="announcement-content">
+                        <p>We're excited to announce the release of our new learning materials for advanced grammar and business English. These materials are now available in your library.</p>
+                        <p>All students currently enrolled in intermediate and advanced courses will automatically have access to these new resources. Check the library section for details.</p>
+                    </div>
+                </div>
+                
+                <div class="announcement-card">
+                    <h3 class="announcement-title">
+                        <i class="fas fa-calendar-alt"></i> Upcoming Maintenance Schedule
+                    </h3>
+                    <span class="announcement-date">June 18, 2025</span>
+                    <div class="announcement-content">
+                        <p>Please be advised that the CEVAM platform will undergo scheduled maintenance on June 30, 2025, from 10:00 PM to 2:00 AM (GMT-5).</p>
+                        <p>During this time, the platform may be temporarily unavailable. We recommend saving your work frequently as the maintenance window approaches.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+
+    <script src="/scripts/recursos.js"></script>
+</body>
+</html>

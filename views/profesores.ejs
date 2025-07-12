@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEVAM - Dashboard Profesores</title>
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/styles/profesores.css">
+</head>
+<body>
+    <!-- Mazer Sidebar -->
+    <aside class="mazer-sidebar">
+        <div class="mazer-logo">
+            <h2>CEVAM</h2>
+        </div>
+        
+        <div class="mazer-menu">
+            <div class="menu-title">Menu Principal</div>
+            
+            <div class="menu-item">
+                <a href="#" class="menu-link active" data-section="dashboard">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+            </div>
+            
+            <div class="menu-item">
+                <a href="#" class="menu-link" data-section="library">
+                    <i class="fas fa-book"></i>
+                    <span>Biblioteca</span>
+                </a>
+            </div>
+            
+            <div class="menu-item">
+                <a href="#" class="menu-link" data-section="progress">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Progreso Estudiantes</span>
+                </a>
+            </div>
+            
+            <div class="menu-title">Configuración</div>
+            
+            <div class="menu-item">
+                <a href="#" class="menu-link" id="settingsLink">
+                    <i class="fas fa-user-cog"></i>
+                    <span>Mi Perfil</span>
+                </a>
+            </div>
+            
+            <div class="menu-item">
+                <a href="#" class="menu-link" id="logoutLink">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Cerrar Sesión</span>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <button class="sidebar-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="cevam-header">
+            <div class="logo-container">
+                <div class="logo">CE</div>
+                <div class="site-info">
+                    <h1 id="headerTitle">DASHBOARD PROFESORES</h1>
+                    <p>Centro Virtual de Aprendizaje</p>
+                </div>
+            </div>
+            <div class="user-info">
+                <div class="user-profile">
+                    <div class="avatar" id="userAvatar"><%= user.nombre.charAt(0); %></div>
+                    <div class="user-name" id="userName"><%= user.nombre %></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div class="main-container" id="dashboardSection">
+            <!-- Summary Section -->
+            <div class="dashboard-summary">
+                <h3 class="summary-title"><i class="fas fa-chart-pie"></i> Resumen General</h3>
+                <div class="summary-content">
+                    <div class="summary-item">
+                        <div class="summary-value">42</div>
+                        <div class="summary-label">Estudiantes Activos</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">28</div>
+                        <div class="summary-label">Contenidos</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">15</div>
+                        <div class="summary-label">Ejercicios Pendientes</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">92%</div>
+                        <div class="summary-label">Participación</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Dashboard Cards -->
+            <div class="dashboard-container">
+                <!-- Estudiantes Activos -->
+                <div class="dashboard-card stat-card">
+                    <div class="stat-value">42</div>
+                    <div class="stat-label">Estudiantes Activos</div>
+                    <div class="stat-change">
+                        <i class="fas fa-arrow-up"></i> +5 desde la semana pasada
+                    </div>
+                </div>
+                
+                <!-- Contenidos Subidos -->
+                <div class="dashboard-card stat-card">
+                    <div class="stat-value">28</div>
+                    <div class="stat-label">Contenidos Subidos</div>
+                    <div class="stat-change">
+                        Último: Gramática Avanzada
+                    </div>
+                </div>
+                
+                <!-- Ejercicios Pendientes -->
+                <div class="dashboard-card stat-card">
+                    <div class="stat-value">15</div>
+                    <div class="stat-label">Ejercicios Pendientes</div>
+                    <div class="stat-change" style="color: var(--orange);">
+                        Por corregir
+                    </div>
+                </div>
+                
+                <!-- Acciones Rápidas -->
+                <div class="dashboard-card action-card">
+                    <div>
+                        <h3 class="action-title">Acciones Rápidas</h3>
+                        <div class="action-description">
+                            Realiza tareas comunes rápidamente desde este panel
+                        </div>
+                    </div>
+                    <div>
+                        <a href="#" class="action-button" data-section="content">
+                            <i class="fas fa-plus-circle"></i> Crear Nuevo Contenido
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Additional Information Section -->
+            <div class="dashboard-summary">
+                <h3 class="summary-title"><i class="fas fa-calendar-alt"></i> Próximas Actividades</h3>
+                <div class="summary-content">
+                    <div class="summary-item">
+                        <div class="summary-value">Lun 10</div>
+                        <div class="summary-label">Clase: Tiempos Verbales</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">Mié 12</div>
+                        <div class="summary-label">Entrega Ejercicios</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">Vie 14</div>
+                        <div class="summary-label">Revisión de Módulos</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">Lun 17</div>
+                        <div class="summary-label">Reunión Docentes</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content - Library Section -->
+        <div class="main-container" id="librarySection" style="display: none;">
+            <div class="section-title">
+                <h2><i class="fas fa-book me-2"></i> Biblioteca CEVAM</h2>
+                <a href="#" class="view-all">
+                    Ver todos los libros
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            
+            <div class="library-container">
+                <% books.forEach(book => { %>
+                    <!-- Book 1 -->
+                    <div class="book-card">
+                        <div class="book-header">
+                            <div class="book-number"><%= book.id_libro %></div>
+                            <h3 class="book-title"><%= book.nombre_libro %></h3>
+                            <div class="book-level">Nivel: <%= book.nivel %></div>
+                            <p class="book-description"><%= book.descripcion %></p>
+                        </div>
+                        <div class="book-content">
+                            <button class="view-modules-btn" data-book="<%= book.id_libro %>">
+                                Ver módulos <i class="fas fa-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                <% }); %> 
+            </div>
+        </div>
+
+        <!-- Book Detail Section -->
+        <div class="main-container" id="bookDetailSection" style="display: none;">
+            <div class="breadcrumb">
+                <a href="#" id="backToLibrary"><i class="fas fa-arrow-left"></i> Volver a la biblioteca</a>
+            </div>
+            
+            <div class="book-detail-header">
+                <a href="#" class="back-to-library" id="backToLibrary2">
+                    <i class="fas fa-arrow-left"></i> Volver a la biblioteca
+                </a>
+                <h2 class="book-detail-title">Book 1: Beginner Level</h2>
+                <div class="book-detail-level">Nivel: Principiante</div>
+                <p class="book-detail-description">Build your English foundation with essential grammar and vocabulary. This book covers all the basics to get you started on your English learning journey.</p>
+            </div>
+            
+            <div class="section-title">
+                <h2><i class="fas fa-cubes me-2"></i> Módulos de Aprendizaje</h2>
+                <button class="create-module-btn" id="createModuleBtn">
+                    <i class="fas fa-plus-circle"></i> Crear Nuevo Módulo
+                </button>
+            </div>
+            
+            <div class="modules-container">
+                <!-- Grammar Module -->
+                <div class="module-card">
+                    <div class="module-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <h4 class="module-title">Grammar</h4>
+                    <p class="module-description">Master essential English grammar rules with clear explanations and practical examples.</p>
+                    <div class="module-actions">
+                        <button class="edit-module-btn" data-module="grammar">
+                            <i class="fas fa-edit me-1"></i> Editar
+                        </button>
+                        <button class="delete-module-btn" data-module="grammar">
+                            <i class="fas fa-trash me-1"></i> Borrar
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Listening Module -->
+                <div class="module-card">
+                    <div class="module-icon">
+                        <i class="fas fa-headphones"></i>
+                    </div>
+                    <h4 class="module-title">Listening</h4>
+                    <p class="module-description">Improve your listening comprehension with real dialogues and audio exercises.</p>
+                    <div class="module-actions">
+                        <button class="edit-module-btn" data-module="listening">
+                            <i class="fas fa-edit me-1"></i> Editar
+                        </button>
+                        <button class="delete-module-btn" data-module="listening">
+                            <i class="fas fa-trash me-1"></i> Borrar
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Speaking Module -->
+                <div class="module-card">
+                    <div class="module-icon">
+                        <i class="fas fa-microphone"></i>
+                    </div>
+                    <h4 class="module-title">Speaking</h4>
+                    <p class="module-description">Develop fluency and confidence in everyday and professional situations.</p>
+                    <div class="module-actions">
+                        <button class="edit-module-btn" data-module="speaking">
+                            <i class="fas fa-edit me-1"></i> Editar
+                        </button>
+                        <button class="delete-module-btn" data-module="speaking">
+                            <i class="fas fa-trash me-1"></i> Borrar
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Reading Module -->
+                <div class="module-card">
+                    <div class="module-icon">
+                        <i class="fas fa-book-reader"></i>
+                    </div>
+                    <h4 class="module-title">Reading</h4>
+                    <p class="module-description">Improve your reading speed and comprehension with varied texts and exercises.</p>
+                    <div class="module-actions">
+                        <button class="edit-module-btn" data-module="reading">
+                            <i class="fas fa-edit me-1"></i> Editar
+                        </button>
+                        <button class="delete-module-btn" data-module="reading">
+                            <i class="fas fa-trash me-1"></i> Borrar
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Writing Module -->
+                <div class="module-card">
+                    <div class="module-icon">
+                        <i class="fas fa-pen"></i>
+                    </div>
+                    <h4 class="module-title">Writing</h4>
+                    <p class="module-description">Learn to express your ideas clearly and with grammatical accuracy.</p>
+                    <div class="module-actions">
+                        <button class="edit-module-btn" data-module="writing">
+                            <i class="fas fa-edit me-1"></i> Editar
+                        </button>
+                        <button class="delete-module-btn" data-module="writing">
+                            <i class="fas fa-trash me-1"></i> Borrar
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Vocabulary Module -->
+                <div class="module-card">
+                    <div class="module-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h4 class="module-title">Vocabulary</h4>
+                    <p class="module-description">Expand your word bank with essential vocabulary for everyday communication.</p>
+                    <div class="module-actions">
+                        <button class="edit-module-btn" data-module="vocabulary">
+                            <i class="fas fa-edit me-1"></i> Editar
+                        </button>
+                        <button class="delete-module-btn" data-module="vocabulary">
+                            <i class="fas fa-trash me-1"></i> Borrar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content - Content Management Section (Module Creation Form) -->
+        <div class="main-container" id="contentSection" style="display: none;">
+            <div class="section-title">
+                <h2><i class="fas fa-plus-circle me-2"></i> Crear Nuevo Módulo</h2>
+                <a href="#" class="view-all">
+                    Ver módulos creados
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            
+            <div id="alertContainer"></div>
+            
+            <div class="form-container">
+                <h3 class="form-title"><i class="fas fa-file-alt"></i> Detalles del Módulo</h3>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="moduleTitle">Título del Módulo *</label>
+                            <input type="text" id="moduleTitle" class="form-control" placeholder="Ej: Gramática Avanzada - Tiempos Verbales">
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="moduleBook">Libro Asociado *</label>
+                            <select id="moduleBook" class="form-control">
+                                <option value="">Seleccionar libro</option>
+                                <option value="1">Book 1: Beginner Level</option>
+                                <option value="2">Book 2: Elementary Level</option>
+                                <option value="3">Book 3: Pre-Intermediate</option>
+                                <option value="4">Book 4: Intermediate</option>
+                                <option value="5">Book 5: Upper Intermediate</option>
+                                <option value="6">Book 6: Advanced Level</option>
+                                <option value="7">Book 7: Business English</option>
+                                <option value="8">Book 8: Academic English</option>
+                                <option value="9">Book 9: Conversational English</option>
+                                <option value="10">Book 10: Exam Preparation</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="moduleDescription">Descripción del Módulo *</label>
+                    <textarea id="moduleDescription" class="form-control" placeholder="Describe el módulo y sus objetivos de aprendizaje..." rows="3"></textarea>
+                </div>
+                
+                <div class="tabs">
+                    <div class="tab active" data-tab="content">Contenido</div>
+                    <div class="tab" data-tab="resources">Recursos</div>
+                    <div class="tab" data-tab="evaluations">Evaluaciones</div>
+                </div>
+                
+                <!-- Contenido Tab -->
+                <div class="tab-content active" id="contentTab">
+                    <div class="form-group">
+                        <label for="contentBody">Contenido Principal *</label>
+                        <textarea id="contentBody" class="form-control" placeholder="Escribe aquí el contenido detallado del módulo..." rows="8"></textarea>
+                    </div>
+                </div>
+                
+                <!-- Recursos Tab -->
+                <div class="tab-content" id="resourcesTab">
+                    <div class="form-group">
+                        <label>Subir Recursos</label>
+                        <div class="upload-container">
+                            <div class="upload-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <div class="upload-text">
+                                Arrastra y suelta archivos aquí o haz clic para seleccionar
+                            </div>
+                            <button class="upload-btn">
+                                <i class="fas fa-folder-open"></i> Seleccionar Archivos
+                            </button>
+                        </div>
+                        
+                        <div class="file-list">
+                            <div class="file-item">
+                                <div class="file-icon">
+                                    <i class="fas fa-file-video"></i>
+                                </div>
+                                <div class="file-info">
+                                    <div class="file-name">Explicación de tiempos verbales.mp4</div>
+                                    <div class="file-size">45.2 MB</div>
+                                </div>
+                                <div class="file-actions">
+                                    <button class="file-action">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="file-action delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="file-item">
+                                <div class="file-icon">
+                                    <i class="fas fa-file-pdf"></i>
+                                </div>
+                                <div class="file-info">
+                                    <div class="file-name">Ejercicios de práctica.pdf</div>
+                                    <div class="file-size">3.1 MB</div>
+                                </div>
+                                <div class="file-actions">
+                                    <button class="file-action">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="file-action delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Evaluaciones Tab -->
+                <div class="tab-content" id="evaluationsTab">
+                    <button class="btn-primary" id="addEvaluationBtn">
+                        <i class="fas fa-plus-circle me-2"></i> Agregar Evaluación
+                    </button>
+                    
+                    <div class="evaluations-container" id="evaluationsContainer">
+                        <div class="evaluation-card">
+                            <div class="evaluation-card-header">
+                                <div>
+                                    <h4 class="evaluation-title">Prueba de Verbos Regulares</h4>
+                                    <span class="evaluation-type">Quiz</span>
+                                </div>
+                                <div class="evaluation-actions">
+                                    <button class="evaluation-action">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="evaluation-action delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="evaluation-details">
+                                <p>Evaluación sobre verbos regulares en presente simple con 10 preguntas</p>
+                            </div>
+                        </div>
+                        
+                        <div class="evaluation-card">
+                            <div class="evaluation-card-header">
+                                <div>
+                                    <h4 class="evaluation-title">Examen Parcial 1</h4>
+                                    <span class="evaluation-type">Examen</span>
+                                </div>
+                                <div class="evaluation-actions">
+                                    <button class="evaluation-action">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="evaluation-action delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="evaluation-details">
+                                <p>Examen parcial que cubre los temas de la primera mitad del módulo</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group" style="margin-top: 30px;">
+                    <button class="btn-primary" id="saveModuleBtn">
+                        <i class="fas fa-save me-2"></i> Guardar Módulo
+                    </button>
+                    <button class="btn-icon" id="resetFormBtn">
+                        <i class="fas fa-redo me-2"></i> Limpiar formulario
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content - Progress Section (NEW DESIGN) -->
+        <div class="main-container" id="progressSection" style="display: none;">
+            <div class="section-title">
+                <h2><i class="fas fa-chart-line me-2"></i> Progreso de Estudiantes</h2>
+                <a href="#" class="view-all">
+                    Exportar reporte
+                    <i class="fas fa-file-export"></i>
+                </a>
+            </div>
+            
+            <div class="progress-section">
+                <!-- Filtros -->
+                <div class="filters-container">
+                    <div class="filter-group">
+                        <label class="filter-label">Grupo</label>
+                        <select class="filter-select">
+                            <option>Todos los grupos</option>
+                            <option>Intermedio A</option>
+                            <option>Intermedio B</option>
+                            <option>Avanzado</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">Nivel</label>
+                        <select class="filter-select">
+                            <option>Todos los niveles</option>
+                            <option>Principiante</option>
+                            <option>Intermedio</option>
+                            <option>Avanzado</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">Ordenar por</label>
+                        <select class="filter-select">
+                            <option>Progreso descendente</option>
+                            <option>Progreso ascendente</option>
+                            <option>Nombre A-Z</option>
+                            <option>Nombre Z-A</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">Buscar estudiante</label>
+                        <input type="text" class="filter-select" placeholder="Nombre o apellido">
+                    </div>
+                </div>
+                
+                <!-- Estadísticas generales -->
+                <div class="progress-stats">
+                    <div class="stat-card-progress">
+                        <div class="stat-icon completed">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-value-progress">78%</div>
+                        <div class="stat-label-progress">Promedio de progreso</div>
+                    </div>
+                    
+                    <div class="stat-card-progress">
+                        <div class="stat-icon pending">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <div class="stat-value-progress">24</div>
+                        <div class="stat-label-progress">Tareas pendientes</div>
+                    </div>
+                    
+                    <div class="stat-card-progress">
+                        <div class="stat-icon average">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stat-value-progress">8.5</div>
+                        <div class="stat-label-progress">Promedio general</div>
+                    </div>
+                    
+                    <div class="stat-card-progress">
+                        <div class="stat-icon attendance">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <div class="stat-value-progress">92%</div>
+                        <div class="stat-label-progress">Asistencia promedio</div>
+                    </div>
+                </div>
+                
+                <!-- Gráficos -->
+                <div class="progress-charts">
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3 class="chart-title">Progreso por Habilidad</h3>
+                            <select class="chart-select">
+                                <option>Todos los grupos</option>
+                            </select>
+                        </div>
+                        <div class="chart-placeholder">
+                            <div class="text-center">
+                                <i class="fas fa-chart-bar"></i>
+                                <p>Gráfico de progreso por habilidades</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3 class="chart-title">Comparación de Grupos</h3>
+                            <select class="chart-select">
+                                <option>Últimos 30 días</option>
+                            </select>
+                        </div>
+                        <div class="chart-placeholder">
+                            <div class="text-center">
+                                <i class="fas fa-chart-pie"></i>
+                                <p>Gráfico comparativo de grupos</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Lista de estudiantes -->
+                <div class="progress-grid">
+                    <!-- Estudiante 1 -->
+                    <div class="student-card">
+                        <div class="student-header">
+                            <div class="student-avatar">MG</div>
+                            <div class="student-info">
+                                <h3 class="student-name">María García</h3>
+                                <p class="student-group">Grupo: Intermedio B</p>
+                                <span class="student-level">Nivel: Intermedio</span>
+                            </div>
+                        </div>
+                        <div class="student-content">
+                            <div class="progress-overall">
+                                <div class="progress-title">
+                                    <span class="progress-label">Progreso general</span>
+                                    <span class="progress-value">85%</span>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" style="width: 85%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="skills-progress">
+                                <div class="skill-item">
+                                    <div class="skill-name">
+                                        <span class="skill-title">Gramática</span>
+                                        <span class="skill-percent">90%</span>
+                                    </div>
+                                    <div class="progress-bar-container">
+                                        <div class="progress-bar" style="width: 90%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="skill-item">
+                                    <div class="skill-name">
+                                        <span class="skill-title">Vocabulario</span>
+                                        <span class="skill-percent">70%</span>
+                                    </div>
+                                    <div class="progress-bar-container">
+                                        <div class="progress-bar" style="width: 70%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="skill-item">
+                                    <div class="skill-name">
+                                        <span class="skill-title">Comprensión</span>
+                                        <span class="skill-percent">82%</span>
+                                    </div>
+                                    <div class="progress-bar-container">
+                                        <div class="progress-bar" style="width: 82%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="skill-item">
+                                    <div class="skill-name">
+                                        <span class="skill-title">Pronunciación</span>
+                                        <span class="skill-percent">75%</span>
+                                    </div>
+                                    <div class="progress-bar-container">
+                                        <div class="progress-bar" style="width: 75%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="student-footer">
+                            <div class="last-activity">
+                                <i class="fas fa-clock"></i> Última actividad: Hoy
+                            </div>
+                            <a href="#" class="view-details">
+                                Ver detalles <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Estudiante 2 -->
+                    <div class="student-card">
+                        <div class="student-header">
+                            <div class="student-avatar">JP</div>
+                            <div class="student-info">
+                                <h3 class="student-name">Juan Pérez</h3>
+                                <p class="student-group">Grupo: Avanzado</p>
+                                <span class="student-level">Nivel: Avanzado</span>
+                            </div>
+                        </div>
+                        <div class="student-content">
+                            <div class="progress-overall">
+                                <div class="progress-title">
+                                    <span class="progress-label">Progreso general</span>
+                                    <span class="progress-value">92%</span>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" style="width: 92%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="skills-progress">
+                                <div class="skill-item">
+                                    <div class="skill-name">
+                                        <span class="skill-title">Gramática</span>
+                                        <span class="skill-percent">95%</span>
+                                    </div>
+                                    <div class="progress-bar-container">
+                                        <div class="progress-bar" style="width: 95%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="skill-item">
+                                    <div class="skill-name">
+                                        <span class="skill-title">Vocabulario</span>
+                                        <span class="skill-percent">88%</span>
+                                    </div>
+                                    <div class="progress-bar-container">
+                                        <div class="progress-bar" style="width: 88%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="skill-item">
+                                    <div class="skill-name">
+                                        <span class="skill-title">Comprensión</span>
+                                        <span class="skill-percent">90%</span>
+                                    </div>
+                                    <div class="progress-bar-container">
+                                        <div class="progress-bar" style="width: 90%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="skill-item">
+                                    <div class="skill-name">
+                                        <span class="skill-title">Pronunciación</span>
+                                        <span class="skill-percent">85%</span>
+                                    </div>
+                                    <div class="progress-bar-container">
+                                        <div class="progress-bar" style="width: 85%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="student-footer">
+                            <div class="last-activity">
+                                <i class="fas fa-clock"></i> Última actividad: Ayer
+                            </div>
+                            <a href="#" class="view-details">
+                                Ver detalles <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Estudiante 3 -->
+                    <div class="student-card">
+                        <div class="student-header">
+                            <div class="student-avatar">LS</div>
+                            <div class="student-info">
+                                <h3 class="student-name">Laura Sánchez</h3>
+                                <p class="student-group">Grupo: Intermedio A</p>
+                                <span class="student-level">Nivel: Intermedio</span>
+                            </div>
+                        </div>
+                        <div class="student-content">
+                            <div class="progress-overall">
+                                <div class="progress-title">
+                                    <span class="progress-label">Progreso general</span>
+                                    <span class="progress-value">68%</span>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" style="width: 68%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="skills-progress">
+                                <div class="skill-item">
+                                    <div class="skill-name">
+                                        <span class="skill-title">Gramática</span>
+                                        <span class="skill-percent">75%</span>
+                                    </div>
+                                    <div class="progress-bar-container">
+                                        <div class="progress-bar" style="width: 75%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="skill-item">
+                                    <div class="skill-name">
+                                        <span class="skill-title">Vocabulario</span>
+                                        <span class="skill-percent">60%</span>
+                                    </div>
+                                    <div class="progress-bar-container">
+                                        <div class="progress-bar" style="width: 60%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="skill-item">
+                                    <div class="skill-name">
+                                        <span class="skill-title">Comprensión</span>
+                                        <span class="skill-percent">72%</span>
+                                    </div>
+                                    <div class="progress-bar-container">
+                                        <div class="progress-bar" style="width: 72%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="skill-item">
+                                    <div class="skill-name">
+                                        <span class="skill-title">Pronunciación</span>
+                                        <span class="skill-percent">65%</span>
+                                    </div>
+                                    <div class="progress-bar-container">
+                                        <div class="progress-bar" style="width: 65%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="student-footer">
+                            <div class="last-activity">
+                                <i class="fas fa-clock"></i> Última actividad: Hace 2 días
+                            </div>
+                            <a href="#" class="view-details">
+                                Ver detalles <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Estudiante 4 -->
+                    <div class="student-card">
+                        <div class="student-header">
+                            <div class="student-avatar">CR</div>
+                            <div class="student-info">
+                                <h3 class="student-name">Carlos Rodríguez</h3>
+                                <p class="student-group">Grupo: Avanzado</p>
+                                <span class="student-level">Nivel: Avanzado</span>
+                            </div>
+                        </div>
+                        <div class="student-content">
+                            <div class="progress-overall">
+                                <div class="progress-title">
+                                    <span class="progress-label">Progreso general</span>
+                                    <span class="progress-value">79%</span>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" style="width: 79%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="skills-progress">
+                                <div class="skill-item">
+                                    <div class="skill-name">
+                                        <span class="skill-title">Gramática</span>
+                                        <span class="skill-percent">85%</span>
+                                    </div>
+                                    <div class="progress-bar-container">
+                                        <div class="progress-bar" style="width: 85%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="skill-item">
+                                    <div class="skill-name">
+                                        <span class="skill-title">Vocabulario</span>
+                                        <span class="skill-percent">82%</span>
+                                    </div>
+                                    <div class="progress-bar-container">
+                                        <div class="progress-bar" style="width: 82%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="skill-item">
+                                    <div class="skill-name">
+                                        <span class="skill-title">Comprensión</span>
+                                        <span class="skill-percent">75%</span>
+                                    </div>
+                                    <div class="progress-bar-container">
+                                        <div class="progress-bar" style="width: 75%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="skill-item">
+                                    <div class="skill-name">
+                                        <span class="skill-title">Pronunciación</span>
+                                        <span class="skill-percent">74%</span>
+                                    </div>
+                                    <div class="progress-bar-container">
+                                        <div class="progress-bar" style="width: 74%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="student-footer">
+                            <div class="last-activity">
+                                <i class="fas fa-clock"></i> Última actividad: Hoy
+                            </div>
+                            <a href="#" class="view-details">
+                                Ver detalles <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal para agregar evaluación -->
+    <div class="modal" id="evaluationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Agregar Nueva Evaluación</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="evaluationTitle">Título de la Evaluación *</label>
+                    <input type="text" id="evaluationTitle" class="form-control" placeholder="Ej: Quiz de Verbos Irregulares">
+                </div>
+                
+                <div class="form-group">
+                    <label>Tipo de Evaluación *</label>
+                    <div class="evaluation-options">
+                        <div class="evaluation-option" data-type="quiz">
+                            <i class="fas fa-question-circle"></i>
+                            <div class="evaluation-option-title">Quiz</div>
+                            <div class="evaluation-option-desc">Preguntas cortas para evaluar conocimientos específicos</div>
+                        </div>
+                        <div class="evaluation-option" data-type="exam">
+                            <i class="fas fa-file-alt"></i>
+                            <div class="evaluation-option-title">Examen</div>
+                            <div class="evaluation-option-desc">Evaluación formal que cubre varios temas</div>
+                        </div>
+                        <div class="evaluation-option" data-type="exercise">
+                            <i class="fas fa-pen"></i>
+                            <div class="evaluation-option-title">Ejercicio</div>
+                            <div class="evaluation-option-desc">Actividad práctica para aplicar conocimientos</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="evaluationDescription">Descripción</label>
+                    <textarea id="evaluationDescription" class="form-control" placeholder="Describe la evaluación..." rows="3"></textarea>
+                </div>
+                
+                <div id="quizQuestionsSection" style="display: none;">
+                    <div class="form-group">
+                        <label>Preguntas</label>
+                        <div class="question-container">
+                            <div class="question-header">
+                                <h5 class="question-title">Pregunta 1</h5>
+                                <div class="question-actions">
+                                    <button class="question-action">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                    <button class="question-action delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Texto de la pregunta">
+                            </div>
+                            <div class="form-group">
+                                <label>Opciones</label>
+                                <div class="option-item">
+                                    <input type="radio" class="option-checkbox" name="option1">
+                                    <input type="text" class="form-control option-input" placeholder="Opción 1">
+                                </div>
+                                <div class="option-item">
+                                    <input type="radio" class="option-checkbox" name="option1">
+                                    <input type="text" class="form-control option-input" placeholder="Opción 2">
+                                </div>
+                                <div class="option-item">
+                                    <input type="radio" class="option-checkbox" name="option1">
+                                    <input type="text" class="form-control option-input" placeholder="Opción 3">
+                                </div>
+                                <button class="add-option">
+                                    <i class="fas fa-plus"></i> Agregar opción
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <button class="btn-icon" id="addQuestionBtn">
+                            <i class="fas fa-plus me-2"></i> Agregar otra pregunta
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancelEvaluationBtn">Cancelar</button>
+                <button class="btn-success" id="saveEvaluationBtn">Guardar Evaluación</button>
+            </div>
+        </div>
+    </div>
+    <!-- Scripts necesarios -->
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+
+    <script src="/scripts/profesores.js"></script>
+</body>
+</html>

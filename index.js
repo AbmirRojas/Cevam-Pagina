@@ -125,14 +125,7 @@ app.get("/", async (req, res) => {
   if (req.isAuthenticated()) {
     // Renderiza la vista principal si el usuario está autenticado
     try {
-      const books = await db.query("SELECT * FROM libros");
-
-      if (books.rows.length > 0) {
-        console.log(books.rows)
-        res.render("index.ejs", { user: req.user, books: books.rows });
-      } else {
-        res.render("index.ejs", { user: req.user });
-      }
+      res.render("recursos.ejs", { user: req.user });
     } catch (error) {
       console.error("Error retrieving books:", error);
       res.status(500).send("Internal server error");
@@ -142,15 +135,56 @@ app.get("/", async (req, res) => {
   }
 });
 
-app.get("/book/:id/units", async (req, res) => {
+app.get("/api/books", async (req, res) => {
+  try {
+    const books = await db.query("SELECT * FROM libros");
+    res.json(books.rows);
+  } catch (error) {
+    res.status(500).json({ error: "Error retrieving books" });
+  }
+});
+
+app.get("/api/book/:id/modules", async (req, res) => {
   if (req.isAuthenticated()) {
     try {
       const bookId = req.params.id;
-      const units = await db.query("SELECT * FROM unidades WHERE id_libro = $1", [bookId]);
+      const modules = await db.query("SELECT * FROM contenidos WHERE id_libro = $1", [bookId]);
 
-      res.render("units.ejs", { user: req.user, units: units.rows });
+      res.json(modules.rows);
     } catch (error) {
-      console.error("Error retrieving units:", error);
+      console.error("Error retrieving modules:", error);
+      res.status(500).send("Internal server error");
+    }
+  } else {
+    res.redirect("/login");
+  }
+});
+
+app.get("/api/module/:id", async (req, res) => {
+  if (req.isAuthenticated()) {
+    try {
+      const moduleId = req.params.id;
+      const module = await db.query("SELECT * FROM contenidos WHERE id_contenido = $1", [moduleId]);
+
+      res.json(module.rows);
+    } catch (error) {
+      console.error("Error retrieving module:", error);
+      res.status(500).send("Internal server error");
+    }
+  } else {
+    res.redirect("/login");
+  }
+});
+
+app.get("/api/module/:id/type", async (req, res) => {
+  if (req.isAuthenticated()) {
+    try {
+      const typeId = req.params.id;
+      const type = await db.query("SELECT * FROM tipos_contenido WHERE id_tipo_contenido = $1", [typeId]);
+      
+      res.json(type.rows[0]);
+    } catch (error) {
+      console.error("Error retrieving type", error);
       res.status(500).send("Internal server error");
     }
   } else {
