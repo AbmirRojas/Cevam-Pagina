@@ -266,7 +266,8 @@
                 'dashboard': document.getElementById('dashboardSection'),
                 'library': document.getElementById('librarySection'),
                 'profile': document.getElementById('profileSection'),
-                'announcements': document.getElementById('announcementsSection')
+                'announcements': document.getElementById('announcementsSection'),
+                'content': document.getElementById('contentSection')
             };
             
             // Module view elements
@@ -289,6 +290,7 @@
                 if (sections[sectionId]) {
                     sections[sectionId].style.display = 'block';
                 }
+
                 
                 // Update active menu
                 menuLinks.forEach(link => {
@@ -355,7 +357,6 @@
                     moduleCard.innerHTML = `
                         <h3>${module.titulo} <span class="module-type">${module.id_tipo_contenido}</span></h3>
                         <p>${module.descripcion}</p>
-                        ${subtopicsHTML}
                         <button class="view-modules-btn" data-module-id="${module.id_contenido}" data-module-type="${module.id_tipo_contenido}">
                             <i class="fas ${bookIcons[module.id_tipo_contenido]}"></i> Open module
                         </button>
@@ -392,7 +393,6 @@
 
                 const module = moduleData[0];
 
-                // Ahora sí, usa module.id_tipo_contenido
                 const typeFetch = await fetch(`/api/module/${module.id_tipo_contenido}/type`);
                 const type = await typeFetch.json() || [];
                 
@@ -412,24 +412,21 @@
                         <div class="module-section">
                             <h4><i class="fas fa-book-open"></i> Introduction</h4>
                             <p>${module.descripcion}</p>
-                            <p>${module.contenido_texto}</p>
                         </div>
                         
                         <div class="module-section">
                             <h4><i class="fas fa-book"></i> Content Overview</h4>
-                            <p>In this module you'll learn:</p>
-                            <ul>
-                                ${moduleSubtopics[moduleType].map(item => `<li>${item}</li>`).join('')}
-                            </ul>
+                            <p>${module.contenido_texto}</p>
                         </div>
                         
                         <div class="module-section">
                             <h4><i class="fas fa-play-circle"></i> Video Lesson</h4>
                             <p>Watch this introductory lesson to get started:</p>
                             
-                            <div class="module-video">
-                                <i class="fas fa-play-circle"></i>
+                            <div class="d-flex justify-content-center mb-5">
+                                ${module.url_recurso}
                             </div>
+                            
                             
                             <a href="#" class="download-btn">
                                 <i class="fas fa-download"></i> Download Material
@@ -437,10 +434,10 @@
                         </div>
                         
                         <div class="exercises-section">
-                            <h4><i class="fas fa-pencil-alt"></i> Quizzes</h4>
+                            <h4><i class="fas fa-pencil-alt"></i> Exercises</h4>
                             <p>Reinforce what you've learned with our interactive quizzes. Each quiz is designed to assess your understanding of the lessons and help you identify areas for improvement.</p>
                             <a href="#" class="quiz-btn">
-                                <i class="fas fa-question-circle"></i> Go to Quizzes
+                                <i class="fas fa-question-circle"></i> Go to Exercises
                             </a>
                         </div>
                     </div>
@@ -545,6 +542,169 @@
                 this.classList.toggle('collapsed');
                 resourcesMenu.classList.toggle('show');
             });
+
+            /* TEACHER MODULE CREATION FUNCTIONALITY */
+            
+            // Tabs functionality
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs and contents
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to current tab
+                    this.classList.add('active');
+                    
+                    // Show corresponding content
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(`${tabId}Tab`).classList.add('active');
+                });
+            });
+            
+            // Evaluation options selection
+            const evaluationOptions = document.querySelectorAll('.evaluation-option');
+            evaluationOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    evaluationOptions.forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show questions section only for quizzes
+                    const type = this.getAttribute('data-type');
+                    if (type === 'quiz') {
+                        document.getElementById('quizQuestionsSection').style.display = 'block';
+                    } else {
+                        document.getElementById('quizQuestionsSection').style.display = 'none';
+                    }
+                });
+            });
+            
+            // Add option to question
+            document.querySelector('.add-option')?.addEventListener('click', function() {
+                const optionsContainer = this.previousElementSibling;
+                const newOption = document.createElement('div');
+                newOption.className = 'option-item';
+                newOption.innerHTML = `
+                    <input type="radio" class="option-checkbox" name="option1">
+                    <input type="text" class="form-control option-input" placeholder="New option">
+                `;
+                optionsContainer.appendChild(newOption);
+            });
+            
+            // Add question
+            document.getElementById('addQuestionBtn')?.addEventListener('click', function() {
+                const questionsContainer = document.querySelector('#quizQuestionsSection .form-group');
+                const questionCount = questionsContainer.children.length + 1;
+                
+                const questionHtml = `
+                    <div class="question-container">
+                        <div class="question-header">
+                            <h5 class="question-title">Question ${questionCount}</h5>
+                            <div class="question-actions">
+                                <button class="question-action">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                                <button class="question-action delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Question text">
+                        </div>
+                        <div class="form-group">
+                            <label>Options</label>
+                            <div class="option-item">
+                                <input type="radio" class="option-checkbox" name="option${questionCount}">
+                                <input type="text" class="form-control option-input" placeholder="Option 1">
+                            </div>
+                            <div class="option-item">
+                                <input type="radio" class="option-checkbox" name="option${questionCount}">
+                                <input type="text" class="form-control option-input" placeholder="Option 2">
+                            </div>
+                            <div class="option-item">
+                                <input type="radio" class="option-checkbox" name="option${questionCount}">
+                                <input type="text" class="form-control option-input" placeholder="Option 3">
+                            </div>
+                            <button class="add-option">
+                                <i class="fas fa-plus"></i> Add option
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                questionsContainer.insertAdjacentHTML('beforeend', questionHtml);
+            });
+            
+            // Modal functionality
+            const modal = document.getElementById('evaluationModal');
+            const openModalBtn = document.getElementById('addEvaluationBtn');
+            const closeModalBtn = document.querySelector('.modal-close');
+            const cancelModalBtn = document.getElementById('cancelEvaluationBtn');
+            
+            if (openModalBtn) {
+                openModalBtn.addEventListener('click', function() {
+                    modal.style.display = 'flex';
+                });
+            }
+            
+            if (closeModalBtn) {
+                closeModalBtn.addEventListener('click', function() {
+                    modal.style.display = 'none';
+                });
+            }
+            
+            if (cancelModalBtn) {
+                cancelModalBtn.addEventListener('click', function() {
+                    modal.style.display = 'none';
+                });
+            }
+            
+            window.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+            
+           
+            // Reset form
+            document.getElementById('resetFormBtn')?.addEventListener('click', function() {
+                document.getElementById('moduleTitle').value = '';
+                document.getElementById('moduleBook').value = '';
+                document.getElementById('moduleDescription').value = '';
+                document.getElementById('contentBody').value = '';
+                document.getElementById('evaluationsContainer').innerHTML = '';
+                document.getElementById('alertContainer').innerHTML = '';
+            });
+            
+            // Simulate file upload
+            document.querySelector('.upload-btn')?.addEventListener('click', function() {
+                const fileList = document.querySelector('.file-list');
+                const newFile = document.createElement('div');
+                newFile.className = 'file-item';
+                newFile.innerHTML = `
+                    <div class="file-icon">
+                        <i class="fas fa-file"></i>
+                    </div>
+                    <div class="file-info">
+                        <div class="file-name">New_resource.docx</div>
+                        <div class="file-size">2.4 MB</div>
+                    </div>
+                    <div class="file-actions">
+                        <button class="file-action">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="file-action delete">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                fileList.appendChild(newFile);
+            });
+            
+            
             
             // Initialize with dashboard
             showSection('dashboard');

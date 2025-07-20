@@ -125,7 +125,23 @@ app.get("/", async (req, res) => {
   if (req.isAuthenticated()) {
     // Renderiza la vista principal si el usuario está autenticado
     try {
-      res.render("recursos.ejs", { user: req.user });
+      const userRoleId = req.user.id_rol;
+      
+      function getUserRole (userRoleId) {
+        let userRole = "";
+          if (userRoleId === 1) {
+          userRole = "admin";
+        } else if (userRoleId === 2) {
+           userRole = "teacher";
+        } else if (userRoleId === 3) {
+          userRole = "student";
+        }
+        return userRole
+      }
+      
+      const userRole = getUserRole(userRoleId);
+
+      res.render("recursos.ejs", { user: req.user, role: userRole });
     } catch (error) {
       console.error("Error retrieving books:", error);
       res.status(500).send("Internal server error");
@@ -261,6 +277,26 @@ app.post(
     failureFlash: false
   })
 );
+
+app.post("/createModule", async (req, res) => {
+  if (req.isAuthenticated()) {
+    const { title, book, description, content, videoURL, contentType } = req.body;
+    const materialType = 1;
+
+    
+  try {
+    db.query(
+      "INSERT INTO contenidos (titulo, id_libro, descripcion, contenido_texto, url_recurso, id_tipo_contenido, id_tipo_material) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+      [title, book, description, content, videoURL, contentType, materialType],
+    );
+    
+    res.redirect("/");
+  } catch (error) {
+    console.error("Error retrieving type", error);
+      res.status(500).send("Internal server error");
+  }
+  } 
+});
 
 app.post("/settings", async (req, res) => {
   if (!req.isAuthenticated()) {
