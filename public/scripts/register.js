@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const reqMayuscula = document.getElementById('req-mayuscula');
     const reqNumero = document.getElementById('req-numero');
     const reqEspecial = document.getElementById('req-especial');
+        
     
     // Validación de contraseña en tiempo real
     password.addEventListener('input', function() {

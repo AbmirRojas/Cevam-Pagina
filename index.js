@@ -208,6 +208,24 @@ app.get("/api/module/:id/type", async (req, res) => {
   }
 });
 
+app.get("/modulo/:id/links", async (req, res) => {
+  const idModulo = req.params.id;
+
+  try {
+    const resultado = await db.query(`
+      SELECT tm.link_archivo, tm.nombre_archivo, tm.tamano_archivo
+      FROM contenido_archivos ca
+      JOIN tipos_material tm ON ca.id_archivo = tm.id_archivo
+      WHERE ca.id_contenido = $1
+    `, [idModulo]);
+
+    res.json(resultado.rows);
+  } catch (error) {
+    console.error("Error al obtener los enlaces:", error);
+    res.status(500).send("Error interno del servidor");
+  }
+});
+
 app.get("/settings", async (req, res) => {
   if (req.isAuthenticated()) {
     res.render("settings.ejs", { user: req.user });
@@ -281,21 +299,59 @@ app.post(
 app.post("/createModule", async (req, res) => {
   if (req.isAuthenticated()) {
     const { title, book, description, content, videoURL, contentType } = req.body;
-    const materialType = 1;
 
-    
-  try {
-    db.query(
-      "INSERT INTO contenidos (titulo, id_libro, descripcion, contenido_texto, url_recurso, id_tipo_contenido, id_tipo_material) VALUES ($1, $2, $3, $4, $5, $6, $7)",
-      [title, book, description, content, videoURL, contentType, materialType],
-    );
-    
-    res.redirect("/");
-  } catch (error) {
-    console.error("Error retrieving type", error);
-      res.status(500).send("Internal server error");
+    try {
+      const archivos = [];
+
+      // Recolectar hasta 10 conjuntos de datos del formulario
+      for (let i = 1; i <= 10; i++) {
+        const enlace = req.body[`file${i}`];
+        const nombre = req.body[`nombre${i}`];
+        const tamano = req.body[`tamano${i}`];
+
+        if (enlace && enlace.trim() !== "") {
+          archivos.push({
+            link: enlace.trim(),
+            nombre: nombre?.trim() || null,
+            tamano: tamano ? parseFloat(tamano) : null,
+          });
+        }
+      }
+
+      // Insertar contenido principal
+      const resultadoContenido = await db.query(
+        `INSERT INTO contenidos (
+          titulo, id_libro, descripcion, contenido_texto, url_recurso, id_tipo_contenido
+        ) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id_contenido`,
+        [title, book, description, content, videoURL, contentType]
+      );
+
+      const id_contenido = resultadoContenido.rows[0].id_contenido;
+
+      // Insertar cada archivo con nombre y tamaño, y vincular al contenido
+      for (const archivo of archivos) {
+        const resultadoArchivo = await db.query(
+          `INSERT INTO tipos_material (
+            link_archivo, nombre_archivo, tamano_archivo
+          ) VALUES ($1, $2, $3) RETURNING id_archivo`,
+          [archivo.link, archivo.nombre, archivo.tamano]
+        );
+
+        const id_archivo = resultadoArchivo.rows[0].id_archivo;
+
+        await db.query(
+          "INSERT INTO contenido_archivos (id_contenido, id_archivo) VALUES ($1, $2)",
+          [id_contenido, id_archivo]
+        );
+      }
+
+      res.redirect("/");
+
+    } catch (error) {
+      console.error("Error al guardar contenido y archivos:", error);
+      res.status(500).send("Error interno del servidor");
+    }
   }
-  } 
 });
 
 app.post("/settings", async (req, res) => {

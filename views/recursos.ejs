@@ -34,43 +34,6 @@
                 </a>
             </div>
             
-            <div class="menu-title">Academic Resources</div>
-            
-            <div class="menu-item">
-                <a href="#" class="menu-link collapsed" id="resourcesToggle">
-                    <i class="fas fa-book-open"></i>
-                    <span>Study Materials</span>
-                    <i class="fas fa-chevron-down arrow ms-auto"></i>
-                </a>
-                <ul class="sub-menu" id="resourcesMenu">
-                    <li class="menu-item">
-                        <a href="#" class="menu-link" data-resource="grammar">
-                            <span>Grammar</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="#" class="menu-link" data-resource="listening">
-                            <span>Listening</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="#" class="menu-link" data-resource="speaking">
-                            <span>Speaking</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="#" class="menu-link" data-resource="reading">
-                            <span>Reading</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="#" class="menu-link" data-resource="writing">
-                            <span>Writing</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            
             <div class="menu-title">Communication</div>
             
             <div class="menu-item">
@@ -270,235 +233,115 @@
         </div>
 
         <!-- Module Creation Section (Teacher Only) -->
-         <form id="moduleCreationForm" action="/createModule" method="post">
+        <form id="moduleCreationForm" action="/createModule" method="post">
             <div class="main-container" id="contentSection" style="display: none;">
-            <div class="section-title">
-                <h2><i class="fas fa-plus-circle me-2"></i> Create New Module</h2>
-            </div>
-            
-            <div id="alertContainer"></div>
-            
-            <div class="form-container">
-                <h3 class="form-title"><i class="fas fa-file-alt"></i> Module Details</h3>
-                
-                <div class="form-row">
-                    <div class="form-col">
-                        <div class="form-group">
-                            <label for="moduleTitle">Module Title </label>
-                            <input name="title" type="text" id="moduleTitle" class="form-control" placeholder="Ex: Advanced Grammar - Verb Tenses">
-                        </div>
-                    </div>
-                    <div class="form-col">
-                        <div class="form-group">
-                            <label for="moduleBook">Associated Book </label>
-                            <select name="book" id="moduleBook" class="form-control">
-                                <option value="">Select book</option>
-                                <option value="1">Book 1: Beginner Level</option>
-                                <option value="2">Book 2: Elementary Level</option>
-                                <option value="3">Book 3: Pre-Intermediate</option>
-                                <option value="4">Book 4: Intermediate</option>
-                                <option value="5">Book 5: Upper Intermediate</option>
-                                <option value="6">Book 6: Advanced Level</option>
-                                <option value="7">Book 7: Business English</option>
-                                <option value="8">Book 8: Academic English</option>
-                                <option value="9">Book 9: Conversational English</option>
-                                <option value="10">Book 10: Exam Preparation</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-col">
-                        <div class="form-group">
-                            <label for="moduleTitle">Embeded Video</label>
-                            <input name="videoURL" type="text" id="videoURL" class="form-control" placeholder="Ex: https://www.youtube.com/">
-                        </div>
-                    </div>
-                    <div class="form-col">
-                        <div class="form-group">
-                            <label for="contentType">Content Type </label>
-                            <select name="contentType" id="contentType" class="form-control">
-                                <option value="">Select Type of Content</option>
-                                <option value="1">Grammar</option>
-                                <option value="2">Listening</option>
-                                <option value="3">Speaking</option>
-                                <option value="4">Reading</option>
-                                <option value="5">Writing</option>
-                            </select>
-                        </div>
-                    </div>
+                <div class="section-title">
+                    <h2><i class="fas fa-plus-circle me-2"></i> Create New Module</h2>
                 </div>
                 
-                <div class="form-group">
-                    <label for="moduleDescription">Module Description </label>
-                    <textarea name="description" id="moduleDescription" class="form-control" placeholder="Describe the module and its learning objectives..." rows="3"></textarea>
-                </div>
+                <div id="alertContainer"></div>
                 
-                <div class="tabs">
-                    <div class="tab active" data-tab="content">Content</div>
-                    <div class="tab" data-tab="evaluations">Evaluations</div>
-                </div>
-                
-                <!-- Content Tab -->
-                <div class="tab-content active" id="contentTab">
-                    <div class="form-group">
-                        <label for="contentBody">Main Content </label>
-                        <textarea name="content" id="contentBody" class="form-control" placeholder="Write detailed module content here..." rows="8"></textarea>
-                    </div>
-                </div>
-                
-                <!-- Evaluations Tab -->
-                <div class="tab-content" id="evaluationsTab">
-                    <button class="btn btn-primary" id="addEvaluationBtn">
-                        <i class="fas fa-plus-circle me-2"></i> Add Evaluation
-                    </button>
+                <div class="form-container">
+                    <h3 class="form-title"><i class="fas fa-file-alt"></i> Module Details</h3>
                     
-                    <div class="evaluations-container" id="evaluationsContainer">
-                        <div class="evaluation-card">
-                            <div class="evaluation-card-header">
-                                <div>
-                                    <h4 class="evaluation-title">Regular Verbs Exercise</h4>
-                                    <span class="evaluation-type">Exercise</span>
-                                </div>
-                                <div class="evaluation-actions">
-                                    <button class="evaluation-action">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="evaluation-action delete">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="evaluation-details">
-                                <p>Assessment on regular verbs in present simple with 10 questions</p>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="moduleTitle">Module Title </label>
+                                <input name="title" type="text" id="moduleTitle" class="form-control" placeholder="Ex: Advanced Grammar - Verb Tenses">
                             </div>
                         </div>
-                        
-                        <div class="evaluation-card">
-                            <div class="evaluation-card-header">
-                                <div>
-                                    <h4 class="evaluation-title">Midterm Exam 1</h4>
-                                    <span class="evaluation-type">Exam</span>
-                                </div>
-                                <div class="evaluation-actions">
-                                    <button class="evaluation-action">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="evaluation-action delete">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="evaluation-details">
-                                <p>Midterm exam covering topics from the first half of the module</p>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="moduleBook">Associated Book </label>
+                                <select name="book" id="moduleBook" class="form-control">
+                                    <option value="">Select book</option>
+                                    <option value="1">Book 1: Beginner Level</option>
+                                    <option value="2">Book 2: Elementary Level</option>
+                                    <option value="3">Book 3: Pre-Intermediate</option>
+                                    <option value="4">Book 4: Intermediate</option>
+                                    <option value="5">Book 5: Upper Intermediate</option>
+                                    <option value="6">Book 6: Advanced Level</option>
+                                    <option value="7">Book 7: Business English</option>
+                                    <option value="8">Book 8: Academic English</option>
+                                    <option value="9">Book 9: Conversational English</option>
+                                    <option value="10">Book 10: Exam Preparation</option>
+                                </select>
                             </div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="form-group" style="margin-top: 30px;">
-                    <button class="btn btn-primary" id="saveModuleBtn">
-                        <i class="fas fa-save me-2"></i> Save Module
-                    </button>
-                    <button class="btn btn-secondary" id="resetFormBtn">
-                        <i class="fas fa-redo me-2"></i> Clear Form
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Evaluation Modal -->
-    <div class="modal" id="evaluationModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Add New Evaluation</h3>
-                <button class="modal-close">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="evaluationTitle">Evaluation Title *</label>
-                    <input type="text" id="evaluationTitle" class="form-control" placeholder="Ex: Irregular Verbs Quiz">
-                </div>
-                
-                <div class="form-group">
-                    <label>Evaluation Type *</label>
-                    <div class="evaluation-options">
-                        <div class="evaluation-option" data-type="quiz">
-                            <i class="fas fa-question-circle"></i>
-                            <div class="evaluation-option-title">Quiz</div>
-                            <div class="evaluation-option-desc">Short questions to assess specific knowledge</div>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="moduleTitle">Embeded Video</label>
+                                <input name="videoURL" type="text" id="videoURL" class="form-control" placeholder="Ex: https://www.youtube.com/">
+                            </div>
                         </div>
-                        <div class="evaluation-option" data-type="exam">
-                            <i class="fas fa-file-alt"></i>
-                            <div class="evaluation-option-title">Exam</div>
-                            <div class="evaluation-option-desc">Formal assessment covering multiple topics</div>
-                        </div>
-                        <div class="evaluation-option" data-type="exercise">
-                            <i class="fas fa-pen"></i>
-                            <div class="evaluation-option-title">Exercise</div>
-                            <div class="evaluation-option-desc">Practical activity to apply knowledge</div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="contentType">Content Type </label>
+                                <select name="contentType" id="contentType" class="form-control">
+                                    <option value="">Select Type of Content</option>
+                                    <option value="1">Grammar</option>
+                                    <option value="2">Listening</option>
+                                    <option value="3">Speaking</option>
+                                    <option value="4">Reading</option>
+                                    <option value="5">Writing</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="evaluationDescription">Description</label>
-                    <textarea id="evaluationDescription" class="form-control" placeholder="Describe the evaluation..." rows="3"></textarea>
-                </div>
-                
-                <div id="quizQuestionsSection" style="display: none;">
+                    
                     <div class="form-group">
-                        <label>Questions</label>
-                        <div class="question-container">
-                            <div class="question-header">
-                                <h5 class="question-title">Question 1</h5>
-                                <div class="question-actions">
-                                    <button class="question-action">
-                                        <i class="fas fa-copy"></i>
-                                    </button>
-                                    <button class="question-action delete">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Question text">
-                            </div>
-                            <div class="form-group">
-                                <label>Options</label>
-                                <div class="option-item">
-                                    <input type="radio" class="option-checkbox" name="option1">
-                                    <input type="text" class="form-control option-input" placeholder="Option 1">
-                                </div>
-                                <div class="option-item">
-                                    <input type="radio" class="option-checkbox" name="option1">
-                                    <input type="text" class="form-control option-input" placeholder="Option 2">
-                                </div>
-                                <div class="option-item">
-                                    <input type="radio" class="option-checkbox" name="option1">
-                                    <input type="text" class="form-control option-input" placeholder="Option 3">
-                                </div>
-                                <button class="add-option">
-                                    <i class="fas fa-plus"></i> Add option
-                                </button>
-                            </div>
+                        <label for="moduleDescription">Module Description </label>
+                        <textarea name="description" id="moduleDescription" class="form-control" placeholder="Describe the module and its learning objectives..." rows="3"></textarea>
+                    </div>
+                    
+                    <div class="tabs">
+                        <div class="tab active" data-tab="content">Content</div>
+                        <div class="tab" data-tab="evaluations">Evaluations</div>
+                        <div class="tab" data-tab="files">Files</div>
+                    </div>
+                    
+                    <!-- Content Tab -->
+                    <div class="tab-content active" id="contentTab">
+                        <div class="form-group">
+                            <label for="contentBody">Main Content </label>
+                            <textarea name="content" id="contentBody" class="form-control" placeholder="Write detailed module content here..." rows="8"></textarea>
                         </div>
-                        
-                        <button class="btn btn-outline-primary" id="addQuestionBtn">
-                            <i class="fas fa-plus me-2"></i> Add another question
+                    </div>
+                    
+                    <!-- Evaluations Tab -->
+                    <div class="tab-content" id="evaluationsTab">
+                        <div class="form-group">
+                            
+                        </div>
+                    </div>
+
+                    <!-- Files Tab -->
+                    <div class="tab-content" id="filesTab">
+                        <div class="form-group">
+                             <button class="btn btn-primary" type="button" id="agregarBtn">
+                                <i class="fas fa-plus"></i> Add a New File</button>
+                             <div id="contenedor">
+                                <!-- Aqui se generan los inputs necesarios para los archivos-->
+                             </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" style="margin-top: 30px;">
+                        <button class="btn btn-primary" id="saveModuleBtn">
+                            <i class="fas fa-save me-2"></i> Save Module
+                        </button>
+                        <button class="btn btn-secondary" id="resetFormBtn">
+                            <i class="fas fa-redo me-2"></i> Clear Form
                         </button>
                     </div>
+                
                 </div>
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" id="cancelEvaluationBtn">Cancel</button>
-                <button type="submit" class="btn btn-success" id="saveEvaluationBtn">Save Evaluation</button>
-            </div>
-        </div>
-    </div>
-    </form>
+        </form>
         
 
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>

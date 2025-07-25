@@ -31,13 +31,13 @@
                 <div class="col-md-6">
                     <div class="campo-formulario">
                         <i class="bi bi-person"></i>
-                        <input name="fName" type="text" placeholder="Nombre(s)" required>
+                        <input name="fName" type="text" placeholder="Nombre(s)" onkeypress="return 'aáéíóúabcdefghijklmnñopqrstuvwxyz'.includes(event.key.toLowerCase())" required>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="campo-formulario">
                         <i class="bi bi-person"></i>
-                        <input name="lName" type="text" placeholder="Apellido(s)" required>
+                        <input name="lName" type="text" placeholder="Apellido(s)" onkeypress="return 'aáéíóúabcdefghijklmnñopqrstuvwxyz'.includes(event.key.toLowerCase())" required>
                     </div>
                 </div>
             </div>
@@ -53,13 +53,13 @@
                 <div class="col-md-6">
                     <div class="campo-formulario">
                         <i class="bi bi-telephone"></i>
-                        <input name="phoneNumber" type="tel" placeholder="Teléfono" required>
+                        <input name="phoneNumber" type="tel" placeholder="Teléfono" onkeypress="return '0123456789+()-. '.includes(event.key)" required>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="campo-formulario">
                         <i class="bi bi-card-heading"></i>
-                        <input name="cedula" type="text" placeholder="Cedula" required>
+                        <input name="cedula" type="text" placeholder="Cedula" onkeypress="return '0123456789 '.includes(event.key)" required>
                     </div>
                 </div>
             </div>
