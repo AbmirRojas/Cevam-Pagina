@@ -1588,6 +1588,61 @@
                 document.getElementById("backToModules").addEventListener("click", () => loadModules());
             }
         }
+
+        document.getElementById("addQuestionBtn").addEventListener("click", () => {
+    const container = document.getElementById("questionsContainer");
+    
+    const questionHTML = `
+        <div class="question-block" style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; position: relative;">
+            <button type="button" class="btn btn-danger btn-sm remove-question-btn" style="position: absolute; top: 10px; right: 10px;">
+                <i class="fas fa-trash"></i>
+            </button>
+            
+            <h5>Pregunta ${questionCount}</h5>
+            
+            <label>Pregunta</label>
+            <input name="pregunta${questionCount}" type="text" class="form-control" required>
+            
+            <label>Opción A</label>
+            <input name="opcion_a${questionCount}" type="text" class="form-control" required>
+            
+            <label>Opción B</label>
+            <input name="opcion_b${questionCount}" type="text" class="form-control" required>
+            
+            <label>Opción C</label>
+            <input name="opcion_c${questionCount}" type="text" class="form-control" required>
+            
+            <label>Opción D</label>
+            <input name="opcion_d${questionCount}" type="text" class="form-control" required>
+            
+            <label>Respuesta Correcta</label>
+            <select name="respuesta_correcta${questionCount}" class="form-control" required>
+                <option value="">Seleccionar</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+            </select>
+        </div>
+    `;
+    
+    // Primero insertamos el HTML
+    container.insertAdjacentHTML('beforeend', questionHTML);
+    
+    // Ahora obtenemos la referencia al nuevo elemento que acabamos de insertar
+    const newBlock = container.lastElementChild;
+    
+    // Añadimos el event listener al botón de eliminar del nuevo bloque
+    const removeBtn = newBlock.querySelector('.remove-question-btn');
+    if (removeBtn) {
+        removeBtn.addEventListener('click', () => {
+            newBlock.remove();
+        });
+    }
+    
+    // No olvides incrementar el contador de preguntas
+    questionCount++;
+});
             
 
 
