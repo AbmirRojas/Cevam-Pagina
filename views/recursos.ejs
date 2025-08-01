@@ -6,8 +6,11 @@
     <link rel="stylesheet" href="/styles/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/styles/recursos.css">
-    <% if (locals.user.id_rol === 2) { %>
+    <% if (locals.user.id_rol === 2 || locals.user.id_rol === 1) { %>
         <link rel="stylesheet" href="/styles/profesores.css">
+    <% } %>
+     <% if (locals.user.id_rol === 1) { %>
+        <link rel="stylesheet" href="/styles/admin.css">
     <% } %>
 </head>
 <body>
@@ -43,16 +46,75 @@
                 </a>
             </div>
 
+            <!-- Teacher Administration Section -->
             <% if (locals.user.id_rol === 2) { %>
-                <!-- Teacher Administration Section -->
-            <div class="menu-title">Administration</div>
-            <div class="menu-item teacher-menu">
-                <a href="#" class="menu-link" data-section="content">
-                    <i class="fas fa-plus-circle"></i>
-                    <span>Create Module</span>
-                    <span class="teacher-indicator">Teacher</span>
-                </a>
-            </div>
+                <div class="menu-title">Teacher Administration</div>
+                <div class="menu-item teacher-menu">
+                    <a href="#" class="menu-link" data-section="content">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Add Module</span>
+                        <span class="teacher-indicator">Teacher</span>
+                    </a>
+                </div>
+            <% } %>
+
+            <!-- Administration Section -->
+            <% if (locals.user.id_rol === 1) { %>  
+                <div class="menu-title">Users Management</div>
+                
+                <div class="menu-item admin-menu">
+                    <a href="#" class="menu-link" data-section="users">
+                        <i class="fas fa-users"></i>
+                        <span>Users</span>
+                        <span class="admin-indicator">Admin</span>
+                    </a>
+                </div>
+
+                <div class="menu-title">Creation</div>
+
+                <div class="menu-item admin-menu">
+                    <a href="#" class="menu-link" data-section="bookCreation">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Add Book</span>
+                        <span class="admin-indicator">Admin</span>
+                    </a>
+                </div>
+
+                <div class="menu-item admin-menu">
+                    <a href="#" class="menu-link" data-section="content">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Add Module</span>
+                        <span class="admin-indicator">Admin</span>
+                    </a>
+                </div>
+
+                <div class="menu-title">Content Management</div>
+            
+                <div class="menu-item admin-menu">
+                    <a href="#" class="menu-link" data-section="books">
+                        <i class="fas fa-book"></i>
+                        <span>Books</span>
+                        <span class="admin-indicator">Admin</span>
+                    </a>
+                </div>
+                
+                <div class="menu-item admin-menu">
+                    <a href="#" class="menu-link" data-section="modules">
+                        <i class="fas fa-book-open"></i>
+                        <span>Modules</span>
+                        <span class="admin-indicator">Admin</span>
+                    </a>
+                </div>
+                
+                <div class="menu-title">Announcements Management </div>
+                
+                <div class="menu-item admin-menu">
+                    <a href="#" class="menu-link" data-section="notifications">
+                        <i class="fas fa-bullhorn"></i>
+                        <span>Announce</span>
+                        <span class="admin-indicator">Admin</span>
+                    </a>
+                </div>
             <% } %>
             
             <div class="menu-title">Settings</div>
@@ -106,15 +168,88 @@
         </div>
 
         <!-- Main Content - Dashboard Section -->
-        <div class="main-container" id="dashboardSection">
-            <div class="section-title">
-                <h2><i class="fas fa-tachometer-alt me-2"></i> <%= locals.role.charAt(0).toUpperCase() + locals.role.slice(1) %> Dashboard</h2>
-            </div>
+         <% if ( locals.user.id_rol === 3 || locals.user.id_rol === 2 ) { %>
             
-            <div class="content-section">
-                <h3>Welcome to the CEVAM Platform</h3>
-                <p>This is your personal area where you can access all educational resources, manage your courses, and customize your learning experience.</p>
+            <div class="main-container" id="dashboardSection">
+                <div class="section-title">
+                    <h2><i class="fas fa-home me-2"></i> <%= locals.role.charAt(0).toUpperCase() + locals.role.slice(1) %> Dashboard</h2>
+                </div>
                 
+                <div class="content-section">
+                    <h3>Welcome to the CEVAM Platform</h3>
+                    <p>This is your personal area where you can access all educational resources, manage your courses, and customize your learning experience.</p>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6 mb-4">
+                            <div class="dashboard-card">
+                                <i class="fas fa-book"></i>
+                                <h4>Resources</h4>
+                                <p>Access all educational resources organized by categories.</p>
+                                <button class="btn btn-primary mt-2" data-section="library">Go to Resources</button>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="dashboard-card">
+                                <i class="fas fa-bullhorn"></i>
+                                <h4>Announcements</h4>
+                                <p>Stay informed with the latest platform announcements.</p>
+                                <button class="btn btn-primary mt-2" data-section="announcements">View Announcements</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <% } %>
+
+        <% if ( locals.user.id_rol === 1 ) { %>
+            <div class="main-container" id="dashboardSection">
+                <div class="section-title">
+                    <h2><i class="fas fa-home me-2"></i> Admin Dashboard</h2>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon students">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3><%= locals.students.length %></h3>
+                            <p>Students</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon teachers">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3><%= locals.teachers.length %></h3>
+                            <p>teachers</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon courses">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3><%= locals.numModules %></h3>
+                            <p>Active Modules</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon active">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3><%= locals.teachers.length + locals.students.length + locals.admins.length %></h3>
+                            <p>Users</p>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row mt-4">
                     <div class="col-md-6 mb-4">
                         <div class="dashboard-card">
@@ -124,6 +259,7 @@
                             <button class="btn btn-primary mt-2" data-section="library">Go to Resources</button>
                         </div>
                     </div>
+
                     <div class="col-md-6 mb-4">
                         <div class="dashboard-card">
                             <i class="fas fa-bullhorn"></i>
@@ -134,9 +270,10 @@
                     </div>
                 </div>
             </div>
-        </div>
+        <% } %>
+        
 
-        <!-- Main Content - Library Section -->
+        <!-- Main Content - Resources Section -->
         <div class="main-container" id="librarySection" style="display: none;">
             <div class="section-title">
                 <h2><i class="fas fa-book me-2"></i> CEVAM Resources</h2>
@@ -196,38 +333,9 @@
             <div class="content-section">
                 <h3>New Registrations & Platform Updates</h3>
                 <p>Stay informed about the latest news, registration periods, and important platform updates.</p>
-                
-                <div class="announcement-card">
-                    <h3 class="announcement-title">
-                        <i class="fas fa-user-graduate"></i> New Student Registration Period
-                    </h3>
-                    <span class="announcement-date">June 25, 2025</span>
-                    <div class="announcement-content">
-                        <p>The registration period for new students for the 2025-2026 academic year is now open. All prospective students should complete their applications by July 15, 2025.</p>
-                        <p>New students will have access to orientation materials starting July 1st. Please check your email for your registration confirmation and access instructions.</p>
-                    </div>
-                </div>
-                
-                <div class="announcement-card">
-                    <h3 class="announcement-title">
-                        <i class="fas fa-book"></i> New Learning Materials Available
-                    </h3>
-                    <span class="announcement-date">June 20, 2025</span>
-                    <div class="announcement-content">
-                        <p>We're excited to announce the release of our new learning materials for advanced grammar and business English. These materials are now available in your library.</p>
-                        <p>All students currently enrolled in intermediate and advanced courses will automatically have access to these new resources. Check the library section for details.</p>
-                    </div>
-                </div>
-                
-                <div class="announcement-card">
-                    <h3 class="announcement-title">
-                        <i class="fas fa-calendar-alt"></i> Upcoming Maintenance Schedule
-                    </h3>
-                    <span class="announcement-date">June 18, 2025</span>
-                    <div class="announcement-content">
-                        <p>Please be advised that the CEVAM platform will undergo scheduled maintenance on June 30, 2025, from 10:00 PM to 2:00 AM (GMT-5).</p>
-                        <p>During this time, the platform may be temporarily unavailable. We recommend saving your work frequently as the maintenance window approaches.</p>
-                    </div>
+
+                <div id="announcementsContainer">
+                    <!--Announcements Will be generated here -->
                 </div>
             </div>
         </div>
@@ -314,13 +422,18 @@
                     
                     <!-- Evaluations Tab -->
                     <div class="tab-content" id="evaluationsTab">
-                        <div class="form-group">
-                            
+                        <div id="questionsContainer">
+                            <!-- Aquí se insertarán las preguntas dinámicamente -->
                         </div>
+
+                        <button type="button" class="btn btn-secondary" id="addQuestionBtn" style="margin-top: 10px;">
+                            <i class="fas fa-plus"></i> Agregar Pregunta
+                        </button>
                     </div>
 
+
                     <!-- External Resources Tab -->
-                    <div class="tab-content" id="ResourcesTab">
+                    <div class="tab-content" id="resourcesTab">
                         <div class="form-group">
                              <button class="btn btn-primary" type="button" id="agregarBtn">
                                 <i class="fas fa-plus"></i> Add a New File</button>
@@ -342,6 +455,175 @@
                 </div>
             </div>
         </form>
+
+        <!-- Admin Section -->
+
+        <!-- Main Content - Users Section -->
+        <div class="main-container" id="usersSection" style="display: none;">
+            <div class="section-title">
+                <h2><i class="fas fa-users me-2"></i> Users Management</h2>
+            </div>
+            
+            <div class="content-section">
+                <div class="form-group" style="max-width: 400px; margin-bottom: 25px;">
+                    <input type="text" id="searchUserInput" class="form-control" placeholder="Buscar usuarios... Ex: Carlos...">
+                </div>
+                
+                <table class="user-table">
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>Email</th>
+                            <th>Name</th>
+                            <th>Role</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersContainer">
+                        <!--user data will be generated here-->
+                    </tbody>
+                </table>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                    <div>1-5 of <%= admins.length + students.length + teachers.length%></div>
+                    <div style="display: flex; gap: 10px;">
+                        <button id="usersPrevBtn" class="btn btn-secondary">Previous</button>
+                        <button id="usersNextBtn" class="btn btn-primary">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        
+        <!-- Main Content - Book Creation Section -->
+        <form action="/createBook" method="post">
+            <div class="main-container" id="bookCreationSection" style="display: none;">
+                <div class="section-title">
+                    <h2><i class="fas fa-plus-circle me-2"></i> Create a New Book</h2>
+                </div>
+                <div class="content-card">
+                    <h3 class="form-title"><i class="fas fa-file-alt"></i> Book Details</h3>
+
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="bookTitle">Book Title </label>
+                                <input name="title" type="text" id="bookTitle" class="form-control" placeholder="Ex: Beginner Level">
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="level">Level </label>
+                                <select name="level" id="level" class="form-control">
+                                    <option value="">Select Level</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="bookDescription">Book Description </label>
+                                <input name="description" type="text" id="bookDescription" class="form-control" placeholder="Ex: Build your English foundation with...">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 30px;">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i> Save Book
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+
+        <!-- Main Content - Book Section -->
+        <div class="main-container" id="booksSection" style="display: none;">
+            <div class="section-title">
+                <h2><i class="fas fa-book me-2"></i> Books Management</h2>
+            </div>
+            <div class="content-card">
+                <h3>CEVAM Library - Current Books</h3>
+                
+                <div id="booksContainer">
+                    <!--Books will be generated Here -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content - Modules Section -->
+        <div class="main-container" id="modulesSection" style="display: none;">
+            <div class="section-title">
+                <h2><i class="fas fa-book-open me-2"></i> Modules Management</h2>
+            </div>
+
+            <div class="form-group">
+                <input type="text" id="moduleSearch" class="form-control" placeholder="Search Module...">
+            </div>
+
+            <div class="content-section">
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
+                    <div id="modulesContainer">
+                        <!--Modules wll be generated here-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content - Notifications Section -->
+        <div class="main-container" id="notificationsSection" style="display: none;">
+            <div class="section-title">
+                <h2><i class="fas fa-bullhorn me-2"></i> Announcements Management</h2>
+            </div>
+            
+            <div class="content-section">
+                <form action="/announcements" method="post">
+                    <div class="notification-form">
+                        <h3><i class="fas fa-paper-plane me-2"></i> Make an announcement</h3>
+                        
+                        <div class="form-group">
+                            <label for="notificationTitle" class="form-label">Title</label>
+                            <input type="text" name="notificationTitle" id="notificationTitle" class="form-control" placeholder="Ej: Mantenimiento programado">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="notificationMessage" class="form-label">Message</label>
+                            <textarea name="notificationMessage" id="notificationMessage" class="form-control" rows="4" placeholder="Escribe el contenido de la notificación..."></textarea>
+                        </div>
+                        
+                        <div class="form-group" style="margin-top: 30px;">
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-paper-plane me-2"></i> Send
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                
+                
+                <h3 style="margin-bottom: 20px;"><i class="fas fa-history me-2"></i> Latest Announcements</h3>
+                
+                <div class="activity-card">
+
+                    
+                    <div id="notificationsContainer">
+                        <!--Anouncements Will be generated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
         
 
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>

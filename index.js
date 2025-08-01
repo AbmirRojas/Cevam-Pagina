@@ -138,10 +138,41 @@ app.get("/", async (req, res) => {
         }
         return userRole
       }
+
+      function getStudents(allUsers) {
+        return allUsers.filter(user => user.id_rol === 3);
+      }
+
+      function getTeachers(allUsers) {
+        return allUsers.filter(user => user.id_rol === 2);
+      }
+
+      function getAdmins(allUsers) {
+        return allUsers.filter(user => user.id_rol === 1);
+      }
+
+
+      const allModules = await db.query("SELECT * FROM contenidos");
+      const numOfModules = allModules.rows.length;
+
+      const allUsers = await db.query("SELECT * FROM usuarios");
+      
+
+      const allStudents = getStudents(allUsers.rows);
+      const allTeachers = getTeachers(allUsers.rows);
+      const allAdmins = getAdmins(allUsers.rows);
+      
       
       const userRole = getUserRole(userRoleId);
 
-      res.render("recursos.ejs", { user: req.user, role: userRole });
+      res.render("recursos.ejs", { 
+        user: req.user, 
+        role: userRole, 
+        students: allStudents, 
+        teachers: allTeachers,
+        admins: allAdmins,
+        numModules: numOfModules
+      });
     } catch (error) {
       console.error("Error retrieving books:", error);
       res.status(500).send("Internal server error");
@@ -153,7 +184,7 @@ app.get("/", async (req, res) => {
 
 app.get("/api/books", async (req, res) => {
   try {
-    const books = await db.query("SELECT * FROM libros");
+    const books = await db.query("SELECT * FROM libros ORDER BY id_libro");
     res.json(books.rows);
   } catch (error) {
     res.status(500).json({ error: "Error retrieving books" });
@@ -215,7 +246,7 @@ app.get("/modulo/:id/links", async (req, res) => {
     const resultado = await db.query(`
       SELECT tm.link_archivo, tm.nombre_archivo, tm.tamano_archivo
       FROM contenido_archivos ca
-      JOIN tipos_material tm ON ca.id_archivo = tm.id_archivo
+      JOIN archivos tm ON ca.id_archivo = tm.id_archivo
       WHERE ca.id_contenido = $1
     `, [idModulo]);
 
@@ -226,13 +257,55 @@ app.get("/modulo/:id/links", async (req, res) => {
   }
 });
 
-app.get("/settings", async (req, res) => {
-  if (req.isAuthenticated()) {
-    res.render("settings.ejs", { user: req.user });
-  } else {
-    res.redirect("/login");
+app.get("/api/announcements", async (req, res) => {
+  try {
+    const result = await db.query("SELECT * FROM anuncios ORDER BY id_mensaje DESC");
+    const anuncios = result.rows;
+    
+    res.json(anuncios);
+  } catch (error) {
+    res.status(500).send("Error al obtener los anuncios: ", error);
   }
 });
+
+app.get("/api/users", async (req, res) => {
+  try {
+    const result = await db.query("SELECT * FROM usuarios ORDER BY id_usuario");
+    const users = result.rows;
+
+    res.json(users);
+  } catch (error) {
+    res.status(500).send("Error al obtener los usuarios", error);
+  }
+});
+
+app.get("/api/modules", async (req, res) => {
+  try {
+    const result = await db.query("SELECT * FROM contenidos ORDER BY id_contenido");
+    const modules = result.rows;
+
+    res.json(modules);
+  } catch (error) {
+    res.status(500).send("Error al obtener los usuarios", error);
+  }
+});
+
+app.get("/api/module/:id/exercises", async (req, res) => {
+  const moduleId = req.params.id;
+
+  try {
+    const result = await db.query(
+      "SELECT * FROM ejercicios WHERE id_contenido = $1",
+      [moduleId]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error("Error al obtener ejercicios:", err);
+    res.status(500).json({ error: "Error al obtener ejercicios" });
+  }
+});
+
+
 
 // Rutas Post
 app.post("/register", async (req, res) => {
@@ -302,8 +375,9 @@ app.post("/createModule", async (req, res) => {
 
     try {
       const archivos = [];
+      const ejercicios = [];
 
-      // Recolectar hasta 10 conjuntos de datos del formulario
+      // Archivos
       for (let i = 1; i <= 10; i++) {
         const enlace = req.body[`file${i}`];
         const nombre = req.body[`nombre${i}`];
@@ -318,7 +392,7 @@ app.post("/createModule", async (req, res) => {
         }
       }
 
-      // Insertar contenido principal
+      // Insertar módulo
       const resultadoContenido = await db.query(
         `INSERT INTO contenidos (
           titulo, id_libro, descripcion, contenido_texto, url_recurso, id_tipo_contenido
@@ -328,10 +402,10 @@ app.post("/createModule", async (req, res) => {
 
       const id_contenido = resultadoContenido.rows[0].id_contenido;
 
-      // Insertar cada archivo con nombre y tamaño, y vincular al contenido
+      // Insertar archivos
       for (const archivo of archivos) {
         const resultadoArchivo = await db.query(
-          `INSERT INTO tipos_material (
+          `INSERT INTO archivos (
             link_archivo, nombre_archivo, tamano_archivo
           ) VALUES ($1, $2, $3) RETURNING id_archivo`,
           [archivo.link, archivo.nombre, archivo.tamano]
@@ -345,33 +419,220 @@ app.post("/createModule", async (req, res) => {
         );
       }
 
+      // Recolectar ejercicios
+      for (let i = 1; i <= 10; i++) {
+        const pregunta = req.body[`pregunta${i}`];
+        const a = req.body[`opcion_a${i}`];
+        const b = req.body[`opcion_b${i}`];
+        const c = req.body[`opcion_c${i}`];
+        const d = req.body[`opcion_d${i}`];
+        const correcta = req.body[`respuesta_correcta${i}`];
+
+        if (pregunta && a && b && c && d && correcta) {
+          ejercicios.push({ pregunta, a, b, c, d, correcta });
+        }
+      }
+
+      // Insertar ejercicios
+      for (const ejercicio of ejercicios) {
+        await db.query(
+          `INSERT INTO ejercicios (
+            id_contenido, pregunta, opcion_a, opcion_b, opcion_c, opcion_d, respuesta_correcta
+          ) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+          [
+            id_contenido,
+            ejercicio.pregunta.trim(),
+            ejercicio.a.trim(),
+            ejercicio.b.trim(),
+            ejercicio.c.trim(),
+            ejercicio.d.trim(),
+            ejercicio.correcta.trim()
+          ]
+        );
+      }
+
       res.redirect("/");
 
     } catch (error) {
-      console.error("Error al guardar contenido y archivos:", error);
+      console.error("Error al guardar contenido, archivos o ejercicios:", error);
       res.status(500).send("Error interno del servidor");
+    }
+  } else {
+    res.redirect("/login");
+  }
+});
+
+
+
+
+app.post("/announcements", async (req, res) => {
+  if (req.isAuthenticated()) {
+    try {
+      const { notificationTitle, notificationMessage } = req.body;
+      const usuarioId = req.user.id_usuario;
+
+      await db.query(
+        "INSERT INTO anuncios (titulo, mensaje, id_usuario) VALUES ($1, $2, $3)", 
+        [notificationTitle, notificationMessage, usuarioId]
+      );
+
+      res.redirect("/");
+
+    } catch (error) {
+      console.error("Error al crear el anuncio:", error);
+      res.status(500).send("Error interno del servidor")
     }
   }
 });
 
-app.post("/settings", async (req, res) => {
-  if (!req.isAuthenticated()) {
-    return res.redirect("/login");
-  }
+app.post("/updateBook/:id", async (req, res) => {
+  const bookId = req.params.id;
+  const { nombre_libro, descripcion } = req.body;
 
-  const { fName, lName, email, password, cedula, phoneNumber } = req.body;
   try {
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
     await db.query(
-      "UPDATE usuarios SET nombre = $1, apellido = $2, correo = $3, contrasena_hash = $4, cedula_identidad = $5, numero_celular = $6 WHERE id_usuario = $7",
-      [fName, lName, email, hashedPassword, cedula, phoneNumber, req.user.id_usuario]
+      "UPDATE libros SET nombre_libro = $1, descripcion = $2 WHERE id_libro = $3",
+      [nombre_libro, descripcion, bookId]
     );
-    res.redirect("/settings");
-  } catch (err) {
-    console.error("Error updating user:", err);
-    res.status(500).send("Error updating user");
+    res.redirect("/");
+  } catch (error) {
+    console.error("Error al actualizar libro:", error);
+    res.status(500).send("Error al actualizar libro");
   }
 });
+
+app.post("/deleteBook/:id", async (req, res) => {
+  const bookId = req.params.id;
+
+  try {
+    // 1. Obtener contenidos del libro
+    const contenidoResult = await db.query(
+      "SELECT id_contenido FROM contenidos WHERE id_libro = $1",
+      [bookId]
+    );
+    const contenidos = contenidoResult.rows;
+
+    for (const contenido of contenidos) {
+      const contenidoId = contenido.id_contenido;
+
+      // 2. Obtener archivos asociados a ese contenido
+      const archivoResult = await db.query(
+        "SELECT id_archivo FROM contenido_archivos WHERE id_contenido = $1",
+        [contenidoId]
+      );
+      const archivos = archivoResult.rows;
+
+      // 3. Eliminar relaciones contenido_archivos
+      await db.query(
+        "DELETE FROM contenido_archivos WHERE id_contenido = $1",
+        [contenidoId]
+      );
+
+      // 4. Eliminar archivos asociados (si existen)
+      for (const archivo of archivos) {
+        await db.query(
+          "DELETE FROM archivos WHERE id_archivo = $1",
+          [archivo.id_archivo]
+        );
+      }
+
+      // 5. Eliminar el contenido
+      await db.query("DELETE FROM contenidos WHERE id_contenido = $1", [
+        contenidoId,
+      ]);
+    }
+
+    // 6. Finalmente, eliminar el libro
+    await db.query("DELETE FROM libros WHERE id_libro = $1", [bookId]);
+
+    res.redirect("/");
+  } catch (error) {
+    console.error("Error al eliminar libro y sus contenidos:", error);
+    res.status(500).send("Error al eliminar libro");
+  }
+});
+
+app.post("/updateUser/:id", async (req, res) => {
+  const userId = req.params.id;
+  const { nombre, apellido, correo, id_rol } = req.body;
+
+  try {
+    await db.query(
+      "UPDATE usuarios SET nombre = $1, apellido = $2, correo = $3, id_rol = $4 WHERE id_usuario = $5",
+      [nombre, apellido, correo, id_rol, userId]
+    );
+    res.redirect("/");
+  } catch (error) {
+    console.error("Error al actualizar usuario:", error);
+    res.status(500).send("Error al actualizar usuario");
+  }
+});
+
+app.post("/updateModule/:id", async (req, res) => {
+  const moduleId = req.params.id;
+  const { title, descripcion, content } = req.body;
+
+  try {
+    await db.query(
+      "UPDATE contenidos SET titulo = $1, descripcion = $2, contenido_texto = $3 WHERE id_contenido = $4",
+      [title, descripcion, content, moduleId]
+    );
+    res.redirect("/");
+  } catch (error) {
+    console.error("Error al actualizar modulo:", error);
+    res.status(500).send("Error al actualizar modulo");
+  }
+});
+
+app.post("/deleteUser/:id", async (req, res) => {
+  const userId = req.params.id;
+
+  try {
+    await db.query("DELETE FROM usuarios WHERE id_usuario = $1", [userId]);
+    res.redirect("/"); 
+  } catch (error) {
+    console.error("Error al eliminar usuario:", error);
+    res.status(500).send("Error al eliminar usuario");
+  }
+});
+
+app.post("/deleteModule/:id", async (req, res) => {
+  const moduleId = req.params.id;
+
+  try {
+    // 1. Obtener archivos relacionados al módulo
+    const archivoResult = await db.query(
+      "SELECT id_archivo FROM contenido_archivos WHERE id_contenido = $1",
+      [moduleId]
+    );
+    const archivos = archivoResult.rows;
+
+    // 2. Eliminar relaciones en contenido_archivos
+    await db.query(
+      "DELETE FROM contenido_archivos WHERE id_contenido = $1",
+      [moduleId]
+    );
+
+    // 3. Eliminar archivos asociados
+    for (const archivo of archivos) {
+      await db.query(
+        "DELETE FROM archivos WHERE id_archivo = $1",
+        [archivo.id_archivo]
+      );
+    }
+
+    // 4. Eliminar el contenido (módulo)
+    await db.query("DELETE FROM contenidos WHERE id_contenido = $1", [moduleId]);
+
+    res.redirect("/");
+  } catch (error) {
+    console.error("Error al eliminar módulo:", error);
+    res.status(500).send("Error al eliminar módulo");
+  }
+});
+
+
+
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

@@ -5,6 +5,17 @@
             let currentBookId = 0;
             let currentModuleType = '';
 
+            // Variables para Poder ver los Usuarios 
+            let currentPage = 1;
+            const usersPerPage = 5;
+            let allUsers = []; // Aquí se guardarán todos los usuarios
+            let currentSearchTerm = "";
+
+            //variables de exercices
+            let questionCount = 1;
+
+
+
             // Subtopic data for each module type
             const moduleSubtopics = {
                 1: ["Explanations", "Exercises", "Practice tests"],
@@ -14,88 +25,12 @@
                 5: ["Explanations", "Samples", "Practice material"]
             };
             
-            // Book titles
-            const bookTitles = {
-                1: "Book 1: Beginner Level",
-                2: "Book 2: Elementary Level",
-                3: "Book 3: Pre-Intermediate",
-                4: "Book 4: Intermediate",
-                5: "Book 5: Upper Intermediate",
-                6: "Book 6: Advanced I",
-                7: "Book 7: Advanced II",
-                8: "Book 8: Business English",
-                9: "Book 9: Academic English",
-                10: "Book 10: Mastery Level"
-            };
-            
-            // Book descriptions
-            const bookDescriptions = {
-                1: "Build your English foundation with essential grammar and vocabulary.",
-                2: "Expand your vocabulary and basic sentence structures.",
-                3: "Develop more complex language skills for everyday communication.",
-                4: "Master intermediate-level grammatical structures and expressions.",
-                5: "Refine your language skills for more sophisticated communication.",
-                6: "Develop advanced comprehension and expression abilities.",
-                7: "Achieve fluency and precision in complex language tasks.",
-                8: "Specialized language skills for professional environments.",
-                9: "Academic writing, research skills, and scholarly vocabulary.",
-                10: "Mastery of nuanced language for expert communication."
-            };
-            
-            // Generate book modules for all books
-            const bookModules = {};
-
             const bookIcons = {
                 1: "fa-language",
                 2: "fa-headphones",
                 3: "fa-microphone",
                 4: "fa-book-reader",
                 5: "fa-pencil-alt",
-            }
-            
-            for (let i = 1; i <= 10; i++) {
-                bookModules[i] = [
-                    { 
-                        title: "Grammar", 
-                        subtitle: getGrammarSubtitle(i),
-                        type: "grammar", 
-                        icon: "fa-language", 
-                        description: getGrammarDescription(i), 
-                        features: getGrammarFeatures(i)
-                    },
-                    { 
-                        title: "Listening", 
-                        subtitle: "Comprehension Skills",
-                        type: "listening", 
-                        icon: "fa-headphones", 
-                        description: getListeningDescription(i), 
-                        features: getListeningFeatures(i)
-                    },
-                    { 
-                        title: "Speaking", 
-                        subtitle: "Fluency Development",
-                        type: "speaking", 
-                        icon: "fa-microphone", 
-                        description: getSpeakingDescription(i), 
-                        features: getSpeakingFeatures(i)
-                    },
-                    { 
-                        title: "Reading", 
-                        subtitle: "Comprehension Skills",
-                        type: "reading", 
-                        icon: "fa-book-reader", 
-                        description: getReadingDescription(i), 
-                        features: getReadingFeatures(i)
-                    },
-                    { 
-                        title: "Writing", 
-                        subtitle: "Expression Skills",
-                        type: "writing", 
-                        icon: "fa-pencil-alt", 
-                        description: getWritingDescription(i), 
-                        features: getWritingFeatures(i)
-                    }
-                ];
             }
             
             // Crear Nuevos Inputs
@@ -156,122 +91,6 @@
             });
 
 
-            // Helper functions to generate book-specific content
-            function getGrammarSubtitle(bookId) {
-                const subtitles = {
-                    1: "Fundamentals and Practice",
-                    2: "Sentence Structure",
-                    3: "Verb Tenses",
-                    4: "Complex Structures",
-                    5: "Advanced Usage",
-                    6: "Precision and Nuance",
-                    7: "Mastery of Structures",
-                    8: "Business Contexts",
-                    9: "Academic Contexts",
-                    10: "Expert Level Usage"
-                };
-                return subtitles[bookId] || "Grammar Development";
-            }
-            
-            function getGrammarDescription(bookId) {
-                return `Master essential English grammar rules with clear explanations for ${bookTitles[bookId]}.`;
-            }
-            
-            function getGrammarFeatures(bookId) {
-                const features = [
-                    ["12 chapters", "25 video lessons"],
-                    ["15 chapters", "30 exercises"],
-                    ["18 lessons", "35 practice activities"],
-                    ["20 lessons", "40 exercises"],
-                    ["22 lessons", "45 practice activities"],
-                    ["24 lessons", "50 exercises"],
-                    ["26 lessons", "55 practice activities"],
-                    ["20 business scenarios", "40 exercises"],
-                    ["22 academic contexts", "45 exercises"],
-                    ["25 advanced topics", "50 exercises"]
-                ];
-                return features[bookId - 1] || ["Comprehensive grammar exercises"];
-            }
-            
-            function getListeningDescription(bookId) {
-                return `Improve your listening comprehension with real dialogues for ${bookTitles[bookId]}.`;
-            }
-            
-            function getListeningFeatures(bookId) {
-                const features = [
-                    ["40 audio files"],
-                    ["45 dialogues"],
-                    ["50 conversations"],
-                    ["55 interviews"],
-                    ["60 lectures"],
-                    ["65 presentations"],
-                    ["70 discussions"],
-                    ["60 business dialogues"],
-                    ["65 academic lectures"],
-                    ["70 expert discussions"]
-                ];
-                return features[bookId - 1] || ["Listening comprehension exercises"];
-            }
-            
-            function getSpeakingDescription(bookId) {
-                return `Develop fluency and confidence in everyday and professional situations for ${bookTitles[bookId]}.`;
-            }
-            
-            function getSpeakingFeatures(bookId) {
-                const features = [
-                    ["Interactive dialogues", "Pronunciation practice"],
-                    ["Common expressions", "Basic conversations"],
-                    ["Situational practice", "Fluency exercises"],
-                    ["Debate practice", "Presentation skills"],
-                    ["Advanced discussions", "Negotiation practice"],
-                    ["Formal presentations", "Critical discussions"],
-                    ["Persuasive speaking", "Expert panels"],
-                    ["Business negotiations", "Professional presentations"],
-                    ["Academic presentations", "Research discussions"],
-                    ["Expert debates", "Mastery dialogues"]
-                ];
-                return features[bookId - 1] || ["Speaking practice activities"];
-            }
-            
-            function getReadingDescription(bookId) {
-                return `Improve your reading speed and comprehension with varied texts for ${bookTitles[bookId]}.`;
-            }
-            
-            function getReadingFeatures(bookId) {
-                const features = [
-                    ["30 texts"],
-                    ["35 passages"],
-                    ["40 articles"],
-                    ["45 stories"],
-                    ["50 essays"],
-                    ["55 complex texts"],
-                    ["60 advanced articles"],
-                    ["55 business documents"],
-                    ["60 academic papers"],
-                    ["65 expert-level texts"]
-                ];
-                return features[bookId - 1] || ["Reading comprehension materials"];
-            }
-            
-            function getWritingDescription(bookId) {
-                return `Learn to express your ideas clearly and with grammatical accuracy for ${bookTitles[bookId]}.`;
-            }
-            
-            function getWritingFeatures(bookId) {
-                const features = [
-                    ["Writing guide"],
-                    ["Sentence construction"],
-                    ["Paragraph development"],
-                    ["Essay structure"],
-                    ["Advanced composition"],
-                    ["Formal writing"],
-                    ["Professional writing"],
-                    ["Business correspondence"],
-                    ["Academic writing"],
-                    ["Expert composition"]
-                ];
-                return features[bookId - 1] || ["Writing practice materials"];
-            }
             
             // Generate book cards for the library
             async function generateBookCards() {
@@ -325,7 +144,12 @@
                 'library': document.getElementById('librarySection'),
                 'profile': document.getElementById('profileSection'),
                 'announcements': document.getElementById('announcementsSection'),
-                'content': document.getElementById('contentSection')
+                'content': document.getElementById('contentSection'),
+                'users': document.getElementById('usersSection'),
+                'books': document.getElementById('booksSection'),
+                'modules': document.getElementById('modulesSection'),
+                'notifications': document.getElementById('notificationsSection'),
+                'bookCreation': document.getElementById('bookCreationSection'),
             };
             
             // Module view elements
@@ -365,8 +189,29 @@
                 if (sectionId === 'library') {
                     generateBookCards();
                 }
+
+                if (sectionId === 'announcements') {
+                    loadAnnouncements();
+                }
+
+                if (sectionId === 'books') {
+                    loadBooks();
+                }
+
+                if (sectionId === 'modules') {
+                    loadModules();
+                }
+
+                if (sectionId === 'users') {
+                    loadUsers();
+                }
+
+                if (sectionId === 'notifications') {
+                    loadNotifications(); //  llamada a la función que renderiza los anuncios
+                }
+
             }
-            
+
             // Show book modules
             async function showBookModules(bookId) {
                 //api book data
@@ -433,7 +278,7 @@
             }
             
             // Show specific module content
-            async function showModuleContent(moduleId, moduleType) {
+            async function showModuleContent(moduleId) {
                 // Hide modules view
                 modulesView.classList.remove('active');
                 
@@ -496,7 +341,7 @@
                         <div class="exercises-section">
                             <h4><i class="fas fa-pencil-alt"></i> Exercises</h4>
                             <p>Reinforce what you've learned with our interactive quizzes. Each quiz is designed to assess your understanding of the lessons and help you identify areas for improvement.</p>
-                            <a href="#" class="quiz-btn">
+                            <a href="#" class="quiz-btn" data-module-id="${module.id_contenido}">
                                 <i class="fas fa-question-circle"></i> Go to Exercises
                             </a>
                         </div>
@@ -531,6 +376,13 @@
 
                 bookModulesView.insertAdjacentHTML('beforeend', modalHTML);
 
+                bookModulesView.querySelector('.quiz-btn').addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    const moduleId = e.target.closest('.quiz-btn').dataset.moduleId;
+                    showExercises(moduleId);
+                });
+
+
                 const downloadBtn = bookModulesView.querySelector('.download-btn');
                 const modal = document.getElementById('downloadModal');
                 const closeModalBtn = document.getElementById('closeModal');
@@ -554,6 +406,44 @@
                 const newBackToModules = bookModulesView.querySelector('#backToModules');
                 newBackToModules.addEventListener('click', backToModulesView);
             }
+
+            async function showExercises(moduleId) {
+                try {
+                    const response = await fetch(`/api/module/${moduleId}/exercises`);
+                    const exercises = await response.json();
+
+                    const exerciseHTML = exercises.map((ex, i) => `
+                    <div class="exercise-question">
+                        <p><strong>Pregunta ${i + 1}:</strong> ${ex.pregunta}</p>
+                        <ul class="exercise-options">
+                        <li>A) ${ex.opcion_a}</li>
+                        <li>B) ${ex.opcion_b}</li>
+                        <li>C) ${ex.opcion_c}</li>
+                        <li>D) ${ex.opcion_d}</li>
+                        </ul>
+                        <hr>
+                    </div>
+                    `).join("");
+
+                    bookModulesView.innerHTML = `
+                    <div class="back-to-modules" id="backToModules">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Back to Module</span>
+                    </div>
+                    <h2>Exercises</h2>
+                    ${exerciseHTML || "<p>No hay ejercicios disponibles para este módulo.</p>"}
+                    `;
+
+                    document.getElementById("backToModules").addEventListener("click", () => loadModules());
+
+                } catch (err) {
+                    console.error("Error cargando ejercicios:", err);
+                }
+            }
+
+
+
+
             
             // Back to library view
             function backToLibraryView() {
@@ -680,8 +570,1028 @@
                     console.error('Error al resetear el formulario:', error);
                 }
             });
+
+            // Notifications
+            async function loadNotifications() {
+                try {
+                    const response = await fetch("/api/announcements");
+                    const allAnnouncements = await response.json();
+
+                    const container = document.getElementById("notificationsContainer");
+                    container.innerHTML = "";
+
+                    if (allAnnouncements.length === 0) {
+                        container.innerHTML = "<p>No hay anuncios disponibles.</p>";
+                        return;
+                    }
+
+                    // Mostrar solo los últimos 5 anuncios (más recientes)
+                    const sortedAnnouncements = allAnnouncements.sort((a, b) => {
+                        return new Date(b.fecha_publicacion) - new Date(a.fecha_publicacion);
+                    });
+
+                    const latestFive = sortedAnnouncements.slice(0, 5);
+
+                    latestFive.forEach(anuncio => {
+                        const card = document.createElement("div");
+                        card.className = "announcement-card";
+
+                        card.innerHTML = `
+                            <div class="activity-item">
+                                <div class="activity-icon system">
+                                    <i class="fas fa-bell"></i>
+                                </div>
+
+                                <div class="activity-content">
+                                    <div class="activity-title">${anuncio.titulo}</div>
+                                    <div class="activity-details">
+                                        <span>${new Date(anuncio.fecha_creacion).toLocaleDateString()}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        container.appendChild(card);
+                    });
+                } catch (error) {
+                    console.error("Error cargando los anuncios:", error);
+                }
+            }
+
+            // Announcements
+            async function loadAnnouncements() {
+                try {
+                    const response = await fetch("/api/announcements");
+                    const announcements = await response.json();
+
+                    const container = document.getElementById("announcementsContainer");
+                    container.innerHTML = ""; // limpiar contenido anterior
+
+                    if (announcements.length === 0) {
+                        container.innerHTML = "<p>No hay anuncios disponibles.</p>";
+                        return;
+                    }
+
+                    announcements.forEach(anuncio => {
+                        const card = document.createElement("div");
+
+                        card.innerHTML = `
+                        <div class="announcement-card">
+                            <h3 class="announcement-title">${anuncio.titulo}</h3>
+
+                            <span class="announcement-date">${new Date(anuncio.fecha_creacion).toLocaleDateString()}</span>
+                            <div class="announcement-content">
+                                <p class="preserve-lines">${anuncio.mensaje}</p>
+                            </div>
+                        </div>
+                        `;
+                        container.appendChild(card);
+                    });
+                } catch (error) {
+                    console.error("Error cargando los anuncios:", error);
+                }
+            }
+
+            // Users Section
+            function userRoleHTML(userRole) {
+                let role = ""; 
+
+                if (userRole === 1) {
+                    role = `<span class="user-role role-admin">Administrator</span>`;
+                } else if (userRole === 2) {
+                    role = `<span class="user-role role-teacher">Teacher</span>`
+                } else if (userRole === 3) {
+                    role = `<span class="user-role role-student">Student</span>`
+                }
+
+                return role;
+            }
+
+            // Botones únicos para la paginación de usuarios
+            const usersPrevBtn = document.getElementById('usersPrevBtn');
+            const usersNextBtn = document.getElementById('usersNextBtn');
+            const usersPaginationInfo = document.getElementById('usersPaginationInfo');
+
+            // Eventos de paginación
+            usersPrevBtn.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderUsers();
+                }
+            });
+
+            usersNextBtn.addEventListener('click', () => {
+                const totalPages = Math.ceil(allUsers.length / usersPerPage);
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderUsers();
+                }
+            });
+
+            document.getElementById('searchUserInput').addEventListener('input', (e) => {
+                currentSearchTerm = e.target.value;
+                currentPage = 1; // Reiniciar a la primera página
+                renderUsers();
+            });
+
+
+            async function loadUsers() {
+                try {
+                    const response = await fetch("/api/users");
+                    allUsers = await response.json(); 
+                    renderUsers();
+                } catch (error) {
+                    console.error("Error cargando los usuarios:", error);
+                }
+            }
+
+            function renderUsers() {
+                let filteredUsers = allUsers;
+
+                // Filtrar por nombre o apellido si hay término de búsqueda
+                if (currentSearchTerm.trim() !== "") {
+                    const term = currentSearchTerm.toLowerCase();
+                    filteredUsers = allUsers.filter(user => {
+                        const fullName = `${user.nombre} ${user.apellido}`.toLowerCase();
+                        return fullName.includes(term);
+                    });
+                }
+
+                const total = filteredUsers.length;
+                const start = (currentPage - 1) * usersPerPage;
+                const end = start + usersPerPage;
+                const currentUsers = filteredUsers.slice(start, end);
+
+                const container = document.getElementById("usersContainer");
+                container.innerHTML = "";
+
+                if (currentUsers.length === 0) {
+                    container.innerHTML = "<tr><td colspan='5'>No users found.</td></tr>";
+                } else {
+                    currentUsers.forEach(user => {
+                        const row = document.createElement("tr");
+                        const roleHTML = userRoleHTML(user.id_rol);
+                        row.innerHTML = `
+                            <td>${user.id_usuario}</td>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                <span>${user.correo}</span>
+                                </div>
+                            </td>
+                            <td>${user.nombre} ${user.apellido}</td>
+                            <td>${roleHTML}</td>
+                            <td>
+                                <button class="action-btn btn-view" data-id="${user.id_usuario}"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn btn-edit" data-id="${user.id_usuario}"><i class="fas fa-edit"></i></button>
+                                <form method="POST" action="/deleteUser/${user.id_usuario}" class="delete-form" style="display:inline;">
+                                <button type="submit" class="action-btn btn-delete" data-id="${user.id_usuario}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                                </form>
+                            </td>
+                        `;
+
+                        container.appendChild(row);
+                    });
+                }
+
+                if (usersPaginationInfo) {
+                    usersPaginationInfo.textContent = `Mostrando ${Math.min(start + 1, total)}-${Math.min(end, total)} de ${total}`;
+                }
+
+                document.querySelectorAll('.btn-view').forEach(button => {
+                    button.addEventListener('click', function () {
+                        const userId = this.getAttribute('data-id');
+                        const user = allUsers.find(u => u.id_usuario == userId);
+                        if (user) openUserModal(user, false);
+                    });
+                });
+
+                document.querySelectorAll('.btn-edit').forEach(button => {
+                    button.addEventListener('click', function () {
+                        const userId = this.getAttribute('data-id');
+                        const user = allUsers.find(u => u.id_usuario == userId);
+                        if (user) openUserModal(user, true);
+                    });
+                });
+
+                document.querySelectorAll('.delete-form').forEach(form => {
+                    form.addEventListener('submit', (e) => {
+                        const confirmed = confirm("¿Estás seguro de que deseas eliminar este usuario?");
+                        if (!confirmed) {
+                        e.preventDefault();
+                        }
+                    });
+                });
+
+            }
+
+            function openUserModal(user, editable = false) {
+                const oldModal = document.getElementById('customUserModal');
+                if (oldModal) oldModal.remove();
+
+                const modalHTML = `
+                    <div id="customUserModal" class="modal-overlay">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2>${editable ? 'Editar Usuario' : 'Ver Usuario'}</h2>
+                                <span class="close-modal" id="closeUserModal">&times;</span>
+                            </div>
+                            <div class="modal-body">
+                                <form id="customUserForm" method="POST" action="/updateUser/${user.id_usuario}">
+                                    <label>Nombre:</label>
+                                    <input type="text" name="nombre" value="${user.nombre}" ${editable ? '' : 'readonly'}>
+
+                                    <label>Apellido:</label>
+                                    <input type="text" name="apellido" value="${user.apellido}" ${editable ? '' : 'readonly'}>
+
+                                    <label>Correo:</label>
+                                    <input type="email" name="correo" value="${user.correo}" ${editable ? '' : 'readonly'}>
+
+                                    <label>Rol:</label>
+                                    <select name="id_rol" ${editable ? '' : 'disabled'}>
+                                        <option value="1" ${user.id_rol === 1 ? 'selected' : ''}>Administrador</option>
+                                        <option value="2" ${user.id_rol === 2 ? 'selected' : ''}>Profesor</option>
+                                        <option value="3" ${user.id_rol === 3 ? 'selected' : ''}>Estudiante</option>
+                                    </select>
+
+                                    ${editable ? `<button type="submit" class="btn btn-save">Guardar Cambios</button>` : ''}
+                                    <button type="button" class="btn btn-cancel" id="cerrarModalBtn">Cerrar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+                // Cerrar modal
+                document.getElementById('closeUserModal').addEventListener('click', () => {
+                    document.getElementById('customUserModal').remove();
+                });
+                document.getElementById('cerrarModalBtn').addEventListener('click', () => {
+                    document.getElementById('customUserModal').remove();
+                });
+            }
+
+            // Books Section
+            async function loadBooks() {
+                try {
+                    const response = await fetch("/api/books");
+                    const books = await response.json();
+
+                    const container = document.getElementById("booksContainer");
+                    container.innerHTML = ""; // limpiar contenido anterior
+
+                    if (books.length === 0) {
+                        container.innerHTML = "<p>No hay libros disponibles.</p>";
+                        return;
+                    }
+
+                    books.forEach(book => {
+                        const card = document.createElement("div");
+
+                        card.innerHTML = `
+                        <div class="content-card" style="margin-bottom: 15px;">
+                            <div class="content-header">
+                                <h4 class="content-title">Book ${book.id_libro}: ${book.nombre_libro}</h4>
+                            </div>
+                            <p>${book.descripcion}</p>
+                            <div class="content-actions">
+                                <button class="btn btn-primary btn-sm btn-edit-book" data-id="${book.id_libro}">Editar</button>
+                                <form method="POST" action="/deleteBook/${book.id_libro}" class="delete-book-form" style="display:inline;">
+                                    <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                                </form>
+                            </div>
+                        </div>
+                        `;
+                        container.appendChild(card);
+                    });
+
+                    // EDITAR
+                    document.querySelectorAll('.btn-edit-book').forEach(button => {
+                        button.addEventListener('click', () => {
+                            const bookId = button.getAttribute('data-id');
+                            const book = books.find(b => b.id_libro == bookId);
+                            if (book) openBookModal(book);
+                        });
+                    });
+
+                    // ELIMINAR (con confirmación)
+                    document.querySelectorAll('.delete-book-form').forEach(form => {
+                        form.addEventListener('submit', (e) => {
+                            const confirmed = confirm("¿Estás seguro de que deseas eliminar este libro?");
+                            if (!confirmed) {
+                                e.preventDefault();
+                            }
+                        });
+                    });
+
+
+                } catch (error) {
+                    console.error("Error cargando los anuncios:", error);
+                }
+            }
+
+            function openBookModal(book) {
+                const oldModal = document.getElementById('bookModal');
+                if (oldModal) oldModal.remove();
+
+                const modalHTML = `
+                    <div id="bookModal" class="modal-overlay">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2>Editar Libro</h2>
+                                <span class="close-modal" id="closeBookModal">&times;</span>
+                            </div>
+                            <div class="modal-body">
+                                <form method="POST" action="/updateBook/${book.id_libro}">
+                                    <label>Nombre del libro:</label>
+                                    <input type="text" name="nombre_libro" value="${book.nombre_libro}" required>
+                                    
+                                    <label>Descripción:</label>
+                                    <textarea name="descripcion" class="form-control" required>${book.descripcion}</textarea>
+
+                                    <button type="submit" class="btn btn-save">Guardar Cambios</button>
+                                    <button type="button" class="btn btn-cancel" id="cancelBookModal">Cancelar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+                document.getElementById('closeBookModal').addEventListener('click', () => {
+                    document.getElementById('bookModal').remove();
+                });
+                document.getElementById('cancelBookModal').addEventListener('click', () => {
+                    document.getElementById('bookModal').remove();
+                });
+            }
+
+            //Modules Section
+            async function loadModules() {
+                try {
+                    const response = await fetch("/api/modules");
+                    const modules = await response.json();
+
+                    const container = document.getElementById("modulesContainer");
+                    container.innerHTML = ""; // limpiar contenido anterior
+
+                    if (modules.length === 0) {
+                        container.innerHTML = "<p>No hay modulos disponibles.</p>";
+                        return;
+                    }
+
+                    window.allModules = modules; // global
+                    renderModules(modules);      // mostrar los módulos filtrables
+
+                } catch (error) {
+                    console.error("Error cargando los modulos:", error);
+                }
+            }
+
+            function renderModules(modulesToRender) {
+                const container = document.getElementById("modulesContainer");
+                container.innerHTML = "";
+
+                if (modulesToRender.length === 0) {
+                    container.innerHTML = "<p>No hay módulos disponibles.</p>";
+                    return;
+                }
+
+                modulesToRender.forEach(module => {
+                    const card = document.createElement("div");
+
+                    card.innerHTML = `
+                    <div class="content-card">
+                        <div class="content-header">
+                            <h4 class="content-title">${module.titulo}</h4>
+                        </div>
+                        <p>${module.descripcion}</p>
+                        <div class="content-actions">
+                            <button class="btn btn-primary btn-sm btn-edit-module" data-id="${module.id_contenido}">Editar</button>
+                            <form method="POST" action="/deleteModule/${module.id_contenido}" class="delete-module-form" style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                            </form>
+                        </div>
+                    </div>
+                    `;
+                    container.appendChild(card);
+                });
+
+                // Botones editar
+                document.querySelectorAll('.btn-edit-module').forEach(button => {
+                    button.addEventListener('click', () => {
+                        const moduleId = button.getAttribute('data-id');
+                        const module = modulesToRender.find(m => m.id_contenido == moduleId);
+                        if (module) openModuleModal(module);
+                    });
+                });
+
+                // Botones eliminar con confirmación
+                document.querySelectorAll('.delete-module-form').forEach(form => {
+                    form.addEventListener('submit', (e) => {
+                        if (!confirm("¿Estás seguro de que deseas eliminar este módulo?")) {
+                            e.preventDefault();
+                        }
+                    });
+                });
+            }
+
+            document.getElementById("moduleSearch").addEventListener("input", (e) => {
+                const search = e.target.value.toLowerCase();
+                const filtered = window.allModules.filter(module =>
+                    module.titulo.toLowerCase().includes(search)
+                );
+                renderModules(filtered);
+            });
+
+
+
+            function openModuleModal(module) {
+                const oldModal = document.getElementById('bookModal');
+                if (oldModal) oldModal.remove();
+
+                const modalHTML = `
+                    <div id="moduleModal" class="modal-overlay">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2>Edit Module</h2>
+                                <span class="close-modal" id="closeModuleModal">&times;</span>
+                            </div>
+                            <div class="modal-body">
+                                <form method="POST" action="/updateModule/${module.id_contenido}">
+                                    <label>Title</label>
+                                    <input type="text" name="title" value="${module.titulo}" required>
+                                    
+                                    <label>Description</label>
+                                    <textarea name="descripcion" class="form-control" required>${module.descripcion}</textarea>
+
+                                    <label>Content</label>
+                                    <textarea name="content" class="form-control" required>${module.contenido_texto}</textarea>
+
+                                    <button type="submit" class="btn btn-save">Guardar Cambios</button>
+                                    <button type="button" class="btn btn-cancel" id="cancelModuleModal">Cancelar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+                document.getElementById('closeModuleModal').addEventListener('click', () => {
+                    document.getElementById('moduleModal').remove();
+                });
+                document.getElementById('cancelModuleModal').addEventListener('click', () => {
+                    document.getElementById('moduleModal').remove();
+                });
+            }
+
+            //exercicies
+            async function showExercises(moduleId) {
+            try {
+                const response = await fetch(`/api/module/${moduleId}/exercises`);
+                const exercises = await response.json();
+
+                // Estado para almacenar las respuestas del usuario
+                let userAnswers = {};
+                let showingResults = false;
+
+                const exerciseHTML = exercises.map((ex, i) => `
+                    <div class="card mb-4 exercise-question" data-question="${i}">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0 text-primary fw-bold">
+                                <i class="fas fa-question-circle me-2"></i>
+                                Pregunta ${i + 1}
+                            </h6>
+                            <span class="badge question-result" id="result-${i}"></span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text fs-6 mb-3">${ex.pregunta}</p>
+                            <div class="exercise-options">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="question-${i}" value="a" id="q${i}a" data-question="${i}">
+                                    <label class="form-check-label option-label w-100 p-2 rounded" for="q${i}a" data-option="a">
+                                        <strong>A)</strong> ${ex.opcion_a}
+                                    </label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="question-${i}" value="b" id="q${i}b" data-question="${i}">
+                                    <label class="form-check-label option-label w-100 p-2 rounded" for="q${i}b" data-option="b">
+                                        <strong>B)</strong> ${ex.opcion_b}
+                                    </label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="question-${i}" value="c" id="q${i}c" data-question="${i}">
+                                    <label class="form-check-label option-label w-100 p-2 rounded" for="q${i}c" data-option="c">
+                                        <strong>C)</strong> ${ex.opcion_c}
+                                    </label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="question-${i}" value="d" id="q${i}d" data-question="${i}">
+                                    <label class="form-check-label option-label w-100 p-2 rounded" for="q${i}d" data-option="d">
+                                        <strong>D)</strong> ${ex.opcion_d}
+                                    </label>
+                                </div>
+                            </div>
+                            ${ex.explicacion ? `
+                                <div class="alert alert-info mt-3 explanation d-none" id="explanation-${i}">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    <strong>Explicación:</strong> ${ex.explicacion}
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `).join("");
+
+                bookModulesView.innerHTML = `
+                    <div class="d-flex align-items-center mb-4" role="button" id="backToModules">
+                        <i class="fas fa-arrow-left text-primary me-2"></i>
+                        <span class="text-primary fw-semibold">Volver al Módulo</span>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card border-0 bg-light">
+                                <div class="card-body">
+                                    <h2 class="card-title mb-3">
+                                        <i class="fas fa-dumbbell text-primary me-2"></i>
+                                        Ejercicios del Módulo
+                                    </h2>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="text-muted" id="progress-text">0 de ${exercises.length} respondidas</span>
+                                        <span class="badge bg-primary" id="progress-badge">0%</span>
+                                    </div>
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar bg-success" role="progressbar" 
+                                            style="width: 0%" id="progress-fill" 
+                                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exercises-container">
+                        ${exerciseHTML || `
+                            <div class="alert alert-info text-center">
+                                <i class="fas fa-info-circle me-2"></i>
+                                No hay ejercicios disponibles para este módulo.
+                            </div>
+                        `}
+                    </div>
+
+                    ${exercises.length > 0 ? `
+                        <div class="text-center mb-4">
+                            <button id="checkAnswers" class="btn btn-primary btn-lg me-2" disabled>
+                                <i class="fas fa-check me-2"></i>
+                                Verificar Respuestas
+                            </button>
+                            <button id="resetExercises" class="btn btn-outline-secondary btn-lg d-none">
+                                <i class="fas fa-redo me-2"></i>
+                                Reiniciar Ejercicios
+                            </button>
+                        </div>
+
+                        <div class="card border-success d-none" id="resultsSummary">
+                            <div class="card-header bg-success text-white text-center">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-chart-pie me-2"></i>
+                                    Resultados del Ejercicio
+                                </h5>
+                            </div>
+                            <div class="card-body text-center">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4">
+                                        <div class="score-circle mx-auto mb-3 mb-md-0" id="scoreCircle">
+                                            <div class="score-text" id="scoreText">0%</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h4 class="text-success mb-2" id="scoreMessage">¡Completa todos los ejercicios!</h4>
+                                        <p class="text-muted mb-0" id="scoreStats"></p>
+                                        <div class="mt-3">
+                                            <div class="row text-center">
+                                                <div class="col-4">
+                                                    <div class="border-end">
+                                                        <div class="fs-4 fw-bold text-success" id="correctCount">0</div>
+                                                        <small class="text-muted">Correctas</small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="border-end">
+                                                        <div class="fs-4 fw-bold text-danger" id="incorrectCount">0</div>
+                                                        <small class="text-muted">Incorrectas</small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="fs-4 fw-bold text-primary" id="totalCount">${exercises.length}</div>
+                                                    <small class="text-muted">Total</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ` : ''}
+                `;
+
+                // Agregar estilos CSS específicos (solo lo que Bootstrap no cubre)
+                if (!document.getElementById('exercises-bootstrap-styles')) {
+                    const styles = document.createElement('style');
+                    styles.id = 'exercises-bootstrap-styles';
+                    styles.textContent = `
+                        .exercise-question {
+                            transition: all 0.3s ease;
+                            border: 2px solid transparent !important;
+                        }
+                        
+                        .exercise-question.answered {
+                            border-color: #0d6efd !important;
+                            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.1);
+                        }
+                        
+                        .exercise-question.correct {
+                            border-color: #198754 !important;
+                            background-color: #f8fff9;
+                        }
+                        
+                        .exercise-question.incorrect {
+                            border-color: #dc3545 !important;
+                            background-color: #fff8f8;
+                        }
+                        
+                        .option-label {
+                            cursor: pointer;
+                            transition: all 0.2s ease;
+                            border: 1px solid #dee2e6;
+                            margin-top: 0.25rem;
+                            position: relative;
+                        }
+                        
+                        .option-label:hover {
+                            background-color: #e9ecef;
+                            border-color: #0d6efd;
+                        }
+                        
+                        .option-label.selected {
+                            background-color: #cff4fc;
+                            border-color: #0d6efd;
+                        }
+                        
+                        .option-label.correct {
+                            background-color: #d1e7dd !important;
+                            border-color: #198754 !important;
+                            color: #0f5132;
+                        }
+                        
+                        .option-label.incorrect {
+                            background-color: #f8d7da !important;
+                            border-color: #dc3545 !important;
+                            color: #721c24;
+                        }
+                        
+                        .option-label.correct::after {
+                            content: "✓";
+                            position: absolute;
+                            right: 1rem;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            color: #198754;
+                            font-weight: bold;
+                            font-size: 1.2rem;
+                        }
+                        
+                        .option-label.incorrect::after {
+                            content: "✗";
+                            position: absolute;
+                            right: 1rem;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            color: #dc3545;
+                            font-weight: bold;
+                            font-size: 1.2rem;
+                        }
+                        
+                        .question-result.correct {
+                            background-color: #198754 !important;
+                        }
+                        
+                        .question-result.incorrect {
+                            background-color: #dc3545 !important;
+                        }
+                        
+                        .score-circle {
+                            width: 120px;
+                            height: 120px;
+                            border-radius: 50%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            background: conic-gradient(from 0deg, #198754 0%, #198754 var(--score-percent, 0%), #e9ecef var(--score-percent, 0%));
+                            position: relative;
+                        }
+                        
+                        .score-circle::before {
+                            content: '';
+                            position: absolute;
+                            width: 90px;
+                            height: 90px;
+                            background: white;
+                            border-radius: 50%;
+                        }
+                        
+                        .score-text {
+                            position: relative;
+                            z-index: 1;
+                            font-size: 1.5rem;
+                            font-weight: bold;
+                            color: #198754;
+                        }
+                        
+                        #backToModules:hover {
+                            transform: translateX(-5px);
+                            transition: transform 0.2s ease;
+                        }
+                        
+                        @media (max-width: 768px) {
+                            .option-label {
+                                font-size: 0.9rem;
+                                padding: 0.75rem !important;
+                            }
+                            
+                            .score-circle {
+                                width: 100px;
+                                height: 100px;
+                            }
+                            
+                            .score-circle::before {
+                                width: 75px;
+                                height: 75px;
+                            }
+                            
+                            .score-text {
+                                font-size: 1.2rem;
+                            }
+                        }
+                    `;
+                    document.head.appendChild(styles);
+                }
+
+                // Event listeners
+                document.getElementById("backToModules").addEventListener("click", () => loadModules());
+
+                if (exercises.length > 0) {
+                    // Manejar selección de respuestas
+                    document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                        radio.addEventListener('change', function() {
+                            const questionIndex = this.getAttribute('data-question');
+                            userAnswers[questionIndex] = this.value;
+                            
+                            // Actualizar estilos visuales
+                            const questionDiv = this.closest('.exercise-question');
+                            questionDiv.classList.add('answered');
+                            
+                            // Remover clase selected de todas las opciones de esta pregunta
+                            questionDiv.querySelectorAll('.option-label').forEach(label => {
+                                label.classList.remove('selected');
+                            });
+                            
+                            // Agregar clase selected a la opción seleccionada
+                            this.closest('.form-check').querySelector('.option-label').classList.add('selected');
+                            
+                            updateProgress();
+                        });
+                    });
+
+                    // Verificar respuestas
+                    document.getElementById('checkAnswers').addEventListener('click', checkAnswers);
+                    
+                    // Reiniciar ejercicios
+                    document.getElementById('resetExercises').addEventListener('click', resetExercises);
+                }
+
+                function updateProgress() {
+                    const totalQuestions = exercises.length;
+                    const answeredQuestions = Object.keys(userAnswers).length;
+                    const percentage = Math.round((answeredQuestions / totalQuestions) * 100);
+                    
+                    document.getElementById('progress-text').textContent = 
+                        `${answeredQuestions} de ${totalQuestions} respondidas`;
+                    document.getElementById('progress-badge').textContent = `${percentage}%`;
+                    document.getElementById('progress-fill').style.width = `${percentage}%`;
+                    document.getElementById('progress-fill').setAttribute('aria-valuenow', percentage);
+                    
+                    // Habilitar botón si todas están respondidas
+                    const checkButton = document.getElementById('checkAnswers');
+                    checkButton.disabled = answeredQuestions < totalQuestions;
+                }
+
+                function checkAnswers() {
+                    if (showingResults) return;
+                    
+                    let correctAnswers = 0;
+                    showingResults = true;
+
+                    exercises.forEach((exercise, index) => {
+                        const userAnswer = userAnswers[index];
+                        let correctAnswer = exercise.respuesta_correcta;
+                        
+                        // Normalizar la respuesta correcta - puede venir como 'A', 'a', 'opcion_a', etc.
+                        if (correctAnswer) {
+                            correctAnswer = correctAnswer.toString().toLowerCase();
+                            // Si viene como 'opcion_a', 'opcion_b', etc., extraer solo la letra
+                            if (correctAnswer.includes('opcion_')) {
+                                correctAnswer = correctAnswer.replace('opcion_', '');
+                            }
+                            // Si viene como 'A', 'B', etc., convertir a minúscula
+                            if (correctAnswer.length === 1 && /[abcd]/i.test(correctAnswer)) {
+                                correctAnswer = correctAnswer.toLowerCase();
+                            }
+                        }
+                        
+                        console.log(`Pregunta ${index + 1}:`, {
+                            userAnswer,
+                            correctAnswer,
+                            originalCorrectAnswer: exercise.respuesta_correcta
+                        });
+                        
+                        const isCorrect = userAnswer === correctAnswer;
+                        
+                        if (isCorrect) correctAnswers++;
+
+                        const questionDiv = document.querySelector(`[data-question="${index}"]`);
+                        const resultSpan = document.getElementById(`result-${index}`);
+                        
+                        // Actualizar resultado visual
+                        questionDiv.classList.add(isCorrect ? 'correct' : 'incorrect');
+                        resultSpan.textContent = isCorrect ? 'Correcto' : 'Incorrecto';
+                        resultSpan.classList.add('badge', isCorrect ? 'correct' : 'incorrect');
+                        
+                        // Mostrar respuestas correctas e incorrectas
+                        questionDiv.querySelectorAll('.option-label').forEach(label => {
+                            const optionValue = label.getAttribute('data-option');
+                            if (optionValue === correctAnswer) {
+                                label.classList.add('correct');
+                            } else if (optionValue === userAnswer && !isCorrect) {
+                                label.classList.add('incorrect');
+                            }
+                        });
+                        
+                        // Mostrar explicación si existe
+                        const explanation = document.getElementById(`explanation-${index}`);
+                        if (explanation) {
+                            explanation.classList.remove('d-none');
+                        }
+                    });
+
+                    // Mostrar resumen de resultados
+                    showResults(correctAnswers, exercises.length);
+                    
+                    // Cambiar botones
+                    document.getElementById('checkAnswers').classList.add('d-none');
+                    document.getElementById('resetExercises').classList.remove('d-none');
+                    
+                    // Deshabilitar todos los radio buttons
+                    document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                        radio.disabled = true;
+                    });
+                }
+
+                function showResults(correct, total) {
+                    const percentage = Math.round((correct / total) * 100);
+                    const incorrect = total - correct;
+                    const resultsSummary = document.getElementById('resultsSummary');
+                    const scoreCircle = document.getElementById('scoreCircle');
+                    
+                    // Actualizar porcentaje en el círculo
+                    scoreCircle.style.setProperty('--score-percent', `${percentage}%`);
+                    
+                    // Cambiar color del círculo según el resultado
+                    const color = getScoreColor(percentage);
+                    scoreCircle.style.background = `conic-gradient(from 0deg, ${color} ${percentage}%, #e9ecef ${percentage}%)`;
+                    
+                    document.getElementById('scoreText').textContent = `${percentage}%`;
+                    document.getElementById('scoreMessage').textContent = getScoreMessage(percentage);
+                    document.getElementById('scoreStats').textContent = 
+                        `Has obtenido un ${percentage}% de acierto`;
+                    document.getElementById('correctCount').textContent = correct;
+                    document.getElementById('incorrectCount').textContent = incorrect;
+                    
+                    // Cambiar color de la card según el resultado
+                    resultsSummary.classList.remove('border-success', 'border-warning', 'border-danger');
+                    const cardHeader = resultsSummary.querySelector('.card-header');
+                    cardHeader.classList.remove('bg-success', 'bg-warning', 'bg-danger');
+                    
+                    if (percentage >= 70) {
+                        resultsSummary.classList.add('border-success');
+                        cardHeader.classList.add('bg-success');
+                    } else if (percentage >= 50) {
+                        resultsSummary.classList.add('border-warning');
+                        cardHeader.classList.add('bg-warning');
+                    } else {
+                        resultsSummary.classList.add('border-danger');
+                        cardHeader.classList.add('bg-danger');
+                    }
+                    
+                    resultsSummary.classList.remove('d-none');
+                    
+                    // Smooth scroll al resumen
+                    setTimeout(() => {
+                        resultsSummary.scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'center' 
+                        });
+                    }, 300);
+                }
+
+                function getScoreColor(percentage) {
+                    if (percentage >= 70) return '#198754';
+                    if (percentage >= 50) return '#ffc107';
+                    return '#dc3545';
+                }
+
+                function getScoreMessage(percentage) {
+                    if (percentage >= 90) return '¡Excelente trabajo!';
+                    if (percentage >= 80) return '¡Muy bien!';
+                    if (percentage >= 70) return '¡Buen trabajo!';
+                    if (percentage >= 50) return 'No está mal, puedes mejorar';
+                    return 'Necesitas repasar el tema';
+                }
+
+                function resetExercises() {
+                    userAnswers = {};
+                    showingResults = false;
+                    
+                    // Limpiar todas las clases y estilos
+                    document.querySelectorAll('.exercise-question').forEach(questionDiv => {
+                        questionDiv.classList.remove('answered', 'correct', 'incorrect');
+                        
+                        questionDiv.querySelectorAll('.option-label').forEach(label => {
+                            label.classList.remove('selected', 'correct', 'incorrect');
+                        });
+                        
+                        questionDiv.querySelectorAll('input[type="radio"]').forEach(radio => {
+                            radio.checked = false;
+                            radio.disabled = false;
+                        });
+                        
+                        const resultSpan = questionDiv.querySelector('.question-result');
+                        resultSpan.textContent = '';
+                        resultSpan.classList.remove('badge', 'correct', 'incorrect');
+                        
+                        const explanation = questionDiv.querySelector('.explanation');
+                        if (explanation) {
+                            explanation.classList.add('d-none');
+                        }
+                    });
+                    
+                    // Resetear progreso
+                    updateProgress();
+                    
+                    // Cambiar botones
+                    document.getElementById('checkAnswers').classList.remove('d-none');
+                    document.getElementById('resetExercises').classList.add('d-none');
+                    document.getElementById('resultsSummary').classList.add('d-none');
+                    
+                    // Scroll al inicio de los ejercicios
+                    document.querySelector('.exercises-container').scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'start' 
+                    });
+                }
+
+            } catch (err) {
+                console.error("Error cargando ejercicios:", err);
+                bookModulesView.innerHTML = `
+                    <div class="d-flex align-items-center mb-4" role="button" id="backToModules">
+                        <i class="fas fa-arrow-left text-primary me-2"></i>
+                        <span class="text-primary fw-semibold">Volver al Módulo</span>
+                    </div>
+                    <div class="alert alert-danger text-center">
+                        <h4 class="alert-heading">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            Error al cargar ejercicios
+                        </h4>
+                        <p class="mb-3">No se pudieron cargar los ejercicios. Por favor, intenta de nuevo.</p>
+                        <button onclick="location.reload()" class="btn btn-primary">
+                            <i class="fas fa-refresh me-2"></i>
+                            Reintentar
+                        </button>
+                    </div>
+                `;
+                
+                document.getElementById("backToModules").addEventListener("click", () => loadModules());
+            }
+        }
             
-            
+
+
             // Initialize with dashboard
             showSection('dashboard');
         });
+
