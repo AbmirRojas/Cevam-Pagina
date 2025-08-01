@@ -102,12 +102,6 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
 
 // ===== FUNCIONALIDAD COMPLETA PARA RECUPERACIÓN DE CONTRASEÑA =====
 
-// Enlace "Olvidó la contraseña"
-document.getElementById('forgotPasswordLink').addEventListener('click', function(e) {
-    e.preventDefault();
-    toggleForms('recovery');
-});
-
 // Botón para volver al login
 document.getElementById('backToLogin').addEventListener('click', function() {
     toggleForms('login');
