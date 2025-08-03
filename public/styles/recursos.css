@@ -1334,6 +1334,144 @@
             color: white;
         }
 
+        /*Announcements Management Section*/
+
+
+        /* Modal styles para anuncios */
+        #announcementModal .modal-content {
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        #announcementModal .form-group {
+            margin-bottom: 1rem;
+        }
+
+        #announcementModal .form-group label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: block;
+            color: #333;
+        }
+
+        #announcementModal textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* Tabla responsive mejorada */
+        .table-responsive {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .user-table {
+            margin-bottom: 0;
+        }
+
+        .user-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            border-bottom: 2px solid #dee2e6;
+            padding: 12px 8px;
+        }
+
+        .user-table td {
+            padding: 12px 8px;
+            vertical-align: middle;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        /* Botones de acción mejorados */
+        .action-btn {
+            border: none;
+            padding: 6px 8px;
+            margin: 0 2px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 12px;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .btn-view {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .btn-view:hover {
+            background-color: #138496;
+        }
+
+        .btn-edit {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        .btn-edit:hover {
+            background-color: #e0a800;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+
+        /* Estilos para el formulario de eliminación inline */
+        .delete-announcement-form {
+            display: inline-block !important;
+            margin: 0;
+        }
+
+        /* Información de paginación mejorada */
+        #announcementsPaginationInfo {
+            font-size: 14px;
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        /* Búsqueda mejorada */
+        #searchAnnouncementInput {
+            border-radius: 25px;
+            border: 1px solid #ced4da;
+            padding: 8px 16px;
+            transition: all 0.2s ease;
+        }
+
+        #searchAnnouncementInput:focus {
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+            outline: 0;
+        }
+
+        /* Responsivo para móviles */
+        @media (max-width: 768px) {
+            .user-table th,
+            .user-table td {
+                padding: 8px 4px;
+                font-size: 12px;
+            }
+            
+            .action-btn {
+                padding: 4px 6px;
+                margin: 0 1px;
+            }
+            
+            .modal-content {
+                margin: 10px;
+                max-width: calc(100% - 20px) !important;
+            }
+        }
+
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-10px); }

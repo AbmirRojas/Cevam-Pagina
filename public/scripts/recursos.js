@@ -11,8 +11,11 @@
             let allUsers = []; // Aquí se guardarán todos los usuarios
             let currentSearchTerm = "";
 
-            //variables de exercices
-            let questionCount = 1;
+            //variables de anuncios
+            let currentAnnouncementPage = 1;
+            const announcementsPerPage = 5;
+            let allAnnouncements = [];
+            let currentAnnouncementSearchTerm = "";
 
 
 
@@ -108,7 +111,7 @@
                                 <div class="book-icon">
                                     <i class="fas fa-book"></i>
                                 </div>
-                                <h3 class="book-title">Book ${book.id_libro}: ${book.nombre_libro}</h3>
+                                <h3 class="book-title">Level ${book.id_libro}: ${book.nombre_libro}</h3>
                             </div>
                             <div class="book-content">
                                 <p class="book-description">${book.descripcion}</p>
@@ -150,6 +153,7 @@
                 'modules': document.getElementById('modulesSection'),
                 'notifications': document.getElementById('notificationsSection'),
                 'bookCreation': document.getElementById('bookCreationSection'),
+                'manageAnnouncements': document.getElementById('manageAnnouncementsSection'),
             };
             
             // Module view elements
@@ -205,6 +209,11 @@
                 if (sectionId === 'users') {
                     loadUsers();
                 }
+
+                if (sectionId === 'manageAnnouncements') {
+                    loadManageAnnouncements();
+                }
+
 
                 if (sectionId === 'notifications') {
                     loadNotifications(); //  llamada a la función que renderiza los anuncios
@@ -1589,60 +1598,331 @@
             }
         }
 
-        document.getElementById("addQuestionBtn").addEventListener("click", () => {
-    const container = document.getElementById("questionsContainer");
-    
-    const questionHTML = `
-        <div class="question-block" style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; position: relative;">
-            <button type="button" class="btn btn-danger btn-sm remove-question-btn" style="position: absolute; top: 10px; right: 10px;">
-                <i class="fas fa-trash"></i>
-            </button>
+        /*Formulario de Ejercicios*/
+
+       function updateQuestionNumbers() {
+        const container = document.getElementById("questionsContainer");
+        const questionBlocks = container.querySelectorAll('.question-block');
+        
+        questionBlocks.forEach((block, index) => {
+            const questionNumber = index + 1;
             
-            <h5>Pregunta ${questionCount}</h5>
+            // Actualizar el título de la pregunta
+            const title = block.querySelector('h5');
+            if (title) {
+                title.textContent = `Pregunta ${questionNumber}`;
+            }
             
-            <label>Pregunta</label>
-            <input name="pregunta${questionCount}" type="text" class="form-control" required>
-            
-            <label>Opción A</label>
-            <input name="opcion_a${questionCount}" type="text" class="form-control" required>
-            
-            <label>Opción B</label>
-            <input name="opcion_b${questionCount}" type="text" class="form-control" required>
-            
-            <label>Opción C</label>
-            <input name="opcion_c${questionCount}" type="text" class="form-control" required>
-            
-            <label>Opción D</label>
-            <input name="opcion_d${questionCount}" type="text" class="form-control" required>
-            
-            <label>Respuesta Correcta</label>
-            <select name="respuesta_correcta${questionCount}" class="form-control" required>
-                <option value="">Seleccionar</option>
-                <option value="A">A</option>
-                <option value="B">B</option>
-                <option value="C">C</option>
-                <option value="D">D</option>
-            </select>
-        </div>
-    `;
-    
-    // Primero insertamos el HTML
-    container.insertAdjacentHTML('beforeend', questionHTML);
-    
-    // Ahora obtenemos la referencia al nuevo elemento que acabamos de insertar
-    const newBlock = container.lastElementChild;
-    
-    // Añadimos el event listener al botón de eliminar del nuevo bloque
-    const removeBtn = newBlock.querySelector('.remove-question-btn');
-    if (removeBtn) {
-        removeBtn.addEventListener('click', () => {
-            newBlock.remove();
+            // Actualizar los nombres de los inputs para mantener la secuencia
+            const inputs = block.querySelectorAll('input, select');
+            inputs.forEach(input => {
+                const name = input.getAttribute('name');
+                if (name) {
+                    // Reemplazar el número en el nombre del input
+                    const baseName = name.replace(/\d+$/, ''); // Eliminar números al final
+                    input.setAttribute('name', `${baseName}${questionNumber}`);
+                }
+            });
         });
     }
-    
-    // No olvides incrementar el contador de preguntas
-    questionCount++;
-});
+
+    function getNextQuestionNumber() {
+            const container = document.getElementById("questionsContainer");
+            const questionBlocks = container.querySelectorAll('.question-block');
+            return questionBlocks.length + 1;
+        }
+
+        document.getElementById("addQuestionBtn").addEventListener("click", () => {
+            const container = document.getElementById("questionsContainer");
+            const questionNumber = getNextQuestionNumber();
+            
+            const questionHTML = `
+                <div class="question-block" style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; position: relative;">
+                    <button type="button" class="btn btn-danger btn-sm remove-question-btn" style="position: absolute; top: 10px; right: 10px;">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                    
+                    <h5>Pregunta ${questionNumber}</h5>
+                    
+                    <label>Pregunta</label>
+                    <input name="pregunta${questionNumber}" type="text" class="form-control" required>
+                    
+                    <label>Opción A</label>
+                    <input name="opcion_a${questionNumber}" type="text" class="form-control" required>
+                    
+                    <label>Opción B</label>
+                    <input name="opcion_b${questionNumber}" type="text" class="form-control" required>
+                    
+                    <label>Opción C</label>
+                    <input name="opcion_c${questionNumber}" type="text" class="form-control" required>
+                    
+                    <label>Opción D</label>
+                    <input name="opcion_d${questionNumber}" type="text" class="form-control" required>
+                    
+                    <label>Respuesta Correcta</label>
+                    <select name="respuesta_correcta${questionNumber}" class="form-control" required>
+                        <option value="">Seleccionar</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                    </select>
+                </div>
+            `;
+            
+            // Insertamos el HTML
+            container.insertAdjacentHTML('beforeend', questionHTML);
+            
+            // Obtenemos la referencia al nuevo elemento
+            const newBlock = container.lastElementChild;
+            
+            // Añadimos el event listener al botón de eliminar
+            const removeBtn = newBlock.querySelector('.remove-question-btn');
+            if (removeBtn) {
+                removeBtn.addEventListener('click', () => {
+                    newBlock.remove();
+                    // Importante: Renumerar todas las preguntas después de eliminar
+                    updateQuestionNumbers();
+                });
+            }
+            
+            // Aplicar animación suave al nuevo elemento
+            newBlock.style.opacity = '0';
+            newBlock.style.transform = 'translateY(-10px)';
+            setTimeout(() => {
+                newBlock.style.transition = 'all 0.3s ease';
+                newBlock.style.opacity = '1';
+                newBlock.style.transform = 'translateY(0)';
+            }, 10);
+        });
+
+        function clearAllQuestions() {
+            const container = document.getElementById("questionsContainer");
+            container.innerHTML = '';
+        }
+
+        document.getElementById('resetFormBtn')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            try {
+                const form = document.getElementById('moduleCreationForm');
+                if (form) {
+                    form.reset(); // Limpia todos los campos del formulario automáticamente
+                    
+                    // Limpiar elementos que no se resetean con form.reset()
+                    const alertContainer = document.getElementById('alertContainer');
+                    if (alertContainer) alertContainer.innerHTML = '';
+                    
+                    // Limpiar todas las preguntas
+                    clearAllQuestions();
+                    
+                    // Limpiar archivos dinámicos
+                    const contenedor = document.getElementById("contenedor");
+                    if (contenedor) contenedor.innerHTML = '';
+                    contador = 1; // Resetear el contador de archivos también
+                    
+                    console.log('Formulario reseteado exitosamente');
+                }
+            } catch (error) {
+                console.error('Error al resetear el formulario:', error);
+            }
+        });
+
+        /*|| Announcements Management Section ||*/
+
+        async function loadManageAnnouncements() {
+            try {
+                const response = await fetch("/api/announcements");
+                allAnnouncements = await response.json();
+                renderManageAnnouncements();
+            } catch (error) {
+                console.error("Error cargando los anuncios para gestión:", error);
+            }
+        }
+
+        // Función para renderizar los anuncios en la tabla
+        function renderManageAnnouncements() {
+            let filteredAnnouncements = allAnnouncements;
+
+            // Filtrar por título si hay término de búsqueda
+            if (currentAnnouncementSearchTerm.trim() !== "") {
+                const term = currentAnnouncementSearchTerm.toLowerCase();
+                filteredAnnouncements = allAnnouncements.filter(announcement =>
+                    announcement.titulo.toLowerCase().includes(term)
+                );
+            }
+
+            const total = filteredAnnouncements.length;
+            const start = (currentAnnouncementPage - 1) * announcementsPerPage;
+            const end = start + announcementsPerPage;
+            const currentAnnouncements = filteredAnnouncements.slice(start, end);
+
+            const container = document.getElementById("announcementsManageContainer");
+            container.innerHTML = "";
+
+            if (currentAnnouncements.length === 0) {
+                container.innerHTML = "<tr><td colspan='5'>No se encontraron anuncios.</td></tr>";
+            } else {
+                currentAnnouncements.forEach(announcement => {
+                    const row = document.createElement("tr");
+                    const date = new Date(announcement.fecha_creacion).toLocaleDateString();
+                    
+                    row.innerHTML = `
+                        <td>${announcement.id_mensaje}</td>
+                        <td>
+                            <div style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                ${announcement.titulo}
+                            </div>
+                        </td>
+                        <td>${announcement.autor_nombre || 'Usuario'}</td>
+                        <td>${date}</td>
+                        <td>
+                            <button class="action-btn btn-view" data-id="${announcement.id_mensaje}" title="Ver anuncio">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="action-btn btn-edit" data-id="${announcement.id_mensaje}" title="Editar anuncio">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <form method="POST" action="/deleteAnnouncement/${announcement.id_mensaje}" class="delete-announcement-form" style="display:inline;">
+                                <button type="submit" class="action-btn btn-delete" title="Eliminar anuncio">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    `;
+                    container.appendChild(row);
+                });
+            }
+
+            // Actualizar información de paginación
+            const paginationInfo = document.getElementById('announcementsPaginationInfo');
+            if (paginationInfo) {
+                paginationInfo.textContent = `${Math.min(start + 1, total)}-${Math.min(end, total)} de ${total}`;
+            }
+
+            // Event listeners para los botones
+            attachAnnouncementEventListeners();
+        }
+
+        // Función para adjuntar event listeners a los botones
+        function attachAnnouncementEventListeners() {
+            // Botón ver
+            document.querySelectorAll('.btn-view').forEach(button => {
+                button.addEventListener('click', function () {
+                    const announcementId = this.getAttribute('data-id');
+                    const announcement = allAnnouncements.find(a => a.id_mensaje == announcementId);
+                    if (announcement) openAnnouncementModal(announcement, false);
+                });
+            });
+
+            // Botón editar
+            document.querySelectorAll('.btn-edit').forEach(button => {
+                button.addEventListener('click', function () {
+                    const announcementId = this.getAttribute('data-id');
+                    const announcement = allAnnouncements.find(a => a.id_mensaje == announcementId);
+                    if (announcement) openAnnouncementModal(announcement, true);
+                });
+            });
+
+            // Formularios de eliminación
+            document.querySelectorAll('.delete-announcement-form').forEach(form => {
+                form.addEventListener('submit', (e) => {
+                    const confirmed = confirm("¿Estás seguro de que deseas eliminar este anuncio?");
+                    if (!confirmed) {
+                        e.preventDefault();
+                    }
+                });
+            });
+        }
+
+        // Función para abrir el modal de anuncio
+        function openAnnouncementModal(announcement, editable = false) {
+            const oldModal = document.getElementById('announcementModal');
+            if (oldModal) oldModal.remove();
+
+            const modalHTML = `
+                <div id="announcementModal" class="modal-overlay">
+                    <div class="modal-content" style="max-width: 600px;">
+                        <div class="modal-header">
+                            <h2>${editable ? 'Editar Anuncio' : 'Ver Anuncio'}</h2>
+                            <span class="close-modal" id="closeAnnouncementModal">&times;</span>
+                        </div>
+                        <div class="modal-body">
+                            <form id="announcementForm" method="POST" action="/updateAnnouncement/${announcement.id_mensaje}">
+                                <div class="form-group">
+                                    <label>Título:</label>
+                                    <input type="text" name="notificationTitle" value="${announcement.titulo}" 
+                                        class="form-control" ${editable ? '' : 'readonly'} required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Mensaje:</label>
+                                    <textarea name="notificationMessage" class="form-control" rows="6" 
+                                            ${editable ? '' : 'readonly'} required>${announcement.mensaje}</textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Fecha de creación:</label>
+                                    <input type="text" value="${new Date(announcement.fecha_creacion).toLocaleString()}" 
+                                        class="form-control" readonly>
+                                </div>
+
+                                <div class="form-group" style="margin-top: 20px;">
+                                    ${editable ? `
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save me-2"></i>Guardar Cambios
+                                        </button>
+                                    ` : ''}
+                                    <button type="button" class="btn btn-secondary" id="cancelAnnouncementModal">
+                                        ${editable ? 'Cancelar' : 'Cerrar'}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+            // Event listeners para cerrar el modal
+            document.getElementById('closeAnnouncementModal').addEventListener('click', () => {
+                document.getElementById('announcementModal').remove();
+            });
+            
+            document.getElementById('cancelAnnouncementModal').addEventListener('click', () => {
+                document.getElementById('announcementModal').remove();
+            });
+
+            // Cerrar modal al hacer clic fuera
+            document.getElementById('announcementModal').addEventListener('click', (e) => {
+                if (e.target.id === 'announcementModal') {
+                    document.getElementById('announcementModal').remove();
+                }
+            });
+        }
+
+        // Event listeners para paginación y búsqueda (agregar al final de la función DOMContentLoaded)
+        document.getElementById('announcementsPrevBtn')?.addEventListener('click', () => {
+            if (currentAnnouncementPage > 1) {
+                currentAnnouncementPage--;
+                renderManageAnnouncements();
+            }
+        });
+
+        document.getElementById('announcementsNextBtn')?.addEventListener('click', () => {
+            const totalPages = Math.ceil(allAnnouncements.length / announcementsPerPage);
+            if (currentAnnouncementPage < totalPages) {
+                currentAnnouncementPage++;
+                renderManageAnnouncements();
+            }
+        });
+
+        document.getElementById('searchAnnouncementInput')?.addEventListener('input', (e) => {
+            currentAnnouncementSearchTerm = e.target.value;
+            currentAnnouncementPage = 1; // Reiniciar a la primera página
+            renderManageAnnouncements();
+        });
             
 
 

@@ -485,6 +485,107 @@ app.post("/announcements", async (req, res) => {
   }
 });
 
+// Ruta para actualizar anuncio
+app.post("/updateAnnouncement/:id", async (req, res) => {
+  if (req.isAuthenticated()) {
+    try {
+      const { notificationTitle, notificationMessage } = req.body;
+      const anuncioId = req.params.id;
+      const usuarioId = req.user.id_usuario;
+
+      // Verificar que el anuncio pertenece al usuario autenticado
+      const anuncioExistente = await db.query(
+        "SELECT id_usuario FROM anuncios WHERE id_mensaje = $1", 
+        [anuncioId]
+      );
+
+      if (anuncioExistente.rows.length === 0) {
+        return res.status(404).send("Anuncio no encontrado");
+      }
+
+      if (anuncioExistente.rows[0].id_usuario !== usuarioId) {
+        return res.status(403).send("No tienes permisos para actualizar este anuncio");
+      }
+
+      // Actualizar el anuncio
+      await db.query(
+        "UPDATE anuncios SET titulo = $1, mensaje = $2 WHERE id_mensaje = $3", 
+        [notificationTitle, notificationMessage, anuncioId]
+      );
+
+      res.redirect("/");
+
+    } catch (error) {
+      console.error("Error al actualizar el anuncio:", error);
+      res.status(500).send("Error interno del servidor");
+    }
+  } else {
+    res.redirect("/login");
+  }
+});
+
+// Ruta para eliminar anuncio
+app.post("/deleteAnnouncement/:id", async (req, res) => {
+  if (req.isAuthenticated()) {
+    try {
+      const anuncioId = req.params.id;
+      const usuarioId = req.user.id_usuario;
+
+      // Verificar que el anuncio pertenece al usuario autenticado
+      const anuncioExistente = await db.query(
+        "SELECT id_usuario FROM anuncios WHERE id_mensaje = $1", 
+        [anuncioId]
+      );
+
+      if (anuncioExistente.rows.length === 0) {
+        return res.status(404).send("Anuncio no encontrado");
+      }
+
+      if (anuncioExistente.rows[0].id_usuario !== usuarioId) {
+        return res.status(403).send("No tienes permisos para eliminar este anuncio");
+      }
+
+      // Eliminar el anuncio
+      await db.query("DELETE FROM anuncios WHERE id_mensaje = $1", [anuncioId]);
+
+      res.redirect("/");
+
+    } catch (error) {
+      console.error("Error al eliminar el anuncio:", error);
+      res.status(500).send("Error interno del servidor");
+    }
+  } else {
+    res.redirect("/login");
+  }
+});
+
+// Ruta para obtener un anuncio específico (útil para formularios de edición)
+app.get("/getAnnouncement/:id", async (req, res) => {
+  if (req.isAuthenticated()) {
+    try {
+      const anuncioId = req.params.id;
+      const usuarioId = req.user.id_usuario;
+
+      const resultado = await db.query(
+        "SELECT * FROM anuncios WHERE id_mensaje = $1 AND id_usuario = $2", 
+        [anuncioId, usuarioId]
+      );
+
+      if (resultado.rows.length === 0) {
+        return res.status(404).json({ error: "Anuncio no encontrado" });
+      }
+
+      res.json(resultado.rows[0]);
+
+    } catch (error) {
+      console.error("Error al obtener el anuncio:", error);
+      res.status(500).json({ error: "Error interno del servidor" });
+    }
+  } else {
+    res.status(401).json({ error: "No autenticado" });
+  }
+});
+
 app.post("/updateBook/:id", async (req, res) => {
   const bookId = req.params.id;
   const { nombre_libro, descripcion } = req.body;
@@ -588,9 +689,33 @@ app.post("/deleteUser/:id", async (req, res) => {
   const userId = req.params.id;
 
   try {
+    // Iniciar una transacción para asegurar que ambas operaciones se completen
+    await db.query("BEGIN");
+
+    // Eliminar en orden para respetar las dependencias de claves foráneas
+    
+    // 1. Eliminar anuncios del usuario
+    await db.query("DELETE FROM anuncios WHERE id_usuario = $1", [userId]);
+    
+    // 2. Eliminar relaciones profesor-estudiante donde el usuario es profesor
+    await db.query("DELETE FROM profesores_estudiantes WHERE id_usuario_profesor = $1", [userId]);
+    
+    // 3. Eliminar relaciones profesor-estudiante donde el usuario es estudiante
+    await db.query("DELETE FROM profesores_estudiantes WHERE id_usuario_estudiante = $1", [userId]);
+    
+    // 4. Eliminar asignaciones de libros al estudiante
+    await db.query("DELETE FROM estudiantes_libros WHERE id_usuario_estudiante = $1", [userId]);
+    
+    // 5. Finalmente eliminar el usuario
     await db.query("DELETE FROM usuarios WHERE id_usuario = $1", [userId]);
+
+    // Confirmar la transacción
+    await db.query("COMMIT");
+
     res.redirect("/"); 
   } catch (error) {
+    // Si hay error, revertir la transacción
+    await db.query("ROLLBACK");
     console.error("Error al eliminar usuario:", error);
     res.status(500).send("Error al eliminar usuario");
   }

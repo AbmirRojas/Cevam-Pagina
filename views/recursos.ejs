@@ -75,7 +75,7 @@
                 <div class="menu-item admin-menu">
                     <a href="#" class="menu-link" data-section="bookCreation">
                         <i class="fas fa-plus-circle"></i>
-                        <span>Add Book</span>
+                        <span>Add Resource</span>
                         <span class="admin-indicator">Admin</span>
                     </a>
                 </div>
@@ -93,7 +93,7 @@
                 <div class="menu-item admin-menu">
                     <a href="#" class="menu-link" data-section="books">
                         <i class="fas fa-book"></i>
-                        <span>Books</span>
+                        <span>Manage Resources</span>
                         <span class="admin-indicator">Admin</span>
                     </a>
                 </div>
@@ -115,6 +115,15 @@
                         <span class="admin-indicator">Admin</span>
                     </a>
                 </div>
+
+                <div class="menu-item admin-menu">
+                    <a href="#" class="menu-link" data-section="manageAnnouncements">
+                        <i class="fas fa-edit"></i>
+                        <span>Manage Announcements</span>
+                        <span class="admin-indicator">Admin</span>
+                    </a>
+                </div>
+                
             <% } %>
             
             <div class="menu-title">Settings</div>
@@ -363,17 +372,17 @@
                             <div class="form-group">
                                 <label for="moduleBook">Associated Book </label>
                                 <select name="book" id="moduleBook" class="form-control">
-                                    <option value="">Select book</option>
-                                    <option value="1">Book 1: Beginner Level</option>
-                                    <option value="2">Book 2: Elementary Level</option>
-                                    <option value="3">Book 3: Pre-Intermediate</option>
-                                    <option value="4">Book 4: Intermediate</option>
-                                    <option value="5">Book 5: Upper Intermediate</option>
-                                    <option value="6">Book 6: Advanced Level</option>
-                                    <option value="7">Book 7: Business English</option>
-                                    <option value="8">Book 8: Academic English</option>
-                                    <option value="9">Book 9: Conversational English</option>
-                                    <option value="10">Book 10: Exam Preparation</option>
+                                    <option value="">Select Level</option>
+                                    <option value="1">Level 1: Beginners</option>
+                                    <option value="2">Level 2: Advanced Beginners</option>
+                                    <option value="3">Level 3: Low Intermediate</option>
+                                    <option value="4">Level 4: Intermediate</option>
+                                    <option value="5">Level 5: Intermediate Intermediate</option>
+                                    <option value="6">Level 6: Advanced Intermediate</option>
+                                    <option value="7">Level 7: Advanced Intermediate</option>
+                                    <option value="8">Level 8: Advanced</option>
+                                    <option value="9">Level 9: Advanced</option>
+                                    <option value="10">Level 10: Advanced Integrated</option>
                                 </select>
                             </div>
                         </div>
@@ -624,6 +633,45 @@
                 </div>
             </div>
         </div>
+
+        
+        <!--Manage Announcements Section-->
+        <div class="main-container" id="manageAnnouncementsSection" style="display: none;">
+            <div class="section-title">
+                <h2><i class="fas fa-edit me-2"></i> Manage Announcements</h2>
+            </div>
+            
+            <div class="content-section">
+                <div class="form-group" style="max-width: 400px; margin-bottom: 25px;">
+                    <input type="text" id="searchAnnouncementInput" class="form-control" placeholder="Buscar anuncios... Ej: Mantenimiento...">
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="user-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Título</th>
+                                <th>Autor</th>
+                                <th>Fecha</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="announcementsManageContainer">
+                            <!--announcement data will be generated here-->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                    <div id="announcementsPaginationInfo">Cargando...</div>
+                    <div style="display: flex; gap: 10px;">
+                        <button id="announcementsPrevBtn" class="btn btn-secondary">Previous</button>
+                        <button id="announcementsNextBtn" class="btn btn-primary">Next</button>
+                    </div>
+                </div>
+            </div>
+        
         
 
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
