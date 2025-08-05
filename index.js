@@ -491,11 +491,10 @@ app.post("/updateAnnouncement/:id", async (req, res) => {
     try {
       const { notificationTitle, notificationMessage } = req.body;
       const anuncioId = req.params.id;
-      const usuarioId = req.user.id_usuario;
 
-      // Verificar que el anuncio pertenece al usuario autenticado
+      // Verificar que el anuncio existe
       const anuncioExistente = await db.query(
-        "SELECT id_usuario FROM anuncios WHERE id_mensaje = $1", 
+        "SELECT id_mensaje FROM anuncios WHERE id_mensaje = $1", 
         [anuncioId]
       );
 
@@ -503,11 +502,7 @@ app.post("/updateAnnouncement/:id", async (req, res) => {
         return res.status(404).send("Anuncio no encontrado");
       }
 
-      if (anuncioExistente.rows[0].id_usuario !== usuarioId) {
-        return res.status(403).send("No tienes permisos para actualizar este anuncio");
-      }
-
-      // Actualizar el anuncio
+      // Actualizar el anuncio sin verificar propiedad
       await db.query(
         "UPDATE anuncios SET titulo = $1, mensaje = $2 WHERE id_mensaje = $3", 
         [notificationTitle, notificationMessage, anuncioId]
@@ -529,11 +524,10 @@ app.post("/deleteAnnouncement/:id", async (req, res) => {
   if (req.isAuthenticated()) {
     try {
       const anuncioId = req.params.id;
-      const usuarioId = req.user.id_usuario;
 
-      // Verificar que el anuncio pertenece al usuario autenticado
+      // Verificar que el anuncio existe
       const anuncioExistente = await db.query(
-        "SELECT id_usuario FROM anuncios WHERE id_mensaje = $1", 
+        "SELECT id_mensaje FROM anuncios WHERE id_mensaje = $1", 
         [anuncioId]
       );
 
@@ -541,11 +535,7 @@ app.post("/deleteAnnouncement/:id", async (req, res) => {
         return res.status(404).send("Anuncio no encontrado");
       }
 
-      if (anuncioExistente.rows[0].id_usuario !== usuarioId) {
-        return res.status(403).send("No tienes permisos para eliminar este anuncio");
-      }
-
-      // Eliminar el anuncio
+      // Eliminar el anuncio sin verificar propiedad
       await db.query("DELETE FROM anuncios WHERE id_mensaje = $1", [anuncioId]);
 
       res.redirect("/");
